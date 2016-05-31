@@ -1,10 +1,10 @@
-﻿<Window x:Class="Piano.MainWindow"
+<Window x:Class="Piano.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         WindowStyle="SingleBorderWindow" ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen" WindowState="Normal"
         Title="Piano" Height="768" Width="1240">
-    
+
     <Grid>
         <Grid Height="768" Width="1240" />
 
@@ -13,7 +13,7 @@
 
             <!--Piano Backing Fill Pieces-->
             <Ellipse Fill="Brown" Height="355" Canvas.Left="789"  Width="240" Canvas.Top="-15"/>
-            
+
             <Rectangle Fill="Brown" Height="435" Canvas.Left="80"  Width="855" RenderTransformOrigin="0.5,0.5">
                 <Rectangle.RenderTransform>
                     <TransformGroup>
@@ -40,33 +40,97 @@
 
             <Ellipse Fill="White" Height="330" Canvas.Left="1028" Canvas.Top="-30" Width="187"/>
 
-            
+
             <!--Piano Keyboard Background-->
             <Rectangle x:Name="Piano_KeyBoard_layout" Fill="BurlyWood" Width="1100" Height="145" Canvas.Left="90" Canvas.Top="470"/>
 
-            
-            <!--Piano Left Side-->           
+
+            <!--Piano Left Side-->
             <Rectangle x:Name="PianoLeftTrim" Fill="Brown" Width="40" Height="195" Canvas.Left="80" Canvas.Top="420"/>
             <Ellipse Fill="Brown" Height="100" Canvas.Left="80" Canvas.Top="540" Width="40"/>
-            
+
 
             <!--Piano Right Side-->
             <Rectangle x:Name="PianoRightTrim" Fill="Brown" Width="40" Height="200" Canvas.Left="1160" Canvas.Top="416"/>
             <Ellipse Fill="Brown" Height="100" Canvas.Left="1160" Canvas.Top="540" Width="40"/>
 
-            
+
             <!-- Piano Top Trim-->
             <Rectangle x:Name="PianoTopTrim" Fill="Brown" Width="1119" Height="85" Stroke="Black" Canvas.Left="80" Canvas.Top="384"/>
 
-            
+
             <!--Bench-->
             <Ellipse Name="Bench" Fill="Black" Height="100" Canvas.Left="563" Canvas.Top="635" Width="166"/>
+            
+            
+            <!--For Beats and music sheet-->            
+            <Rectangle Fill="AntiqueWhite" Height="340" Canvas.Left="400" Stroke="Black" Canvas.Top="42" Width="500"/>
+            <Button  x:Name="Play"  Content=" Play/ Pause" Canvas.Left="425" Canvas.Top="350" Width="75" Click="ButtonDown"/>
+            <Button x:Name="Load" Content="Load" Canvas.Left="545" Canvas.Top="350" Width="50" Click="ButtonDown"/>
+            <Button x:Name="Save" Content="Save" Canvas.Left="640" Canvas.Top="350" Width="50" Click="ButtonDown"/>
+            <Button x:Name="Print" Content="Print" Canvas.Left="735" Canvas.Top="350" Width="50" Click="ButtonDown"/>
+            <Button x:Name="Reset" Content="Reset" Canvas.Left="830" Canvas.Top="350" Width="50" Click="ButtonDown"/>
+
+
+            
+            <!--Treble Sheet-->
+            <Canvas Background="White" Height="100" Width="450" Canvas.Left="425" Canvas.Top="100" VerticalAlignment="Top" ClipToBounds="True">
+                
+                <Line  Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="450"  Margin="0,30,0,0"/>
+                <Line  Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="450"  Margin="0,40,0,0"/>
+                <Line  Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="450"  Margin="0,50,0,0"/>
+                <Line  Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="450"  Margin="0,60,0,0"/>
+                <Line  Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="450"  Margin="0,70,0,0"/>               
+               
+                <!--<Label Content="Beat Count" Height="30" Width="70" Canvas.Left="40"/>-->
+                <Label Content="/" FontSize="50" Height="80" Width="40" Canvas.Left="60" Canvas.Top="5"/>
+                <TextBox x:Name="Top"  Height="20" Canvas.Left="40" Canvas.Top="30" TextWrapping="NoWrap" Text="" MaxLength="1" Width="30" TextChanged="TopCnt" />              
+                <TextBox x:Name="Bottom" Height="20" Canvas.Left="80" Canvas.Top="50" TextWrapping="NoWrap" Text="" MaxLength="1" Width="30" TextChanged="BottomCnt" />
+
+                <!--For Note Placement-->
+                <Canvas x:Name="TrebleNotePlacer_P1" Background="White" Height="100" Width="325" Canvas.Left="125" Canvas.Top="0" VerticalAlignment="Top" ClipToBounds="True">
+                    <Line x:Name="TrebleF" Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="325"  Margin="0,30,0,0"/>
+                    <Line x:Name="TrebleD"  Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="325"  Margin="0,40,0,0"/>
+                    <Line x:Name="TrebleB"  Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="325"  Margin="0,50,0,0"/>
+                    <Line x:Name="TrebleG"  Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="325"  Margin="0,60,0,0"/>
+                    <Line x:Name="TrebleE"  Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="325"  Margin="0,70,0,0"/>
+                </Canvas>
+
+            </Canvas>
+
+            
+            
+           <!--Bass Sheet-->
+           <Canvas Background="White" Height="100" Width="450" Canvas.Left="425" Canvas.Top="225" VerticalAlignment="Top" ClipToBounds="True">
+                <Label  FontSize="20" Height="40" Width="30" Canvas.Left="40" Canvas.Top="20"  Content="{Binding Text,ElementName=Top, UpdateSourceTrigger=PropertyChanged}" />
+                <Label  FontSize="20" Height="40" Width="30"  Canvas.Left="65" Canvas.Top="40"  Content="{Binding Text,ElementName=Bottom, UpdateSourceTrigger=PropertyChanged}" />
+                <Label Content="/" FontSize="50" Height="80" Width="50" Canvas.Left="50" Canvas.Top="5"/>
+
+                <Line Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="450"  Margin="0,30,0,0"/>
+                <Line Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="450"  Margin="0,40,0,0"/>
+                <Line Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="450"  Margin="0,50,0,0"/>
+                <Line Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="450"  Margin="0,60,0,0"/>
+                <Line Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="450"  Margin="0,70,0,0"/>
+                
+               <!--For Note Placement-->
+                <Canvas x:Name="BassNotePlacer_P1" Background="White" Height="100" Width="325" Canvas.Left="125" Canvas.Top="0" VerticalAlignment="Top" ClipToBounds="True">
+                    <Line x:Name="BassA" Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="325"  Margin="0,30,0,0"/>
+                    <Line x:Name="BassF" Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="325"  Margin="0,40,0,0"/>
+                    <Line x:Name="BassD" Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="325"  Margin="0,50,0,0"/>
+                    <Line x:Name="BassB" Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="325"  Margin="0,60,0,0"/>
+                    <Line x:Name="BassG" Stroke="Black" StrokeThickness="1" X1="0" Y1="0" X2="325"  Margin="0,70,0,0"/>
+                </Canvas>
+            </Canvas>
+            
+            <!--PlaceHolder Names working on symbols for treble clef and bass clef-->
+            <Label Content="Treble" Canvas.Left="425" Canvas.Top="80"/>
+            <Label Content="Bass" Canvas.Left="425" Canvas.Top="205"/>
 
         </Canvas>
 
-        
-<!--Piano White Keys -->
-        <Canvas x:Name="Piano_White_Keys" Margin="98,455,80,145" ClipToBounds="True">            
+
+        <!--Piano White Keys -->
+        <Canvas x:Name="Piano_White_Keys" Margin="98,455,80,145" ClipToBounds="True">
             
             <Rectangle x:Name="A1" Fill="White"  Width="16" Height="140" Canvas.Left="0" Canvas.Top="0"  MouseEnter="MouseOver" MouseLeave="MouseLeave" MouseLeftButtonDown="MouseDown" MouseLeftButtonUp="MouseUp"/>
             <Rectangle x:Name="B1" Fill="White"  Width="16" Height="140" Canvas.Left="20" Canvas.Top="0" MouseEnter="MouseOver" MouseLeave="MouseLeave" MouseLeftButtonDown="MouseDown" MouseLeftButtonUp="MouseUp"/>
@@ -136,9 +200,9 @@
             <Rectangle x:Name="C8" Fill="White"  Width="16" Height="140" Canvas.Left="1020" Canvas.Top="0" MouseEnter="MouseOver" MouseLeave="MouseLeave" MouseLeftButtonDown="MouseDown" MouseLeftButtonUp="MouseUp"/>
         </Canvas>
 
-        
 
-<!--Piano Black Keys -->
+
+        <!--Piano Black Keys -->
         <Canvas x:Name="Piano_Black_Keys" Margin="98,455,80,145" ClipToBounds="True">
 
             <Rectangle x:Name="BA1" Fill="Black"  Width="12" Height="90" Canvas.Left="12" Canvas.Top="0" MouseEnter="MouseBlackOver" MouseLeave="MouseBlackLeave" MouseLeftButtonDown="MouseDown" MouseLeftButtonUp="MouseUp"/>
@@ -193,8 +257,7 @@
             <Rectangle x:Name="BA8" Fill="Black"  Width="12" Height="90" Canvas.Left="992" Canvas.Top="0" MouseEnter="MouseBlackOver" MouseLeave="MouseBlackLeave" MouseLeftButtonDown="MouseDown" MouseLeftButtonUp="MouseUp"/>
 
         </Canvas>
-
-
-
+        
     </Grid>
 </Window>
+
