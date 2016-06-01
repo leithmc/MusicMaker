@@ -34,6 +34,31 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Manufaktura.Controls">
+      <HintPath>Manufactura\Demo1.2.7\Manufaktura.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Manufaktura.Controls.Desktop, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Manufactura\Demo1.2.7\Manufaktura.Controls.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Manufaktura.Controls.Legacy">
+      <HintPath>Manufactura\Demo1.2.7\Manufaktura.Controls.Legacy.dll</HintPath>
+    </Reference>
+    <Reference Include="Manufaktura.Controls.WPF">
+      <HintPath>Manufactura\Demo1.2.7\Manufaktura.Controls.WPF.dll</HintPath>
+    </Reference>
+    <Reference Include="Manufaktura.Model">
+      <HintPath>Manufactura\Demo1.2.7\Manufaktura.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="Manufaktura.Model.Legacy">
+      <HintPath>Manufactura\Demo1.2.7\Manufaktura.Model.Legacy.dll</HintPath>
+    </Reference>
+    <Reference Include="Manufaktura.Music">
+      <HintPath>Manufactura\Demo1.2.7\Manufaktura.Music.dll</HintPath>
+    </Reference>
+    <Reference Include="Manufaktura.Music.Legacy">
+      <HintPath>Manufactura\Demo1.2.7\Manufaktura.Music.Legacy.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -93,6 +118,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Manufaktura.Controls.Desktop.dll" />
+    <Content Include="Manufaktura.Controls.Desktop.pdb" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

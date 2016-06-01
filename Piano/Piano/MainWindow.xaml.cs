@@ -115,5 +115,10 @@ namespace Piano
 
             }
         }
+
+        private void NoteViewer_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
