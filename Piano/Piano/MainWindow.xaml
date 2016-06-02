@@ -1,6 +1,4 @@
 ﻿<Window
-        xmlns:PSAMlib="clr-namespace:PSAMControlLibrary;assembly=PSAMControlLibrary"
-        xmlns:PSAM="clr-namespace:PSAMWPFControlLibrary;assembly=PSAMWPFControlLibrary"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:WPF="clr-namespace:Manufaktura.Controls.WPF;assembly=Manufaktura.Controls.WPF" x:Class="Piano.MainWindow"
