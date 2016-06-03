@@ -22,9 +22,10 @@ namespace Piano
     {
         private String KeyName;
         private String ButtonName;
-        private String MusicSheetName;
+        private String Title;
         private String BeatMeasure;
         private String BeatLength;
+        private String KeySig;
 
 
 
@@ -92,7 +93,10 @@ namespace Piano
         }
 
 
-//Popup Window
+
+
+
+//Start Popup Window
         private void PopUp(object sender, RoutedEventArgs e)
         {
             NewPop.IsOpen = true;
@@ -106,8 +110,8 @@ namespace Piano
            TextBox textbox = sender as TextBox;
             if(textbox != null){
                 String TCount = textbox.Text;
-                MusicSheetName = TCount;
-                Console.WriteLine(MusicSheetName);// tested passed
+                Title = TCount;
+                Console.WriteLine(Title);// tested passed
                 //do something back end with this top count
             }
         }
@@ -117,6 +121,7 @@ namespace Piano
         private void NoteViewer_Loaded(object sender, RoutedEventArgs e)
         {
             NewPop.IsOpen = false;
+          
         }
         
 
@@ -125,7 +130,7 @@ namespace Piano
         private void BeatsMeasureBox(object sender, SelectionChangedEventArgs e)
         {
             BeatMeasure = (Beats_Measure.SelectedItem as ComboBoxItem).Content.ToString();
-
+            
         }
 
 
@@ -134,10 +139,15 @@ namespace Piano
         private void BeatLengthBox(object sender, SelectionChangedEventArgs e)
         {
             BeatLength = (Beat_Length.SelectedItem as ComboBoxItem).Content.ToString();
+            
         }
 
 
-
-      
+//Key Signature selction
+        private void KeySignatureBox(object sender, SelectionChangedEventArgs e)
+        {
+            KeySig = (KeySignature.SelectedItem as ComboBoxItem).Content.ToString();
+           // Console.WriteLine(KeySig); //test passed
+        }
     }
 }
