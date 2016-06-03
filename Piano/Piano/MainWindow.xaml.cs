@@ -22,8 +22,9 @@ namespace Piano
     {
         private String KeyName;
         private String ButtonName;
-        private String TopCount;
-        private String BottomCount;
+        private String MusicSheetName;
+        private String BeatMeasure;
+        private String BeatLength;
 
 
 
@@ -35,6 +36,7 @@ namespace Piano
             
         }
 
+        
 
 //Key Controller (Each Key has has its own parts)
 //
@@ -89,36 +91,53 @@ namespace Piano
             //do something here on backside
         }
 
-//Top Count
-        private void TopCnt(object sender, EventArgs e)
+
+//Popup Window
+        private void PopUp(object sender, RoutedEventArgs e)
+        {
+            NewPop.IsOpen = true;
+        }
+
+
+
+//Music Sheet Name
+        private void MusicName(object sender, EventArgs e)
         {
            TextBox textbox = sender as TextBox;
             if(textbox != null){
                 String TCount = textbox.Text;
-                TopCount = TCount;
-                Console.WriteLine(TopCount);// tested passed
+                MusicSheetName = TCount;
+                Console.WriteLine(MusicSheetName);// tested passed
                 //do something back end with this top count
-
             }
         }
 
-//Bottom Count
-        private void BottomCnt(object sender, EventArgs e)
-        {
-            TextBox textbox = sender as TextBox;
-            if (textbox != null)
-            {
-                String BCount = textbox.Text;
-                BottomCount = BCount;
-                Console.WriteLine(BottomCount);// tested passed
-                //do something back end with this bottom count
 
-            }
-        }
-
+//Close popup and load NoteViewer
         private void NoteViewer_Loaded(object sender, RoutedEventArgs e)
         {
+            NewPop.IsOpen = false;
+        }
+        
+
+
+//combo box Beats/ Measure
+        private void BeatsMeasureBox(object sender, SelectionChangedEventArgs e)
+        {
+            BeatMeasure = (Beats_Measure.SelectedItem as ComboBoxItem).Content.ToString();
 
         }
+
+
+
+//Combo Box Beat Length
+        private void BeatLengthBox(object sender, SelectionChangedEventArgs e)
+        {
+            BeatLength = (Beat_Length.SelectedItem as ComboBoxItem).Content.ToString();
+        }
+
+
+
+      
     }
 }
