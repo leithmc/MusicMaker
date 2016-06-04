@@ -214,7 +214,7 @@
             <Popup x:Name="NewPop" Placement="Center"  HorizontalOffset="31" VerticalOffset="-124">
                 <Canvas Height="339" Width="499" Background="AntiqueWhite">
 
-                    <Label Content="Music Name" Canvas.Left="200"/>
+                    <Label Content="Title" Canvas.Left="200"/>
                     <TextBox x:Name="Name"  Height="20" Canvas.Left="35" Canvas.Top="25" TextWrapping="NoWrap" Text="" MaxLength="100" Width="425" TextChanged="MusicName" />
 
                     <Label Content="Beats / Measure" Canvas.Left="150" Canvas.Top="70"/>
@@ -242,6 +242,30 @@
                         <ComboBoxItem>4</ComboBoxItem>
                         <ComboBoxItem>8</ComboBoxItem>
                         <ComboBoxItem>16</ComboBoxItem>
+                    </ComboBox>
+
+                    <Label Content="Key Signature" Canvas.Left="150" Canvas.Top="130"/>
+                    <ComboBox x:Name="KeySignature" Canvas.Left="250" Canvas.Top="130" SelectionChanged="KeySignatureBox">
+                        <ComboBoxItem>F</ComboBoxItem>
+                        <ComboBoxItem>C</ComboBoxItem>
+                        <ComboBoxItem>G</ComboBoxItem>
+                        <ComboBoxItem>D</ComboBoxItem>
+                        <ComboBoxItem>A</ComboBoxItem>
+                        <ComboBoxItem>E</ComboBoxItem>
+                        <ComboBoxItem>B</ComboBoxItem>
+                        <ComboBoxItem>Bb</ComboBoxItem>
+                        <ComboBoxItem>Eb</ComboBoxItem>
+                        <ComboBoxItem>Ab</ComboBoxItem>
+                        <ComboBoxItem>Db</ComboBoxItem>
+                        <ComboBoxItem>Gb</ComboBoxItem>
+                        <ComboBoxItem>Cb</ComboBoxItem>
+                        <ComboBoxItem>Fs</ComboBoxItem>
+                        <ComboBoxItem>Cs</ComboBoxItem>
+                        <ComboBoxItem>Gs</ComboBoxItem>
+                        <ComboBoxItem>Ds</ComboBoxItem>
+                        <ComboBoxItem>As</ComboBoxItem>
+                        <ComboBoxItem>Es</ComboBoxItem>
+                        <ComboBoxItem>Bs</ComboBoxItem>
                     </ComboBox>
 
                     <Button x:Name="PopUpClose" Content="Start" Width="50" Canvas.Left="215" Canvas.Top="300" Click="NoteViewer_Loaded"/>
@@ -398,5 +422,7 @@
 
     </Grid>
 </Window>
+
+
 
 
