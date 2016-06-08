@@ -34,15 +34,15 @@ namespace Piano
             InitializeComponent();
             // for back programming.
             BackCode backcode = new BackCode();
-            
+
         }
 
-        
 
-//Key Controller (Each Key has has its own parts)
-//
-//
-//White Keys
+
+        //Key Controller (Each Key has has its own parts)
+        //
+        //
+        //White Keys
         private void MouseOver(object sender, MouseEventArgs e)
         {
             ((Rectangle)sender).Fill = Brushes.Aqua;
@@ -55,7 +55,7 @@ namespace Piano
 
 
 
-//Black Keys
+        //Black Keys
         private void MouseBlackOver(object sender, MouseEventArgs e)
         {
             ((Rectangle)sender).Fill = Brushes.Aqua;
@@ -68,14 +68,14 @@ namespace Piano
 
 
 
-//Capture Mouse Click
+        //Capture Mouse Click
         private void MouseDown(object sender, MouseButtonEventArgs e)
         {
             ((Rectangle)sender).Fill = Brushes.Yellow;
             KeyName = (((FrameworkElement)e.Source).Name);
             Console.WriteLine(KeyName);
         }
-        
+
         private void MouseUp(object sender, MouseButtonEventArgs e)
         {
             ((Rectangle)sender).Fill = Brushes.Aqua;
@@ -84,7 +84,7 @@ namespace Piano
         }
 
 
-//Button actions
+        //Button actions
         private void ButtonDown(object sender, RoutedEventArgs e)
         {
             ButtonName = (((FrameworkElement)e.Source).Name);
@@ -96,7 +96,7 @@ namespace Piano
 
 
 
-//Start Popup Window
+        //Start Popup Window
         private void PopUp(object sender, RoutedEventArgs e)
         {
             NewPop.IsOpen = true;
@@ -104,11 +104,12 @@ namespace Piano
 
 
 
-//Music Sheet Name
+        //Music Sheet Name
         private void MusicName(object sender, EventArgs e)
         {
-           TextBox textbox = sender as TextBox;
-            if(textbox != null){
+            TextBox textbox = sender as TextBox;
+            if (textbox != null)
+            {
                 String TCount = textbox.Text;
                 Title = TCount;
                 Console.WriteLine(Title);// tested passed
@@ -117,37 +118,37 @@ namespace Piano
         }
 
 
-//Close popup and load NoteViewer
+        //Close popup and load NoteViewer
         private void NoteViewer_Loaded(object sender, RoutedEventArgs e)
         {
             NewPop.IsOpen = false;
-          
+
         }
-        
 
 
-//combo box Beats/ Measure
+
+        //combo box Beats/ Measure
         private void BeatsMeasureBox(object sender, SelectionChangedEventArgs e)
         {
             BeatMeasure = (Beats_Measure.SelectedItem as ComboBoxItem).Content.ToString();
-            
+
         }
 
 
 
-//Combo Box Beat Length
+        //Combo Box Beat Length
         private void BeatLengthBox(object sender, SelectionChangedEventArgs e)
         {
             BeatLength = (Beat_Length.SelectedItem as ComboBoxItem).Content.ToString();
-            
+
         }
 
 
-//Key Signature selction
+        //Key Signature selction
         private void KeySignatureBox(object sender, SelectionChangedEventArgs e)
         {
             KeySig = (KeySignature.SelectedItem as ComboBoxItem).Content.ToString();
-           // Console.WriteLine(KeySig); //test passed
+            // Console.WriteLine(KeySig); //test passed
         }
     }
 }
