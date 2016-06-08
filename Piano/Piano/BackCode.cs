@@ -11,36 +11,41 @@ namespace Piano
 {
     class BackCode
     {
-        //static XmlDocumentType DocType = new XmlDocumentType
+        static XmlDocumentType DocType = new XmlDocumentType
         private static bool isValid = true;
 
         /// <summary>
-        /// Loads the specified XML document. 
+        /// Loads the specified XML document.
         /// </summary>
-        /// <param name="fileName">The name, including path, of the MusicXML file to load.</param>
+        /// <param name = "fileName" > The name, including path, of the MusicXML file to load.</param>
         /// <returns>An XmlDocument object containing the contents of the specified file.</returns>
-    //    public static XmlDocument LoadFile(string fileName)
-    //    {
-    //        XmlDocument doc;
-    //        doc = new XmlDocument();
-    //        if (File.Exists(fileName))
-    //        {
-    //            // Validate file before loading
-    //            XmlTextReader r = new XmlTextReader("C:\\MyFolder\\ProductWithDTD.xml");
-    //            XmlValidatingReader v = new XmlValidatingReader(r);
+        public static XmlDocument LoadFile(string fileName)
+        {
+            XmlDocument doc;
+            doc = new XmlDocument();
+            if (File.Exists(fileName))
+            {
+                // Validate file before loading
+                if (!validateMusicXML(fileName)) throw new FileFormatException("File: " + fileName + " is not a valid MusicXML file.");
+                doc.Load(fileName);
+                return doc;
+            }
+            throw new FileNotFoundException(fileName + " not found.");
+        }
 
+        private bool validateMusicXML(string fileName)
+        {
+            // To be implemented
+            //XmlTextReader r = new XmlTextReader("C:\\MyFolder\\ProductWithDTD.xml");
+            //XmlValidatingReader v = new XmlValidatingReader(r);
+            return true;
+        }
 
-    //        }
-    //        doc.Load(fileName);
-    //        doc.CreateDocumentType()
-    //        return doc;
-    //    }
+        public XmlDocument CreateNew(string fileName, Staff[] staves)
+        {
 
-    //    public XmlDocument CreateNew(string fileName, Staff[] staves)
-    //    {
-
-    //        return true;
-    //    }
+            return new XmlDocument();
+        }
 
     }
 
