@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Xml;
 
 namespace Piano
 {
@@ -23,9 +22,10 @@ namespace Piano
     {
         private String KeyName;
         private String ButtonName;
-        private String TopCount;
-        private String BottomCount;
-        protected XmlDocument song;
+        private String Title;
+        private String BeatMeasure;
+        private String BeatLength;
+        private String KeySig;
 
 
 
@@ -34,10 +34,10 @@ namespace Piano
             InitializeComponent();
             // for back programming.
             BackCode backcode = new BackCode();
-
             
         }
 
+        
 
 //Key Controller (Each Key has has its own parts)
 //
@@ -92,36 +92,62 @@ namespace Piano
             //do something here on backside
         }
 
-//Top Count
-        private void TopCnt(object sender, EventArgs e)
+
+
+
+
+//Start Popup Window
+        private void PopUp(object sender, RoutedEventArgs e)
+        {
+            NewPop.IsOpen = true;
+        }
+
+
+
+//Music Sheet Name
+        private void MusicName(object sender, EventArgs e)
         {
            TextBox textbox = sender as TextBox;
             if(textbox != null){
                 String TCount = textbox.Text;
-                TopCount = TCount;
-                Console.WriteLine(TopCount);// tested passed
+                Title = TCount;
+                Console.WriteLine(Title);// tested passed
                 //do something back end with this top count
-
             }
         }
 
-//Bottom Count
-        private void BottomCnt(object sender, EventArgs e)
-        {
-            TextBox textbox = sender as TextBox;
-            if (textbox != null)
-            {
-                String BCount = textbox.Text;
-                BottomCount = BCount;
-                Console.WriteLine(BottomCount);// tested passed
-                //do something back end with this bottom count
 
-            }
-        }
-
+//Close popup and load NoteViewer
         private void NoteViewer_Loaded(object sender, RoutedEventArgs e)
         {
+            NewPop.IsOpen = false;
+          
+        }
+        
 
+
+//combo box Beats/ Measure
+        private void BeatsMeasureBox(object sender, SelectionChangedEventArgs e)
+        {
+            BeatMeasure = (Beats_Measure.SelectedItem as ComboBoxItem).Content.ToString();
+            
+        }
+
+
+
+//Combo Box Beat Length
+        private void BeatLengthBox(object sender, SelectionChangedEventArgs e)
+        {
+            BeatLength = (Beat_Length.SelectedItem as ComboBoxItem).Content.ToString();
+            
+        }
+
+
+//Key Signature selction
+        private void KeySignatureBox(object sender, SelectionChangedEventArgs e)
+        {
+            KeySig = (KeySignature.SelectedItem as ComboBoxItem).Content.ToString();
+           // Console.WriteLine(KeySig); //test passed
         }
     }
 }
