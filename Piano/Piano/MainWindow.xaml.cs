@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
 
 namespace Piano
 {
@@ -24,6 +25,7 @@ namespace Piano
         private String ButtonName;
         private String TopCount;
         private String BottomCount;
+        protected XmlDocument song;
 
 
 
@@ -32,6 +34,7 @@ namespace Piano
             InitializeComponent();
             // for back programming.
             BackCode backcode = new BackCode();
+
             
         }
 

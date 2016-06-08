@@ -16,8 +16,6 @@ E:\Git\MusicMaker\Piano\Piano\obj\Debug\Piano.exe
 E:\Git\MusicMaker\Piano\Piano\obj\Debug\Piano.pdb
 E:\Git\MusicMaker\Piano\Piano\bin\Debug\Piano.exe
 E:\Git\MusicMaker\Piano\Piano\bin\Debug\Piano.pdb
-E:\Git\MusicMaker\Piano\Piano\bin\Debug\PSAMControlLibrary.dll
-E:\Git\MusicMaker\Piano\Piano\bin\Debug\PSAMWPFControlLibrary.dll
 E:\Git\MusicMaker\Piano\Piano\obj\Debug\Piano.csprojResolveAssemblyReference.cache
 E:\Git\MusicMaker\Piano\Piano\obj\Debug\MainWindow.baml
 E:\Git\MusicMaker\Piano\Piano\obj\Debug\MainWindow.g.cs

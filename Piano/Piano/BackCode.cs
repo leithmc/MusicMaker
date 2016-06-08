@@ -3,22 +3,44 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Schema;
+using System.IO;
 
 namespace Piano
 {
     class BackCode
     {
-        public bool LoadFile(string fileName)
-        {
+        //static XmlDocumentType DocType = new XmlDocumentType
+        private static bool isValid = true;
 
-            return true;
-        }
+        /// <summary>
+        /// Loads the specified XML document. 
+        /// </summary>
+        /// <param name="fileName">The name, including path, of the MusicXML file to load.</param>
+        /// <returns>An XmlDocument object containing the contents of the specified file.</returns>
+    //    public static XmlDocument LoadFile(string fileName)
+    //    {
+    //        XmlDocument doc;
+    //        doc = new XmlDocument();
+    //        if (File.Exists(fileName))
+    //        {
+    //            // Validate file before loading
+    //            XmlTextReader r = new XmlTextReader("C:\\MyFolder\\ProductWithDTD.xml");
+    //            XmlValidatingReader v = new XmlValidatingReader(r);
 
-        public bool CreateNew(string fileName, Staff[] staves)
-        {
 
-            return true;
-        }
+    //        }
+    //        doc.Load(fileName);
+    //        doc.CreateDocumentType()
+    //        return doc;
+    //    }
+
+    //    public XmlDocument CreateNew(string fileName, Staff[] staves)
+    //    {
+
+    //        return true;
+    //    }
 
     }
 
@@ -26,6 +48,7 @@ namespace Piano
     {
         private KeySignature keySig;
         private TimeSignature timeSig;
+        private Cleff cleff;
         public Staff(KeySignature keySig, TimeSignature timeSig, Cleff cleff)
         {
 
@@ -56,6 +79,19 @@ namespace Piano
                 timeSig = value;
             }
         }
+
+        public Cleff Cleff
+        {
+            get
+            {
+                return cleff;
+            }
+
+            set
+            {
+                cleff = value;
+            }
+        }
     }
 
     public class TimeSignature
@@ -83,3 +119,4 @@ namespace Piano
     public enum KeySignature { F, C, G, D, A, E, B, Bb, Eb, Ab, Db, Gb, Cb, Fs, Cs, Gs, Ds, As, Es, Bs  };
     public enum Cleff { Treble, Bass, Alto, Tenor };
 }
+
