@@ -11,7 +11,7 @@ namespace Piano
 {
     class BackCode
     {
-        static XmlDocumentType DocType = new XmlDocumentType
+        //static XmlDocumentType DocType = new XmlDocumentType
         private static bool isValid = true;
 
         /// <summary>
@@ -33,17 +33,30 @@ namespace Piano
             throw new FileNotFoundException(fileName + " not found.");
         }
 
-        private bool validateMusicXML(string fileName)
+
+        /// <summary>
+        /// Validates that the file at the specified path matches the MusicXML schema definition.
+        /// </summary>
+        /// <param name="fileName">The name of the file to validate, including path.</param>
+        /// <returns>true if valid; false otherwise.</returns>
+        private static bool validateMusicXML(string fileName)
         {
             // To be implemented
             //XmlTextReader r = new XmlTextReader("C:\\MyFolder\\ProductWithDTD.xml");
             //XmlValidatingReader v = new XmlValidatingReader(r);
+            string s = fileName;
             return true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fileName">The name of the file to validate, including path.</param>
+        /// <param name="staves">An array of Staff objects representing the different parts in the composition.</param>
+        /// <returns>An XmlDocument containing the empty score.</returns>
         public XmlDocument CreateNew(string fileName, Staff[] staves)
         {
-
+            // To be implemented
             return new XmlDocument();
         }
 
@@ -56,46 +69,27 @@ namespace Piano
         private Cleff cleff;
         public Staff(KeySignature keySig, TimeSignature timeSig, Cleff cleff)
         {
-
+            this.keySig = keySig;
+            this.timeSig = timeSig;
+            this.cleff = cleff;
         }
 
         public KeySignature KeySig
         {
-            get
-            {
-                return keySig;
-            }
-
-            set
-            {
-                keySig = value;
-            }
+            get { return keySig; }
+            set { keySig = value; }
         }
 
         public TimeSignature TimeSig
         {
-            get
-            {
-                return timeSig;
-            }
-
-            set
-            {
-                timeSig = value;
-            }
+            get { return timeSig; }
+            set { timeSig = value; }
         }
 
         public Cleff Cleff
         {
-            get
-            {
-                return cleff;
-            }
-
-            set
-            {
-                cleff = value;
-            }
+            get { return cleff; }
+            set { cleff = value; }
         }
     }
 

@@ -271,13 +271,13 @@
 
 
 
-            <Button x:Name="Load" Content="Load" Canvas.Left="350" Canvas.Top="240" Width="50" Click="ButtonDown"/>
-            <Button x:Name="Save" Content="Save" Canvas.Left="350" Canvas.Top="280" Width="50" Click="ButtonDown"/>
-            <Button x:Name="Print" Content="Print" Canvas.Left="350" Canvas.Top="320" Width="50" Click="ButtonDown"/>
+            <Button x:Name="Load" Content="Load" Canvas.Left="350" Canvas.Top="240" Width="50" Click="Load_Click" />
+            <Button x:Name="Save" Content="Save" Canvas.Left="350" Canvas.Top="280" Width="50" Click="Save_Click" />
+            <Button x:Name="Print" Content="Print" Canvas.Left="350" Canvas.Top="320" Width="50" Click="Print_Click" />
 
-            <Button  x:Name="Play"  Content=" Play/ Pause" Canvas.Left="500" Canvas.Top="409" Width="75" Click="ButtonDown"/>
-            <Button x:Name="Stop" Content="Stop" Canvas.Left="610" Canvas.Top="409" Width="50" Click="ButtonDown"/>
-            <Button x:Name="Reset" Content="Reset" Canvas.Left="690" Canvas.Top="409" Width="50" Click="ButtonDown"/>
+            <Button  x:Name="Play"  Content=" Play/ Pause" Canvas.Left="500" Canvas.Top="409" Width="75" Click="Play_Click" />
+            <Button x:Name="Stop" Content="Stop" Canvas.Left="610" Canvas.Top="409" Width="50" Click="Stop_Click" />
+            <Button x:Name="Reset" Content="Reset" Canvas.Left="690" Canvas.Top="409" Width="50" Click="Reset_Click" />
 
 
             <!--Note viewer-->

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
 
 namespace Piano
 {
@@ -26,7 +27,7 @@ namespace Piano
         private String BeatMeasure;
         private String BeatLength;
         private String KeySig;
-
+        private XmlDocument Song;
 
 
         public MainWindow()
@@ -149,6 +150,53 @@ namespace Piano
         {
             KeySig = (KeySignature.SelectedItem as ComboBoxItem).Content.ToString();
             // Console.WriteLine(KeySig); //test passed
+        }
+
+        private void Load_Click(object sender, RoutedEventArgs e)
+        {
+            string fileName;
+            Microsoft.Win32.OpenFileDialog dlgOpen = new Microsoft.Win32.OpenFileDialog();
+            Nullable<bool> result = dlgOpen.ShowDialog();
+            if (result == true) fileName = dlgOpen.FileName;
+            else
+            {
+                MessageBox.Show("File could not be opened.");
+                return;
+            }
+            try
+            {
+                Song = BackCode.LoadFile(fileName);
+                //Viewer.s
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Print_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Play_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Stop_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Reset_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
