@@ -28,16 +28,10 @@ E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Controls.Desktop.dll
 E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Controls.Desktop.pdb
 E:\Git\MusicMaker\Piano\Piano\obj\Debug\Piano_Content.g.cs
 E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Controls.dll
-E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Controls.Legacy.dll
 E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Controls.WPF.dll
 E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Model.dll
-E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Model.Legacy.dll
 E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Music.dll
-E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Music.Legacy.dll
 E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Controls.pdb
-E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Controls.Legacy.pdb
 E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Controls.WPF.pdb
 E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Model.pdb
-E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Model.Legacy.pdb
 E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Music.pdb
-E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Music.Legacy.pdb

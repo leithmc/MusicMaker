@@ -21,16 +21,11 @@ namespace Piano
 {
     public class ScoreVM : ViewModel
     {
-        private string fileName = "";
-        public string FileName  // might not need public property
-        {
-            get { return fileName; }
-            set { fileName = value; }
-        }
+        private string fileName = "";   // Name of the file to load from or save to.
 
         private Score data;
         /// <summary>
-        /// Holds the current Score object.
+        /// Holds the current Score object. Refreshing the public property updates the viewer.
         /// </summary>
         public Score Data
         {
@@ -44,7 +39,6 @@ namespace Piano
         /// </summary>
         public void loadStartData()
         {
-
             Data = createGrandStaff();
         }
 
@@ -92,22 +86,22 @@ namespace Piano
                 //if (!validateMusicXML(fileName)) throw new FileFormatException("File: " + fileName + " is not a valid MusicXML file.");
                 var parser = new MusicXmlParser();
                 Score score = parser.Parse(XDocument.Load(fileName));
-                data = score;
+                Data = score;
             }
-            throw new FileNotFoundException(fileName + " not found.");
+            else throw new FileNotFoundException(fileName + " not found.");
         }
 
         /// <summary>
-        /// 
+        /// Creates a new score with the specified staff configuration and loads it into the viewer.
         /// </summary>
-        /// <param name="fileName">The name of the file to validate, including path.</param>
+        /// <param name="title">The title of the piece</param>
         /// <param name="staves">An array of Staff objects representing the different parts in the composition.</param>
-        /// <returns>An XmlDocument containing the empty score.</returns>
-        public Score createNew(string fileName, Staff[] staves)
+        public void createNew(string title, Staff[] staves)
         {
-            this.fileName = fileName;
-
-            return new Score();
+            Score score = new Score();
+            foreach (Staff staff in staves) { score.Staves.Add(staff); }
+            // TODO: Figure out how to add a title. This may have to be done directly to the MusicXML while saving.
+            Data = score;
         }
 
 
@@ -136,7 +130,9 @@ namespace Piano
             }
             catch (Exception ex)
             {
-                MessageBox.Show()
+                MessageBox.Show("Could not save to " + fileName + ".\n" + ex.Message);
+                fileName = "";
+                save();
             }
 
             return true;
