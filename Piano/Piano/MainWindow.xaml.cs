@@ -1,4 +1,5 @@
 using Manufaktura.Controls.Model;
+using Manufaktura.Music.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +32,9 @@ namespace Piano
         private ScoreVM Model;
 
 
+        /// <summary>
+        /// Constructor for main xaml window.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -41,9 +45,6 @@ namespace Piano
             Model.loadStartData();
 
         }
-
-
-
 
         /// <summary>
         /// Called when the mouse passes over a piano key.
@@ -77,9 +78,6 @@ namespace Piano
         {
             ((Rectangle)sender).Fill = Brushes.Black;
         }
-
-
-
         
         /// <summary>
         /// Called by the mouse_down event of the piano keys.
@@ -92,8 +90,35 @@ namespace Piano
             ((Rectangle)sender).Fill = Brushes.Yellow;
             KeyName = (((FrameworkElement)e.Source).Name);
             Console.WriteLine(KeyName);
+            Note note = new Note();
+            if (KeyName.Length == 2)
+                note.Pitch = new Pitch(KeyName.Substring(0, 1), 0, int.Parse(KeyName.Substring(1, 1)));
+            else 
+            {
+                Manufaktura.Controls.Model.Key key = null;
+                foreach (var item in Model.Data.FirstStaff.Elements)
+                {
+                    if (item.GetType() == typeof(Manufaktura.Controls.Model.Key))
+                        key = (Manufaktura.Controls.Model.Key) item;
+                    continue;
+                }
+                string letter;
+                int mod;
+                if (key.Fifths > 0)
+                {
+                    letter = KeyName.Substring(1, 1);
+                    mod = 1;
+                }
+                else
+                {
+                    letter = KeyName.Substring(0, 1);
+                    mod = -1;
+                }
+                note.Pitch = new Pitch(letter, mod, int.Parse(KeyName.Substring(2, 1)));
+            }
+            note.Duration = new RhythmicDuration(4, 0);
+            Viewer.SelectedElement.Staff.Elements.Add(note);
         }
-
 
         /// <summary>
         /// Called by the mouse_up event of the piano keys.
@@ -135,7 +160,6 @@ namespace Piano
             // Open the popup
             NewPop.IsOpen = true;
         }
-
 
 
         //Music Sheet Name
