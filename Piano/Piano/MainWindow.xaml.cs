@@ -1,3 +1,4 @@
+using Manufaktura.Controls.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace Piano
         private String BeatMeasure;
         private String BeatLength;
         private String KeySig;
-        private XmlDocument Song;
+        private ScoreVM Model;
 
 
         public MainWindow()
@@ -35,6 +36,9 @@ namespace Piano
             InitializeComponent();
             // for back programming.
             BackCode backcode = new BackCode();
+            Model = new ScoreVM();
+            DataContext = Model;
+            Model.loadStartData();
 
         }
 
@@ -155,9 +159,9 @@ namespace Piano
         private void Load_Click(object sender, RoutedEventArgs e)
         {
             string fileName;
-            Microsoft.Win32.OpenFileDialog dlgOpen = new Microsoft.Win32.OpenFileDialog();
-            Nullable<bool> result = dlgOpen.ShowDialog();
-            if (result == true) fileName = dlgOpen.FileName;
+            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
+            Nullable<bool> result = dialog.ShowDialog();
+            if (result == true) fileName = dialog.FileName;
             else
             {
                 MessageBox.Show("File could not be opened.");
@@ -165,8 +169,7 @@ namespace Piano
             }
             try
             {
-                Song = BackCode.LoadFile(fileName);
-                //Viewer.s
+                Model.loadFile(fileName);
             }
             catch (Exception ex)
             {
@@ -176,7 +179,7 @@ namespace Piano
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-
+            Model.save();
         }
 
         private void Print_Click(object sender, RoutedEventArgs e)

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Schema;
 using System.IO;
+using Manufaktura.Controls.Parser;
+using System.Xml.Linq;
+using Manufaktura.Controls.Model;
 
 namespace Piano
 {
@@ -19,16 +22,15 @@ namespace Piano
         /// </summary>
         /// <param name = "fileName" > The name, including path, of the MusicXML file to load.</param>
         /// <returns>An XmlDocument object containing the contents of the specified file.</returns>
-        public static XmlDocument LoadFile(string fileName)
+        public static Score LoadFile(string fileName)
         {
-            XmlDocument doc;
-            doc = new XmlDocument();
             if (File.Exists(fileName))
             {
                 // Validate file before loading
                 if (!validateMusicXML(fileName)) throw new FileFormatException("File: " + fileName + " is not a valid MusicXML file.");
-                doc.Load(fileName);
-                return doc;
+                var parser = new MusicXmlParser();
+                Score score = parser.Parse(XDocument.Load(fileName));
+                return score;
             }
             throw new FileNotFoundException(fileName + " not found.");
         }
@@ -54,68 +56,68 @@ namespace Piano
         /// <param name="fileName">The name of the file to validate, including path.</param>
         /// <param name="staves">An array of Staff objects representing the different parts in the composition.</param>
         /// <returns>An XmlDocument containing the empty score.</returns>
-        public XmlDocument CreateNew(string fileName, Staff[] staves)
+        public Score CreateNew(string fileName, Staff[] staves)
         {
             // To be implemented
-            return new XmlDocument();
+            return new Score();
         }
 
     }
 
-    public class Staff
-    {
-        private KeySignature keySig;
-        private TimeSignature timeSig;
-        private Cleff cleff;
-        public Staff(KeySignature keySig, TimeSignature timeSig, Cleff cleff)
-        {
-            this.keySig = keySig;
-            this.timeSig = timeSig;
-            this.cleff = cleff;
-        }
+    //public class Staff
+    //{
+    //    private KeySignature keySig;
+    //    private TimeSignature timeSig;
+    //    private Cleff cleff;
+    //    public Staff(KeySignature keySig, TimeSignature timeSig, Cleff cleff)
+    //    {
+    //        this.keySig = keySig;
+    //        this.timeSig = timeSig;
+    //        this.cleff = cleff;
+    //    }
 
-        public KeySignature KeySig
-        {
-            get { return keySig; }
-            set { keySig = value; }
-        }
+    //    public KeySignature KeySig
+    //    {
+    //        get { return keySig; }
+    //        set { keySig = value; }
+    //    }
 
-        public TimeSignature TimeSig
-        {
-            get { return timeSig; }
-            set { timeSig = value; }
-        }
+    //    public TimeSignature TimeSig
+    //    {
+    //        get { return timeSig; }
+    //        set { timeSig = value; }
+    //    }
 
-        public Cleff Cleff
-        {
-            get { return cleff; }
-            set { cleff = value; }
-        }
-    }
+    //    public Cleff Cleff
+    //    {
+    //        get { return cleff; }
+    //        set { cleff = value; }
+    //    }
+    //}
 
-    public class TimeSignature
-    {
-        private int beatsPerMeasure, beatType;
-        public TimeSignature(int beatsPerMeasure, int beatType)
-        {
-            this.beatsPerMeasure = beatsPerMeasure;
-            this.beatType = beatType;
-        }
+    //public class TimeSignature
+    //{
+    //    private int beatsPerMeasure, beatType;
+    //    public TimeSignature(int beatsPerMeasure, int beatType)
+    //    {
+    //        this.beatsPerMeasure = beatsPerMeasure;
+    //        this.beatType = beatType;
+    //    }
         
-        public int BeatType
-        {
-            get { return beatType; }
-        }
+    //    public int BeatType
+    //    {
+    //        get { return beatType; }
+    //    }
 
-        public int BeatsPerMeasure
-        {
-            get { return beatsPerMeasure; }
-        }
+    //    public int BeatsPerMeasure
+    //    {
+    //        get { return beatsPerMeasure; }
+    //    }
 
-        public override string ToString() { return beatsPerMeasure + "/" + beatType; }
-    }
+    //    public override string ToString() { return beatsPerMeasure + "/" + beatType; }
+    //}
 
-    public enum KeySignature { F, C, G, D, A, E, B, Bb, Eb, Ab, Db, Gb, Cb, Fs, Cs, Gs, Ds, As, Es, Bs  };
-    public enum Cleff { Treble, Bass, Alto, Tenor };
+    //public enum KeySignature { F, C, G, D, A, E, B, Bb, Eb, Ab, Db, Gb, Cb, Fs, Cs, Gs, Ds, As, Es, Bs  };
+    //public enum Cleff { Treble, Bass, Alto, Tenor };
 }
 
