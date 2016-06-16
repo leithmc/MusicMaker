@@ -30,6 +30,14 @@ namespace Piano
         private int beatLength;
         private String keySignature;
         private ScoreVM Model;
+        private Boolean Looped = false;
+        private String NoteLength = "QuarterNote";
+        private String Keyboard_Input = "None";
+        private Boolean FreshStart = true;
+
+        private string[] keySigs = { "F", "C", "G", "D", "A", "E", "B", "F#", "C#", "G#", "D#", "A#", "E#", "Bb", "Eb", "Ab", "Db", "Gb" };
+        string[] validBeatsPerMeasure = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
+        string[] validBeatLengths = { "2", "4", "8", "16" };
 
 
         /// <summary>
@@ -44,7 +52,35 @@ namespace Piano
             DataContext = Model;
             Model.loadStartData();
 
+            if(FreshStart == true)
+            {
+                PopUpStart();
+            }
         }
+
+
+
+
+        /// <summary>
+        /// Starts with Create New popup window and populates the combo boxes.
+        ///</summary>
+        private void PopUpStart()
+        {
+            FreshStart = false;
+
+            // Populate the combo boxes
+
+            Beats_Measure.ItemsSource = validBeatsPerMeasure;
+            Beat_Length.ItemsSource = validBeatLengths;
+            KeySignature.ItemsSource = keySigs;
+
+            // Open the popup
+            NewPop.IsOpen = true;
+        }
+
+
+
+
 
         /// <summary>
         /// Called when the mouse passes over a piano key.
@@ -57,6 +93,9 @@ namespace Piano
             ((Rectangle)sender).Fill = Brushes.Aqua;
         }
 
+
+
+
         /// <summary>
         /// Called when the mouse leaves a white key.
         /// Turns the key white.
@@ -67,6 +106,9 @@ namespace Piano
         {
             ((Rectangle)sender).Fill = Brushes.White;
         }
+
+
+
 
         /// <summary>
         /// Called when the mouse leaves a black key.
@@ -79,6 +121,9 @@ namespace Piano
             ((Rectangle)sender).Fill = Brushes.Black;
         }
         
+        
+
+
         /// <summary>
         /// Called by the mouse_down event of the piano keys.
         /// Turns the key yellow, adds its note to the score, and plays the note.
@@ -120,6 +165,10 @@ namespace Piano
             Viewer.SelectedElement.Staff.Elements.Add(note);
         }
 
+
+
+
+
         /// <summary>
         /// Called by the mouse_up event of the piano keys.
         /// Turns the key aqua.
@@ -134,6 +183,8 @@ namespace Piano
         }
 
 
+
+
         ////Button actions
         //private void ButtonDown(object sender, RoutedEventArgs e)
         //{
@@ -142,9 +193,9 @@ namespace Piano
         //    //do something here on backside
         //}
         
-        private string[] keySigs = { "F", "C", "G", "D", "A", "E", "B", "F#", "C#", "G#", "D#", "A#", "E#", "Bb", "Eb", "Ab", "Db", "Gb"  };
-        string[] validBeatsPerMeasure = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
-        string[] validBeatLengths = { "2", "4", "8", "16" };
+
+
+
         /// <summary>
         /// Opens the Create New Score popup window and populates the combo boxes.
         /// </summary>
@@ -162,7 +213,12 @@ namespace Piano
         }
 
 
-        //Music Sheet Name
+
+        /// <summary>
+        /// Music Sheet Name
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MusicName(object sender, EventArgs e)
         {
             TextBox textbox = sender as TextBox;
@@ -170,13 +226,13 @@ namespace Piano
             {
                 String TCount = textbox.Text;
                 Title = TCount;
-                Console.WriteLine(Title);// tested passed
-                //do something back end with this top count
+                
             }
         }
 
 
-        //Close popup and load NoteViewer
+
+        
         /// <summary>
         /// Collects title, time, and key signature information from the Create New Score popup
         /// and uses them to create a new Score object and load it in the viewer.
@@ -209,6 +265,7 @@ namespace Piano
 
 
 
+
         
         /// <summary>
         /// Called when the user makes a selection from the Beats / Measure combobox.
@@ -221,6 +278,9 @@ namespace Piano
             string value = (string) Beats_Measure.SelectedValue;
             beatsPerMeasure = int.Parse(value);
         }
+
+
+
 
         /// <summary>
         /// Called when the user makes a selection from the Beat Length combobox.
@@ -235,6 +295,9 @@ namespace Piano
             beatLength = int.Parse(value);
         }
 
+
+
+
         /// <summary>
         /// Called when the user makes a selection from the Key Signature combobox.
         /// Stores the selected value.
@@ -245,6 +308,9 @@ namespace Piano
         {
             keySignature = (string) KeySignature.SelectedValue;
         }
+
+
+
 
 
         /// <summary>
@@ -275,6 +341,8 @@ namespace Piano
         }
 
 
+
+
         /// <summary>
         /// Saves the current score as a MusicXml file.
         /// </summary>
@@ -284,6 +352,8 @@ namespace Piano
         {
             Model.save();
         }
+
+
 
 
         /// <summary>
@@ -299,6 +369,9 @@ namespace Piano
             // load the score into the new noteViewer, and then print it from the xaml. http://www.c-sharpcorner.com/uploadfile/mahesh/printing-in-wpf/
         }
 
+
+
+
         /// <summary>
         /// Converts teh score to MIDI and plays the MIDI.
         /// </summary>
@@ -308,6 +381,9 @@ namespace Piano
         {
 
         }
+
+
+
 
         /// <summary>
         /// Stops playback.
@@ -319,6 +395,9 @@ namespace Piano
 
         }
 
+
+
+
         /// <summary>
         /// Deletes the current score and replaces it with a blank default grand staff.
         /// </summary>
@@ -327,6 +406,79 @@ namespace Piano
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+
+
+
+        /// <summary>
+        /// loop button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Loop_Click(object sender, RoutedEventArgs e)
+        {
+            //unloop method
+            if (Looped == true)
+            {
+                ((Button)sender).Background = Brushes.White;
+                Looped = false;
+            }
+
+            //looped method
+            else
+            {
+                ((Button)sender).Background = Brushes.Green;
+                Looped = true;
+            }
+
+           
+        }
+
+
+
+        /// <summary>
+        /// Note length Combo Box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Note_Length_Change(object sender, SelectionChangedEventArgs e)
+        {
+            //Grab the value name (default is set to Quarter Note)
+            ComboBoxItem comboBox = (ComboBoxItem)Length.SelectedItem;
+
+            NoteLength = comboBox.Name;
+            
+        }
+
+
+
+        /// <summary>
+        /// Radio Buttons... tested Default is none
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Keyboard_Selection(object sender, RoutedEventArgs e)
+        {
+
+            if (None.IsChecked == true)
+            {
+                Keyboard_Input = None.Name.ToString();
+            }
+            
+            if(Number.IsChecked == true)
+            {
+                Keyboard_Input = Number.Name.ToString();
+            }
+
+            if(Letter.IsChecked == true)
+            {
+                Keyboard_Input = Letter.Name.ToString();
+            }
+
+            Console.WriteLine(Keyboard_Input);
+            
+            
         }
     }
 }
