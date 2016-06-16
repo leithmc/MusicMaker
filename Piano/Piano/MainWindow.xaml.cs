@@ -25,7 +25,7 @@ namespace Piano
     {
         private String KeyName;
         private String ButtonName;
-        private String Title;
+        private String ScoreTitle;
         private int beatsPerMeasure;
         private int beatLength;
         private String keySignature;
@@ -45,37 +45,40 @@ namespace Piano
         /// </summary>
         public MainWindow()
         {
+            // Initialize the base window
             InitializeComponent();
-            // for back programming.
-            BackCode backcode = new BackCode();
+            
+            // Initialize the view model
             Model = new ScoreVM();
             DataContext = Model;
             Model.loadStartData();
 
             if(FreshStart == true)
             {
-                PopUpStart();
+                OpenScoreCreationWindow();
             }
         }
 
-
-
-
         /// <summary>
-        /// Starts with Create New popup window and populates the combo boxes.
-        ///</summary>
-        private void PopUpStart()
+        /// Opens the score creation window, populates combo boxes, and sets to default values.
+        /// </summary>
+        private void OpenScoreCreationWindow()
         {
             FreshStart = false;
 
             // Populate the combo boxes
+            BeatsMeasureCombo.ItemsSource = validBeatsPerMeasure;
+            BeatLengthCombo.ItemsSource = validBeatLengths;
+            KeySignatureCombo.ItemsSource = keySigs;
 
-            Beats_Measure.ItemsSource = validBeatsPerMeasure;
-            Beat_Length.ItemsSource = validBeatLengths;
-            KeySignature.ItemsSource = keySigs;
+            // Reset selections to default values
+            BeatsMeasureCombo.SelectedIndex = 2;
+            BeatLengthCombo.SelectedIndex = 1;
+            KeySignatureCombo.SelectedIndex = 1;
+            TitleBox.Text = "";
 
             // Open the popup
-            NewPop.IsOpen = true;
+            ScoreCreationWindow.IsOpen = true;
         }
 
 
@@ -197,19 +200,13 @@ namespace Piano
 
 
         /// <summary>
-        /// Opens the Create New Score popup window and populates the combo boxes.
+        /// Called when the New button is clicked.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void PopUp(object sender, RoutedEventArgs e)
+        private void NewButton_Click(object sender, RoutedEventArgs e)
         {
-            // Populate the combo boxes
-            Beats_Measure.ItemsSource = validBeatsPerMeasure;
-            Beat_Length.ItemsSource = validBeatLengths;
-            KeySignature.ItemsSource = keySigs;
-
-            // Open the popup
-            NewPop.IsOpen = true;
+            OpenScoreCreationWindow();
         }
 
 
@@ -243,10 +240,10 @@ namespace Piano
         private void createNew(object sender, RoutedEventArgs e)
         {
             // Close the popup
-            NewPop.IsOpen = false;
+            ScoreCreationWindow.IsOpen = false;
 
             // Calculate key signature
-            int keyIndex = (KeySignature.SelectedIndex < 13) ? KeySignature.SelectedIndex - 1 : 12 - KeySignature.SelectedIndex;
+            int keyIndex = (KeySignatureCombo.SelectedIndex < 13) ? KeySignatureCombo.SelectedIndex - 1 : 12 - KeySignatureCombo.SelectedIndex;
             Manufaktura.Controls.Model.Key key = new Manufaktura.Controls.Model.Key(keyIndex);
 
             // Calculate time signature
@@ -260,7 +257,7 @@ namespace Piano
             elements[0] = Clef.Bass;
             for (int i = 0; i < 3; i++) bass.Elements.Add(elements[i]);
             Staff[] staves = { treble, bass };
-            Model.createNew(Name.Text, staves);
+            Model.createNew(TitleBox.Text, staves);
         }
 
 
@@ -273,9 +270,9 @@ namespace Piano
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void beatsMeasure_Changed(object sender, SelectionChangedEventArgs e)
+        private void BeatsMeasureComboSelection_Changed(object sender, SelectionChangedEventArgs e)
         {
-            string value = (string) Beats_Measure.SelectedValue;
+            string value = (string) BeatsMeasureCombo.SelectedValue;
             beatsPerMeasure = int.Parse(value);
         }
 
@@ -289,9 +286,9 @@ namespace Piano
         /// <param name="sender"></param>
         /// <param name="e"></param>
         //Combo Box Beat Length
-        private void beatLength_changed(object sender, SelectionChangedEventArgs e)
+        private void BeatLengthComboSelection_Changed(object sender, SelectionChangedEventArgs e)
         {
-            string value = (string) Beat_Length.SelectedValue;
+            string value = (string) BeatLengthCombo.SelectedValue;
             beatLength = int.Parse(value);
         }
 
@@ -304,9 +301,9 @@ namespace Piano
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void keySignature_changed(object sender, SelectionChangedEventArgs e)
+        private void KeySignatureComboSelection_Changed(object sender, SelectionChangedEventArgs e)
         {
-            keySignature = (string) KeySignature.SelectedValue;
+            keySignature = (string) KeySignatureCombo.SelectedValue;
         }
 
 
@@ -319,7 +316,7 @@ namespace Piano
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Load_Click(object sender, RoutedEventArgs e)
+        private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
             string fileName;
             Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
@@ -348,7 +345,7 @@ namespace Piano
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Save_Click(object sender, RoutedEventArgs e)
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             Model.save();
         }
@@ -361,12 +358,13 @@ namespace Piano
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Print_Click(object sender, RoutedEventArgs e)
+        private void PrintButton_Click(object sender, RoutedEventArgs e)
         {
             // To be implemented
             // One way to do this would be to generate a xaml popup like the one used for creating a new score,
             // but sized like a piece of paper, put a NoteViewer object in at the right size to match typical page margins,
             // load the score into the new noteViewer, and then print it from the xaml. http://www.c-sharpcorner.com/uploadfile/mahesh/printing-in-wpf/
+            TBI("Printing");
         }
 
 
@@ -377,9 +375,10 @@ namespace Piano
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Play_Click(object sender, RoutedEventArgs e)
+        private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-
+            // To be implemented
+            TBI("Playback");
         }
 
 
@@ -390,9 +389,10 @@ namespace Piano
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Stop_Click(object sender, RoutedEventArgs e)
+        private void StopButton_Click(object sender, RoutedEventArgs e)
         {
-
+            // To be implemented
+            TBI("Playback");
         }
 
 
@@ -403,9 +403,10 @@ namespace Piano
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Reset_Click(object sender, RoutedEventArgs e)
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
-
+            // To be implemented
+            TBI("Score reset");
         }
 
 
@@ -416,7 +417,7 @@ namespace Piano
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Loop_Click(object sender, RoutedEventArgs e)
+        private void LoopButton_Click(object sender, RoutedEventArgs e)
         {
             //unloop method
             if (Looped == true)
@@ -430,9 +431,7 @@ namespace Piano
             {
                 ((Button)sender).Background = Brushes.Green;
                 Looped = true;
-            }
-
-           
+            }           
         }
 
 
@@ -442,7 +441,7 @@ namespace Piano
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Note_Length_Change(object sender, SelectionChangedEventArgs e)
+        private void NoteLengthSelection_Changed(object sender, SelectionChangedEventArgs e)
         {
             //Grab the value name (default is set to Quarter Note)
             ComboBoxItem comboBox = (ComboBoxItem)Length.SelectedItem;
@@ -458,27 +457,33 @@ namespace Piano
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Keyboard_Selection(object sender, RoutedEventArgs e)
+        private void KeyboardMappingSelection_Changed(object sender, RoutedEventArgs e)
         {
 
-            if (None.IsChecked == true)
+            if (rbNone.IsChecked == true)
             {
-                Keyboard_Input = None.Name.ToString();
+                Keyboard_Input = rbNone.Name.ToString();
             }
             
-            if(Number.IsChecked == true)
+            if(rbNumber.IsChecked == true)
             {
-                Keyboard_Input = Number.Name.ToString();
+                Keyboard_Input = rbNumber.Name.ToString();
             }
 
-            if(Letter.IsChecked == true)
+            if(rbLetter.IsChecked == true)
             {
-                Keyboard_Input = Letter.Name.ToString();
+                Keyboard_Input = rbLetter.Name.ToString();
             }
 
             Console.WriteLine(Keyboard_Input);
             
             
+        }
+
+        // Just a temporary helper method to show when something isn't implemented yet.
+        private void TBI(string feature)
+        {
+            MessageBox.Show(feature + " is not yet implemented.");
         }
     }
 }

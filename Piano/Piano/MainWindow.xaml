@@ -147,26 +147,26 @@
 
             <!--For Beats and music sheet-->
             <Rectangle Fill="AntiqueWhite" Height="340" Canvas.Left="400" Stroke="Black" Canvas.Top="90" Width="500"/>
-            <Button x:Name="New" Content="New" Canvas.Left="350" Canvas.Top="200" Width="50" Click="PopUp"/>
+            <Button x:Name="New" Content="New" Canvas.Left="350" Canvas.Top="200" Width="50" Click="NewButton_Click"/>
 
             <!-- Popup Window-->
             <!-- ignore placement on screen Works when played-->
-            <Popup x:Name="NewPop" Placement="Center"  HorizontalOffset="31" VerticalOffset="-124">
+            <Popup x:Name="ScoreCreationWindow" Placement="Center"  HorizontalOffset="31" VerticalOffset="-124">
                 <Canvas Height="339" Width="499" Background="AntiqueWhite">
 
                     <Label Content="Title" Canvas.Left="200"/>
-                    <TextBox x:Name="Name"  Height="20" Canvas.Left="35" Canvas.Top="25" TextWrapping="NoWrap" Text="" MaxLength="100" Width="425" TextChanged="MusicName" />
+                    <TextBox x:Name="TitleBox"  Height="20" Canvas.Left="35" Canvas.Top="25" TextWrapping="NoWrap" Text="" MaxLength="100" Width="425" TextChanged="MusicName" />
 
                     <Label Content="Beats / Measure" Canvas.Left="150" Canvas.Top="70"/>
-                    <ComboBox x:Name="Beats_Measure" Canvas.Left="250" Canvas.Top="70" SelectionChanged="beatsMeasure_Changed">
+                    <ComboBox x:Name="BeatsMeasureCombo" Canvas.Left="250" Canvas.Top="70" SelectionChanged="BeatsMeasureComboSelection_Changed">
                     </ComboBox>
 
                     <Label Content="Beat Length" Canvas.Left="150" Canvas.Top="100"/>
-                    <ComboBox x:Name="Beat_Length" Canvas.Left="250" Canvas.Top="100" SelectionChanged="beatLength_changed">
+                    <ComboBox x:Name="BeatLengthCombo" Canvas.Left="250" Canvas.Top="100" SelectionChanged="BeatLengthComboSelection_Changed">
                     </ComboBox>
 
                     <Label Content="Key Signature" Canvas.Left="150" Canvas.Top="130"/>
-                    <ComboBox x:Name="KeySignature" Canvas.Left="250" Canvas.Top="130" ItemsSource="{Binding System.Enum.GetValues(typeof(Key));}" SelectionChanged="keySignature_changed">
+                    <ComboBox x:Name="KeySignatureCombo" Canvas.Left="250" Canvas.Top="130" ItemsSource="{Binding System.Enum.GetValues(typeof(Key));}" SelectionChanged="KeySignatureComboSelection_Changed">
                     </ComboBox>
 
                     <Button x:Name="PopUpClose" Content="Start" Width="50" Canvas.Left="215" Canvas.Top="300" Click="createNew"/>
@@ -176,7 +176,7 @@
 
 
             <!-- Beat Length-->
-            <ComboBox x:Name="Length" Canvas.Left="610" Canvas.Top="360" Width="50" Height="30" SelectionChanged="Note_Length_Change">
+            <ComboBox x:Name="Length" Canvas.Left="610" Canvas.Top="360" Width="50" Height="30" SelectionChanged="NoteLengthSelection_Changed">
                 <ComboBoxItem IsSelected="True" x:Name="QuarterNote">
                     <StackPanel Orientation="Horizontal">
                         <Image  Source="/Resources/Images/Quarter_Note.jpg"/>
@@ -214,19 +214,19 @@
                 </ComboBoxItem>
             </ComboBox>
 
-            <Button x:Name="Load" Content="Load" Canvas.Left="350" Canvas.Top="240" Width="50" Click="Load_Click" />
-            <Button x:Name="Save" Content="Save" Canvas.Left="350" Canvas.Top="280" Width="50" Click="Save_Click" />
-            <Button x:Name="Print" Content="Print" Canvas.Left="350" Canvas.Top="320" Width="50" Click="Print_Click" />
+            <Button x:Name="Load" Content="Load" Canvas.Left="350" Canvas.Top="240" Width="50" Click="LoadButton_Click" />
+            <Button x:Name="Save" Content="Save" Canvas.Left="350" Canvas.Top="280" Width="50" Click="SaveButton_Click" />
+            <Button x:Name="Print" Content="Print" Canvas.Left="350" Canvas.Top="320" Width="50" Click="PrintButton_Click" />
 
-            <Button x:Name="Loop" Canvas.Left="480" Canvas.Top="409" Width="26" Height="20" Background="White" Click="Loop_Click">
+            <Button x:Name="Loop" Canvas.Left="480" Canvas.Top="409" Width="26" Height="20" Background="White" Click="LoopButton_Click">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Width="26">
                     <Image Source="/Resources/Images/Loop.png" Width="25" Height="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
 
-            <Button  x:Name="Play"  Content=" Play/ Pause" Canvas.Left="540" Canvas.Top="409" Width="75" Click="Play_Click" />
-            <Button x:Name="Stop" Content="Stop" Canvas.Left="650" Canvas.Top="409" Width="50" Click="Stop_Click" />
-            <Button x:Name="Reset" Content="Reset" Canvas.Left="735" Canvas.Top="409" Width="50" Click="Reset_Click" />
+            <Button  x:Name="Play"  Content=" Play/ Pause" Canvas.Left="540" Canvas.Top="409" Width="75" Click="PlayButton_Click" />
+            <Button x:Name="Stop" Content="Stop" Canvas.Left="650" Canvas.Top="409" Width="50" Click="StopButton_Click" />
+            <Button x:Name="Reset" Content="Reset" Canvas.Left="735" Canvas.Top="409" Width="50" Click="ResetButton_Click" />
 
 
             <!--Note viewer-->
@@ -234,9 +234,9 @@
 
             <!--Radio Button, Keyboard Control-->
             <Canvas Width="725" Height="30" Canvas.Left="256" Canvas.Top="430">
-                <RadioButton x:Name="Number"  Content="1-0 Keyboard Binding" Canvas.Left="150" Height="30"  VerticalAlignment="Top" Width="150" Foreground="White" BorderBrush="White" Checked="Keyboard_Selection"/>                
-                <RadioButton x:Name="Letter"  Content="Letter (ASDFGHJKL) Keyboard Binding"  Canvas.Left="500" Height="30"  VerticalAlignment="Top" Width="220" Foreground="White" BorderBrush="White" Checked="Keyboard_Selection"/>                
-                <RadioButton x:Name="None"  Content="No Keyboard Binding"  Canvas.Left="325" Height="30" IsChecked="True" VerticalAlignment="Top" Width="150" Foreground="White" BorderBrush="White" Checked="Keyboard_Selection"/>
+                <RadioButton x:Name="rbNumber"  Content="1-0 Keyboard Binding" Canvas.Left="150" Height="30"  VerticalAlignment="Top" Width="150" Foreground="White" BorderBrush="White" Checked="KeyboardMappingSelection_Changed"/>                
+                <RadioButton x:Name="rbLetter"  Content="Letter (ASDFGHJKL) Keyboard Binding"  Canvas.Left="500" Height="30"  VerticalAlignment="Top" Width="220" Foreground="White" BorderBrush="White" Checked="KeyboardMappingSelection_Changed"/>                
+                <RadioButton x:Name="rbNone"  Content="No Keyboard Binding"  Canvas.Left="325" Height="30" IsChecked="True" VerticalAlignment="Top" Width="150" Foreground="White" BorderBrush="White" Checked="KeyboardMappingSelection_Changed"/>
             </Canvas>
 
 
