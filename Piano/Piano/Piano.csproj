@@ -114,6 +114,15 @@
   <ItemGroup>
     <Content Include="Manufaktura.Controls.Desktop.dll" />
     <Content Include="Manufaktura.Controls.Desktop.pdb" />
+    <Resource Include="Resources\Images\Dot.jpg" />
+    <Resource Include="Resources\Images\Eighth_Note.jpg" />
+    <Resource Include="Resources\Images\Half_Note.jpg" />
+    <Resource Include="Resources\Images\Loop.png" />
+    <Resource Include="Resources\Images\Piano Gui.png" />
+    <Resource Include="Resources\Images\Quarter_Note.jpg" />
+    <Resource Include="Resources\Images\Sixteenth_Note.jpg" />
+    <Resource Include="Resources\Images\Thirtysecond_Note.jpg" />
+    <Resource Include="Resources\Images\Whole_Note.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

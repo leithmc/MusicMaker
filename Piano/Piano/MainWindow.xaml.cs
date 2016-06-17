@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
+using Microsoft.Win32;
 
 namespace Piano
 {
@@ -53,10 +54,15 @@ namespace Piano
             DataContext = Model;
             Model.loadStartData();
 
-            if(FreshStart == true)
-            {
-                OpenScoreCreationWindow();
-            }
+            // Set viewer properties
+            Viewer.RenderingMode = Manufaktura.Controls.Rendering.ScoreRenderingModes.SinglePage;
+
+            OpenScoreCreationWindow();
+
+            //if (FreshStart == true)
+            //{
+            //    OpenScoreCreationWindow();
+            //}
         }
 
         /// <summary>
@@ -81,10 +87,6 @@ namespace Piano
             ScoreCreationWindow.IsOpen = true;
         }
 
-
-
-
-
         /// <summary>
         /// Called when the mouse passes over a piano key.
         /// Turns the key aqua.
@@ -95,10 +97,7 @@ namespace Piano
         {
             ((Rectangle)sender).Fill = Brushes.Aqua;
         }
-
-
-
-
+        
         /// <summary>
         /// Called when the mouse leaves a white key.
         /// Turns the key white.
@@ -165,7 +164,22 @@ namespace Piano
                 note.Pitch = new Pitch(letter, mod, int.Parse(KeyName.Substring(2, 1)));
             }
             note.Duration = new RhythmicDuration(4, 0);
-            Viewer.SelectedElement.Staff.Elements.Add(note);
+            
+            // Add note to staff
+            var elem = Viewer.SelectedElement;
+            addNote(note, elem);
+        }
+
+        private void addNote(Note note, MusicalSymbol elem)
+        {
+            if (elem == null) MessageBox.Show("You must select a staff to write to or a note to insert after.");
+            else if (elem == elem.Staff) Viewer.SelectedElement.Staff.Elements.Add(note); 
+            else
+            {
+                var elems = elem.Staff.Elements;
+                elems.Insert(elems.IndexOf(elem) + 1, note);
+            }
+            Viewer.UpdateLayout();
         }
 
 
@@ -318,8 +332,11 @@ namespace Piano
         /// <param name="e"></param>
         private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
+            // Close the score creation window if open
+            ScoreCreationWindow.IsOpen = false;
+
             string fileName;
-            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
+            OpenFileDialog dialog = new OpenFileDialog();
             Nullable<bool> result = dialog.ShowDialog();
             if (result == true) fileName = dialog.FileName;
             else
@@ -333,8 +350,11 @@ namespace Piano
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Could not parse file: " + ex.Message);
             }
+
+
+
         }
 
 

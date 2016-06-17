@@ -179,37 +179,37 @@
             <ComboBox x:Name="Length" Canvas.Left="610" Canvas.Top="360" Width="50" Height="30" SelectionChanged="NoteLengthSelection_Changed">
                 <ComboBoxItem IsSelected="True" x:Name="QuarterNote">
                     <StackPanel Orientation="Horizontal">
-                        <Image  Source="/Resources/Images/Quarter_Note.jpg"/>
+                        <Image Source="Resources\Images\Quarter_Note.jpg"/>
                     </StackPanel>
                 </ComboBoxItem>
                 <ComboBoxItem x:Name="WholeNote">
                     <StackPanel Orientation="Horizontal">
-                        <Image  Source="/Resources/Images/Whole_note.jpg" />
+                        <Image  Source="Resources\Images\Whole_note.jpg" />
                     </StackPanel>
                 </ComboBoxItem>
                 <ComboBoxItem x:Name="HalfNote">
                     <StackPanel Orientation="Horizontal">
-                        <Image  Source="/Resources/Images/Half_Note.jpg"/>
+                        <Image  Source="Resources/Images/Half_Note.jpg"/>
                     </StackPanel>
                 </ComboBoxItem>
                 <ComboBoxItem x:Name="EigthNote">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="/Resources/Images/Eighth_Note.jpg"/>
+                        <Image Source="Resources/Images/Eighth_Note.jpg"/>
                     </StackPanel>
                 </ComboBoxItem>
                 <ComboBoxItem x:Name="SixteenthNote">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="/Resources/Images/Sixteenth_Note.jpg"/>
+                        <Image Source="Resources/Images/Sixteenth_Note.jpg"/>
                     </StackPanel>
                 </ComboBoxItem>
                 <ComboBoxItem x:Name="ThirtySecondNote">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="/Resources/Images/Thirtysecond_Note.jpg"/>
+                        <Image Source="Resources/Images/Thirtysecond_Note.jpg"/>
                     </StackPanel>
                 </ComboBoxItem>
                 <ComboBoxItem x:Name="Dot">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="/Resources/Images/Dot.jpg"/>
+                        <Image Source="Resources/Images/Dot.jpg"/>
                     </StackPanel>
                 </ComboBoxItem>
             </ComboBox>
