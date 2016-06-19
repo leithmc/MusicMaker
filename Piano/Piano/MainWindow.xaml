@@ -16,7 +16,7 @@
         <Grid Height="768" Width="1240" Grid.ColumnSpan="2" Margin="0,0,-6.4,-29.6" />
 
         <!--Piano Canvas-->
-        <Canvas Height="768" Width="1240" Margin="-24,-15,17.6,-14.6" ClipToBounds="True" Grid.ColumnSpan="2">
+        <Canvas Name="PianoCanvas" Height="768" Width="1240" Margin="-24,-15,17.6,-14.6" ClipToBounds="True" Grid.ColumnSpan="2">
 
             <!--Piano Backing Fill Pieces-->
             <Ellipse Fill="Black" Height="355" Canvas.Left="789"  Width="240" Canvas.Top="-15"/>
@@ -136,10 +136,6 @@
             </Path>
 
 
-
-
-
-
             <!--Bench-->
             <Rectangle x:Name="Bench" Fill="Brown" Height="100" Canvas.Left="500" Canvas.Top="635" Width="300"/>
             <Rectangle Fill="Black" Stroke="Gray" Height="90" Canvas.Left="505" Canvas.Top="640" Width="290"/>
@@ -238,10 +234,7 @@
                 <RadioButton x:Name="rbLetter"  Content="Letter (ASDFGHJKL) Keyboard Binding"  Canvas.Left="500" Height="30"  VerticalAlignment="Top" Width="220" Foreground="White" BorderBrush="White" Checked="KeyboardMappingSelection_Changed"/>                
                 <RadioButton x:Name="rbNone"  Content="No Keyboard Binding"  Canvas.Left="325" Height="30" IsChecked="True" VerticalAlignment="Top" Width="150" Foreground="White" BorderBrush="White" Checked="KeyboardMappingSelection_Changed"/>
             </Canvas>
-
-
         </Canvas>
-
 
         <!--Piano White Keys -->
         <Canvas x:Name="Piano_White_Keys" Margin="98,455,26.2,145.4" ClipToBounds="True">
@@ -313,8 +306,6 @@
             <Rectangle x:Name="B8" Fill="White"  Width="16" Height="140" Canvas.Left="1000" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="C8" Fill="White"  Width="16" Height="140" Canvas.Left="1020" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
         </Canvas>
-
-
 
         <!--Piano Black Keys -->
         <Canvas x:Name="Piano_Black_Keys" Margin="98,455,26.2,145.4" ClipToBounds="True">

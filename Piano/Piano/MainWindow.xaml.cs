@@ -24,21 +24,26 @@ namespace Piano
     /// </summary>
     public partial class MainWindow : Window
     {
-        private String KeyName;
-        private String ButtonName;
-        private String ScoreTitle;
+       // private String KeyName;
+        private String scoreTitle;
         private int beatsPerMeasure;
         private int beatLength;
         private String keySignature;
-        private ScoreVM Model;
-        private Boolean Looped = false;
-        private String NoteLength = "QuarterNote";
-        private String Keyboard_Input = "None";
-        private Boolean FreshStart = true;
+        private ScoreVM model;
+        private Boolean looped = false;
+        private RhythmicDuration noteLength = RhythmicDuration.Quarter;
+        private bool dotted = false;
+        private string keyboard_Input = "None";
+       // private Boolean FreshStart = true;
 
         private string[] keySigs = { "F", "C", "G", "D", "A", "E", "B", "F#", "C#", "G#", "D#", "A#", "E#", "Bb", "Eb", "Ab", "Db", "Gb" };
         string[] validBeatsPerMeasure = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
         string[] validBeatLengths = { "2", "4", "8", "16" };
+        Dictionary<string, RhythmicDuration> NoteLengths = new Dictionary<string, RhythmicDuration>()
+        {
+            {"WholeNote", RhythmicDuration.Whole }, { "HalfNote", RhythmicDuration.Half }, {"QuarterNote", RhythmicDuration.Quarter },
+            {"EigthNote", RhythmicDuration.Eighth }, {"SixteenthNote", RhythmicDuration.Sixteenth }, {"ThirtySecondNote", RhythmicDuration.D32nd }
+        };
 
 
         /// <summary>
@@ -50,19 +55,34 @@ namespace Piano
             InitializeComponent();
             
             // Initialize the view model
-            Model = new ScoreVM();
-            DataContext = Model;
-            Model.loadStartData();
+            model = new ScoreVM();
+            DataContext = model;
+            model.loadStartData();
 
             // Set viewer properties
             Viewer.RenderingMode = Manufaktura.Controls.Rendering.ScoreRenderingModes.SinglePage;
 
-            OpenScoreCreationWindow();
+            // Removign this for now -- user might want to start from an existing file.
+            //OpenScoreCreationWindow();
 
+            // Don't actually need this
             //if (FreshStart == true)
             //{
             //    OpenScoreCreationWindow();
             //}
+        }
+
+        #region FileIO_EventHandlers
+        /*** The code in this region handles the New, Load, Save, and Print buttons ***/
+
+        /// <summary>
+        /// Called when the New button is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void NewButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenScoreCreationWindow();  // separate the event handler from the function so the function can be called from elsewhere
         }
 
         /// <summary>
@@ -70,7 +90,7 @@ namespace Piano
         /// </summary>
         private void OpenScoreCreationWindow()
         {
-            FreshStart = false;
+            //FreshStart = false;
 
             // Populate the combo boxes
             BeatsMeasureCombo.ItemsSource = validBeatsPerMeasure;
@@ -87,163 +107,6 @@ namespace Piano
             ScoreCreationWindow.IsOpen = true;
         }
 
-        /// <summary>
-        /// Called when the mouse passes over a piano key.
-        /// Turns the key aqua.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void keyOver(object sender, MouseEventArgs e)
-        {
-            ((Rectangle)sender).Fill = Brushes.Aqua;
-        }
-        
-        /// <summary>
-        /// Called when the mouse leaves a white key.
-        /// Turns the key white.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void whiteKeyLeave(object sender, MouseEventArgs e)
-        {
-            ((Rectangle)sender).Fill = Brushes.White;
-        }
-
-
-
-
-        /// <summary>
-        /// Called when the mouse leaves a black key.
-        /// Turns the key black.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void blackKeyLeave(object sender, MouseEventArgs e)
-        {
-            ((Rectangle)sender).Fill = Brushes.Black;
-        }
-        
-        
-
-
-        /// <summary>
-        /// Called by the mouse_down event of the piano keys.
-        /// Turns the key yellow, adds its note to the score, and plays the note.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void pianoKeyDown(object sender, MouseButtonEventArgs e)
-        {
-            ((Rectangle)sender).Fill = Brushes.Yellow;
-            KeyName = (((FrameworkElement)e.Source).Name);
-            Console.WriteLine(KeyName);
-            Note note = new Note();
-            if (KeyName.Length == 2)
-                note.Pitch = new Pitch(KeyName.Substring(0, 1), 0, int.Parse(KeyName.Substring(1, 1)));
-            else 
-            {
-                Manufaktura.Controls.Model.Key key = null;
-                foreach (var item in Model.Data.FirstStaff.Elements)
-                {
-                    if (item.GetType() == typeof(Manufaktura.Controls.Model.Key))
-                        key = (Manufaktura.Controls.Model.Key) item;
-                    continue;
-                }
-                string letter;
-                int mod;
-                if (key.Fifths > 0)
-                {
-                    letter = KeyName.Substring(1, 1);
-                    mod = 1;
-                }
-                else
-                {
-                    letter = KeyName.Substring(0, 1);
-                    mod = -1;
-                }
-                note.Pitch = new Pitch(letter, mod, int.Parse(KeyName.Substring(2, 1)));
-            }
-            note.Duration = new RhythmicDuration(4, 0);
-            
-            // Add note to staff
-            var elem = Viewer.SelectedElement;
-            addNote(note, elem);
-        }
-
-        private void addNote(Note note, MusicalSymbol elem)
-        {
-            if (elem == null) MessageBox.Show("You must select a staff to write to or a note to insert after.");
-            else if (elem == elem.Staff) Viewer.SelectedElement.Staff.Elements.Add(note); 
-            else
-            {
-                var elems = elem.Staff.Elements;
-                elems.Insert(elems.IndexOf(elem) + 1, note);
-            }
-            Viewer.UpdateLayout();
-        }
-
-
-
-
-
-        /// <summary>
-        /// Called by the mouse_up event of the piano keys.
-        /// Turns the key aqua.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void pianoKeyUp(object sender, MouseButtonEventArgs e)
-        {
-            ((Rectangle)sender).Fill = Brushes.Aqua;
-            KeyName = "";
-            Console.WriteLine(KeyName);
-        }
-
-
-
-
-        ////Button actions
-        //private void ButtonDown(object sender, RoutedEventArgs e)
-        //{
-        //    ButtonName = (((FrameworkElement)e.Source).Name);
-        //    Console.WriteLine(ButtonName); //test name capture
-        //    //do something here on backside
-        //}
-        
-
-
-
-        /// <summary>
-        /// Called when the New button is clicked.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void NewButton_Click(object sender, RoutedEventArgs e)
-        {
-            OpenScoreCreationWindow();
-        }
-
-
-
-        /// <summary>
-        /// Music Sheet Name
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void MusicName(object sender, EventArgs e)
-        {
-            TextBox textbox = sender as TextBox;
-            if (textbox != null)
-            {
-                String TCount = textbox.Text;
-                Title = TCount;
-                
-            }
-        }
-
-
-
-        
         /// <summary>
         /// Collects title, time, and key signature information from the Create New Score popup
         /// and uses them to create a new Score object and load it in the viewer.
@@ -271,58 +134,8 @@ namespace Piano
             elements[0] = Clef.Bass;
             for (int i = 0; i < 3; i++) bass.Elements.Add(elements[i]);
             Staff[] staves = { treble, bass };
-            Model.createNew(TitleBox.Text, staves);
+            model.createNew(TitleBox.Text, staves);
         }
-
-
-
-
-        
-        /// <summary>
-        /// Called when the user makes a selection from the Beats / Measure combobox.
-        /// Stores the selected value and converts to int.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BeatsMeasureComboSelection_Changed(object sender, SelectionChangedEventArgs e)
-        {
-            string value = (string) BeatsMeasureCombo.SelectedValue;
-            beatsPerMeasure = int.Parse(value);
-        }
-
-
-
-
-        /// <summary>
-        /// Called when the user makes a selection from the Beat Length combobox.
-        /// Stores the selected value and converts to int.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        //Combo Box Beat Length
-        private void BeatLengthComboSelection_Changed(object sender, SelectionChangedEventArgs e)
-        {
-            string value = (string) BeatLengthCombo.SelectedValue;
-            beatLength = int.Parse(value);
-        }
-
-
-
-
-        /// <summary>
-        /// Called when the user makes a selection from the Key Signature combobox.
-        /// Stores the selected value.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void KeySignatureComboSelection_Changed(object sender, SelectionChangedEventArgs e)
-        {
-            keySignature = (string) KeySignatureCombo.SelectedValue;
-        }
-
-
-
-
 
         /// <summary>
         /// Called when the user clicks the 'Load' button.
@@ -336,8 +149,17 @@ namespace Piano
             ScoreCreationWindow.IsOpen = false;
 
             string fileName;
+            Nullable<bool> result;
             OpenFileDialog dialog = new OpenFileDialog();
-            Nullable<bool> result = dialog.ShowDialog();
+            try
+            {                
+                result = dialog.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not open file dialog. " + ex.Message);
+                return;
+            }
             if (result == true) fileName = dialog.FileName;
             else
             {
@@ -346,19 +168,13 @@ namespace Piano
             }
             try
             {
-                Model.loadFile(fileName);
+                model.loadFile(fileName);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Could not parse file: " + ex.Message);
             }
-
-
-
         }
-
-
-
 
         /// <summary>
         /// Saves the current score as a MusicXml file.
@@ -367,12 +183,9 @@ namespace Piano
         /// <param name="e"></param>
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            Model.save();
+            model.save();
         }
-
-
-
-
+        
         /// <summary>
         /// Formats the current score into one or more 8 1/2 x 11 pages and then sends them to the selected printer.
         /// </summary>
@@ -386,75 +199,144 @@ namespace Piano
             // load the score into the new noteViewer, and then print it from the xaml. http://www.c-sharpcorner.com/uploadfile/mahesh/printing-in-wpf/
             TBI("Printing");
         }
+        #endregion
 
-
-
-
+        #region PianoKeyHandlers
+        /***** The code in this region handles everything to do with the piano keys. ****/
+      
         /// <summary>
-        /// Converts teh score to MIDI and plays the MIDI.
+        /// Called when the mouse passes over a piano key.
+        /// Turns the key aqua.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void PlayButton_Click(object sender, RoutedEventArgs e)
+        private void keyOver(object sender, MouseEventArgs e) { ((Rectangle)sender).Fill = Brushes.Aqua; }
+        
+        /// <summary>
+        /// Called when the mouse leaves a white key.
+        /// Turns the key white.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void whiteKeyLeave(object sender, MouseEventArgs e) { ((Rectangle)sender).Fill = Brushes.White; }
+        
+        /// <summary>
+        /// Called when the mouse leaves a black key.
+        /// Turns the key black.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void blackKeyLeave(object sender, MouseEventArgs e) { ((Rectangle)sender).Fill = Brushes.Black; }
+
+        /// <summary>
+        /// Called by the mouse_down event of the piano keys.
+        /// Turns the key yellow, adds its note to the score, and plays the note.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void pianoKeyDown(object sender, MouseButtonEventArgs e)
         {
-            // To be implemented
-            TBI("Playback");
+            ((Rectangle)sender).Fill = Brushes.Yellow;
+            string keyName = (((FrameworkElement)e.Source).Name);
+            Console.WriteLine(keyName);
+            Note note = buildNote(keyName);
+
+            // Add note to staff
+            addNote(note);
         }
 
-
-
-
-        /// <summary>
-        /// Stops playback.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void StopButton_Click(object sender, RoutedEventArgs e)
+        private Note buildNote(string keyName)
         {
-            // To be implemented
-            TBI("Playback");
-        }
-
-
-
-
-        /// <summary>
-        /// Deletes the current score and replaces it with a blank default grand staff.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ResetButton_Click(object sender, RoutedEventArgs e)
-        {
-            // To be implemented
-            TBI("Score reset");
-        }
-
-
-
-
-        /// <summary>
-        /// loop button
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void LoopButton_Click(object sender, RoutedEventArgs e)
-        {
-            //unloop method
-            if (Looped == true)
-            {
-                ((Button)sender).Background = Brushes.White;
-                Looped = false;
-            }
-
-            //looped method
+            Note note = new Note();
+            if (keyName.Length == 2)
+                note.Pitch = new Pitch(keyName.Substring(0, 1), 0, int.Parse(keyName.Substring(1, 1)));
             else
             {
-                ((Button)sender).Background = Brushes.Green;
-                Looped = true;
-            }           
+                Manufaktura.Controls.Model.Key key = null;
+                foreach (var item in model.Data.FirstStaff.Elements)
+                {
+                    if (item.GetType() == typeof(Manufaktura.Controls.Model.Key))
+                    {
+                        key = (Manufaktura.Controls.Model.Key)item;
+                        break;
+                    }
+                }
+                string letter;
+                int mod;
+                if (key.Fifths > 0)
+                {
+                    letter = keyName.Substring(1, 1);
+                    mod = 1;
+                }
+                else
+                {
+                    letter = keyName.Substring(0, 1);
+                    mod = -1;
+                }
+                note.Pitch = new Pitch(letter, mod, int.Parse(keyName.Substring(2, 1)));
+            }
+            note.Duration = noteLength;
+            return note;
         }
 
+        private void addNote(Note note)
+        {
+            var elem = Viewer.SelectedElement;
+            if (elem == null)
+            {
+                MessageBox.Show("You must select a staff to write to or a note to insert after.");
+                return;
+            }
 
+            // Determine which staff in the score to write to
+            Score staffScore = elem.Staff.Score;
+            int staffIndex = 0;
+            foreach (Staff st in Viewer.InnerScore.Staves)
+            {
+                if (st.Id == staffScore.FirstStaff.Id)
+                {
+                    staffIndex = Viewer.InnerScore.Staves.IndexOf(st);
+                    break; // may be able to simplify -- if staffScore is a ref to st, should have the same id
+                    // May be able to simplify more -- if the staff in the viewer is the same as the staff in the score...
+                }
+            }
+
+            // If selected element is a staff, append to last note. Else insert after selected note.
+            //if (elem == elem.Staff) Viewer.InnerScore.Staves[staffIndex].Elements.Add(note);
+            //else
+            //{
+            //    var elems = elem.Staff.Elements;
+            //    int index = elems.IndexOf(elem);
+            //    Viewer.InnerScore.Staves[staffIndex].Elements.Insert(index + 1, note);
+            //}
+
+            model.addNote(note);
+            //model.Data.FirstStaff.Elements.Add(note);
+            //model.forceUpdate();
+
+            
+
+            Viewer.UpdateLayout();
+            PianoCanvas.UpdateLayout();
+        }
+
+        /// <summary>
+        /// Called by the mouse_up event of the piano keys.
+        /// Turns the key aqua.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void pianoKeyUp(object sender, MouseButtonEventArgs e)
+        {
+            ((Rectangle)sender).Fill = Brushes.Aqua;
+            //KeyName = "";
+            //Console.WriteLine(KeyName);
+        }
+        #endregion
+
+        #region NoteControls
+        /**** The code in this region handles events from duration, key signature, time signature, and 
+              any other controls that change the score except for the piano keys. ****/
 
         /// <summary>
         /// Note length Combo Box
@@ -463,14 +345,14 @@ namespace Piano
         /// <param name="e"></param>
         private void NoteLengthSelection_Changed(object sender, SelectionChangedEventArgs e)
         {
+            // Assume the new note value is not dotted unless this is a dot
+            dotted = false;
+
             //Grab the value name (default is set to Quarter Note)
-            ComboBoxItem comboBox = (ComboBoxItem)Length.SelectedItem;
-
-            NoteLength = comboBox.Name;
-            
+            ComboBoxItem item = (ComboBoxItem)Length.SelectedItem;
+            if (item.Name == "Dot") dotted = true;
+            else noteLength = NoteLengths[item.Name];
         }
-
-
 
         /// <summary>
         /// Radio Buttons... tested Default is none
@@ -482,28 +364,143 @@ namespace Piano
 
             if (rbNone.IsChecked == true)
             {
-                Keyboard_Input = rbNone.Name.ToString();
-            }
-            
-            if(rbNumber.IsChecked == true)
-            {
-                Keyboard_Input = rbNumber.Name.ToString();
+                keyboard_Input = rbNone.Name.ToString();
             }
 
-            if(rbLetter.IsChecked == true)
+            if (rbNumber.IsChecked == true)
             {
-                Keyboard_Input = rbLetter.Name.ToString();
+                keyboard_Input = rbNumber.Name.ToString();
             }
 
-            Console.WriteLine(Keyboard_Input);
-            
-            
+            if (rbLetter.IsChecked == true)
+            {
+                keyboard_Input = rbLetter.Name.ToString();
+            }
+
+            Console.WriteLine(keyboard_Input);
+        }
+        #endregion
+
+        #region ScoreSetup
+        /**** Code in this region handles events for controls involved in creating a new score. ****/
+        
+        /// <summary>
+        /// Music Sheet Name
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MusicName(object sender, EventArgs e)
+        {
+            TextBox textbox = sender as TextBox;
+            if (textbox != null)
+            {
+                String TCount = textbox.Text;
+                Title = TCount;                
+            }
+        }
+        
+        /// <summary>
+        /// Called when the user makes a selection from the Beats / Measure combobox.
+        /// Stores the selected value and converts to int.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BeatsMeasureComboSelection_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            string value = (string) BeatsMeasureCombo.SelectedValue;
+            beatsPerMeasure = int.Parse(value);
         }
 
+        /// <summary>
+        /// Called when the user makes a selection from the Beat Length combobox.
+        /// Stores the selected value and converts to int.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        //Combo Box Beat Length
+        private void BeatLengthComboSelection_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            string value = (string) BeatLengthCombo.SelectedValue;
+            beatLength = int.Parse(value);
+        }
+       
+        /// <summary>
+        /// Called when the user makes a selection from the Key Signature combobox.
+        /// Stores the selected value.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void KeySignatureComboSelection_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            keySignature = (string) KeySignatureCombo.SelectedValue;
+        }
+        
+        /// <summary>
+        /// Deletes the current score and replaces it with a blank default grand staff.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            // To be implemented
+            TBI("Score reset");
+        }
+        #endregion
+
+        #region Playback
+        /**** Code in this region pertains to plaback controls. ****/
+
+        /// <summary>
+        /// Converts teh score to MIDI and plays the MIDI.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void PlayButton_Click(object sender, RoutedEventArgs e)
+        {
+            // To be implemented
+            TBI("Playback");
+        }
+    
+        /// <summary>
+        /// Stops playback.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void StopButton_Click(object sender, RoutedEventArgs e)
+        {
+            // To be implemented
+            TBI("Playback");
+        }
+        
+        /// <summary>
+        /// loop button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LoopButton_Click(object sender, RoutedEventArgs e)
+        {
+            //unloop method
+            if (looped == true)
+            {
+                ((Button)sender).Background = Brushes.White;
+                looped = false;
+            }
+
+            //looped method
+            else
+            {
+                ((Button)sender).Background = Brushes.Green;
+                looped = true;
+            }           
+        }
+        #endregion
+
+        #region HelperFunctions
         // Just a temporary helper method to show when something isn't implemented yet.
         private void TBI(string feature)
         {
             MessageBox.Show(feature + " is not yet implemented.");
         }
+        #endregion
     }
 }

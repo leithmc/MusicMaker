@@ -33,15 +33,16 @@ namespace Piano
             set { data = value; OnPropertyChanged(() => Data); }
         }
 
+       // public void forceUpdate() { OnPropertyChanged(() => Data); }
+
 
         /// <summary>
         /// Populates the note viewer with an empty default grand staff. Does not set fileName.
         /// </summary>
         public void loadStartData()
         {
-            Data = createGrandStaff();
+            Data = createStartingStaff();
         }
-
 
         /// <summary>
         /// Generates an empty grand staff in the specified key and time signature.
@@ -49,30 +50,50 @@ namespace Piano
         /// <param name="key">A Key enumeration value to specify the starting key of the piece</param>
         /// <param name="timeSig">A TimeSignature object representing the time signature of the piece</param>
         /// <returns>A score object containing a grand staff in the specified key and time signature</returns>
-        public Score createGrandStaff(Key key, TimeSignature timeSig)
+        public Score createStartingStaff()
         {
             var score = Score.CreateOneStaffScore();
             score.FirstStaff.Elements.Add(Clef.Treble);
-            score.FirstStaff.Elements.Add(key);
-            score.FirstStaff.Elements.Add(timeSig);
-            //score.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Quarter));
-            //score.FirstStaff.Elements.Add(new Note(Pitch.B4, RhythmicDuration.Quarter));
-            //score.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Half));
-            //score.FirstStaff.Elements.Add(new Barline());
-            Staff bass = new Staff();
-            bass.Elements.Add(Clef.Bass);
-            bass.Elements.Add(key);
-            bass.Elements.Add(timeSig);
-            score.Staves.Add(bass);
+            score.FirstStaff.Elements.Add(new Key(0));
+            score.FirstStaff.Elements.Add(TimeSignature.CommonTime);
+            score.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Quarter));
+            score.FirstStaff.Elements.Add(new Note(Pitch.B4, RhythmicDuration.Quarter));
+            score.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Half));
+            score.FirstStaff.Elements.Add(new Barline());
             return score;
         }
 
+        // Do not delete -- will want to put this back in later
+        /// <summary>
+        /// Generates an empty grand staff in the specified key and time signature.
+        /// </summary>
+        /// <param name="key">A Key enumeration value to specify the starting key of the piece</param>
+        /// <param name="timeSig">A TimeSignature object representing the time signature of the piece</param>
+        /// <returns>A score object containing a grand staff in the specified key and time signature</returns>
+        //public Score createGrandStaff(Key key, TimeSignature timeSig)
+        //{
+        //    var score = Score.CreateOneStaffScore();
+        //    score.FirstStaff.Elements.Add(Clef.Treble);
+        //    score.FirstStaff.Elements.Add(key);
+        //    score.FirstStaff.Elements.Add(timeSig);
+        //    score.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Quarter));
+        //    score.FirstStaff.Elements.Add(new Note(Pitch.B4, RhythmicDuration.Quarter));
+        //    score.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Half));
+        //    score.FirstStaff.Elements.Add(new Barline());
+        //    Staff bass = new Staff();
+        //    bass.Elements.Add(Clef.Bass);
+        //    bass.Elements.Add(key);
+        //    bass.Elements.Add(timeSig);
+        //    score.Staves.Add(bass);
+        //    return score;
+        //}
 
+            /// keep this for later
         /// <summary>
         /// Returns a default empty grand staff.
         /// </summary>
         /// <returns>A Score object containing an empty grand staff in C major and 4/4 time</returns>
-        public Score createGrandStaff() { return createGrandStaff(new Key(0), TimeSignature.CommonTime); }
+        //public Score createGrandStaff() { return createGrandStaff(new Key(0), TimeSignature.CommonTime); }
 
         /// <summary>
         /// Loads the viewer with a Score object generated from the specified MusicXml file.
@@ -138,6 +159,13 @@ namespace Piano
             return true;
         }
 
-
+        internal void addNote(Note note)
+        {
+            var score = Score.CreateOneStaffScore();
+            score.FirstStaff.Elements.AddRange(data.FirstStaff.Elements);
+            score.FirstStaff.Elements.Add(note);
+            Data = score;
+        }
     }
 }
+//////// Trim this down to single staff and simplify methods accordingly, then have another go at note input.
