@@ -16,7 +16,6 @@ E:\Git\MusicMaker\Piano\Piano\obj\Debug\Piano.exe
 E:\Git\MusicMaker\Piano\Piano\obj\Debug\Piano.pdb
 E:\Git\MusicMaker\Piano\Piano\bin\Debug\Piano.exe
 E:\Git\MusicMaker\Piano\Piano\bin\Debug\Piano.pdb
-E:\Git\MusicMaker\Piano\Piano\obj\Debug\Piano.csprojResolveAssemblyReference.cache
 E:\Git\MusicMaker\Piano\Piano\obj\Debug\MainWindow.baml
 E:\Git\MusicMaker\Piano\Piano\obj\Debug\MainWindow.g.cs
 E:\Git\MusicMaker\Piano\Piano\obj\Debug\App.g.cs
@@ -35,3 +34,4 @@ E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Controls.pdb
 E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Controls.WPF.pdb
 E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Model.pdb
 E:\Git\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Music.pdb
+E:\Git\MusicMaker\Piano\Piano\obj\Debug\Piano.csprojResolveAssemblyReference.cache

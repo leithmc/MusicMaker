@@ -161,11 +161,88 @@ namespace Piano
 
         internal void addNote(Note note)
         {
-            var score = Score.CreateOneStaffScore();
-            score.FirstStaff.Elements.AddRange(data.FirstStaff.Elements);
-            score.FirstStaff.Elements.Add(note);
+            //var score = Score.CreateOneStaffScore();
+            //score.FirstStaff.Elements.AddRange(data.FirstStaff.Elements);
+            //score.FirstStaff.Elements.Add(note);
+            //Data = score;
+            Data.FirstStaff.Elements.Add(note);
+           // Data.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Half));
+            updateView();
+        }
+
+        public void updateView()
+        {
+            var score = Data;
+            Data = null;
             Data = score;
         }
+
+        internal void fitMeasure(Measure m, TimeSignature ts) // Still need to add support for deletion
+        {
+            double beats = 0.0;
+            foreach (MusicalSymbol item in m.Elements)//.FindAll(e => e.GetType() == typeof(NoteOrRest)))
+            {
+                // If new time sig, update
+                if (item.GetType() == typeof(TimeSignature)) ts = (TimeSignature) item;
+
+                else if (item.GetType() == typeof(NoteOrRest))
+                {
+                    NoteOrRest nr = (NoteOrRest)item;
+                    double d = nr.Duration.ToDouble();
+                    double overage = (beats + d) - ts.WholeNoteCapacity;
+                    int index = m.Staff.Elements.IndexOf(item);
+                    if (overage > 0)
+                    {
+                        double d1 = d - overage;
+                        RhythmicDuration dur1 = getDuration(d1);
+                        NoteOrRest firstPart, secondPart;
+                        if (nr.GetType() == typeof(Note))
+                        {
+                            Note n = (Note)nr;
+                            firstPart = new Note(n.Pitch, getDuration(d1));
+                            secondPart = new Note(n.Pitch, getDuration(overage));
+                        }
+                        else
+                        {
+                            firstPart = new Rest(getDuration(d1));
+                            secondPart = new Rest(getDuration(overage));
+                        }
+                        m.Staff.Elements.Insert(index, firstPart);    
+                        m.Staff.Elements.Remove(item);
+                        if (m.Staff.Elements.Count < index + 2 
+                            || m.Staff.Elements[index + 1].GetType() != typeof(Barline))
+                            m.Staff.Elements.Insert(index + 1, new Barline());
+                        m.Staff.Elements.Insert(index + 2, secondPart);
+
+                        // We had to fit this into a new measure, so make recursive call for the next measure.
+                        fitMeasure(m.Staff.Elements[index + 2].Measure, ts);
+                    }
+                    else if (overage == 0)
+                    {
+                        if (m.Staff.Elements.Count < index + 2
+                            || m.Staff.Elements[index + 1].GetType() != typeof(Barline))
+                            m.Staff.Elements.Insert(index + 1, new Barline());
+                    }
+                }
+            }
+        }
+
+        private RhythmicDuration getDuration(double d)
+        {
+            RhythmicDuration rd;
+            if (d >= 1) rd = RhythmicDuration.Whole;
+            else if (d >= .5) rd = RhythmicDuration.Half;
+            else if (d >= .25) rd = RhythmicDuration.Quarter;
+            else if (d >= .125) rd = RhythmicDuration.Eighth;
+            else if (d >= .0625) rd = RhythmicDuration.Sixteenth;
+            else rd = RhythmicDuration.D32nd;
+
+            // Fill in dots if needed
+            while (rd.ToDouble() < d) rd.Dots++;
+
+            return rd;
+        }
+
     }
 }
 //////// Trim this down to single staff and simplify methods accordingly, then have another go at note input.

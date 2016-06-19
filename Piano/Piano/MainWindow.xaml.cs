@@ -239,17 +239,17 @@ namespace Piano
             ((Rectangle)sender).Fill = Brushes.Yellow;
             string keyName = (((FrameworkElement)e.Source).Name);
             Console.WriteLine(keyName);
-            Note note = buildNote(keyName);
+            Note note = parseNoteFromInput(keyName);
 
             // Add note to staff
-            addNote(note);
+            addNoteToStaff(note);
         }
 
-        private Note buildNote(string keyName)
+        private Note parseNoteFromInput(string keyName)
         {
-            Note note = new Note();
+            Pitch p;
             if (keyName.Length == 2)
-                note.Pitch = new Pitch(keyName.Substring(0, 1), 0, int.Parse(keyName.Substring(1, 1)));
+                p = new Pitch(keyName.Substring(0, 1), 0, int.Parse(keyName.Substring(1, 1)));
             else
             {
                 Manufaktura.Controls.Model.Key key = null;
@@ -273,13 +273,12 @@ namespace Piano
                     letter = keyName.Substring(0, 1);
                     mod = -1;
                 }
-                note.Pitch = new Pitch(letter, mod, int.Parse(keyName.Substring(2, 1)));
+                p = new Pitch(letter, mod, int.Parse(keyName.Substring(2, 1)));
             }
-            note.Duration = noteLength;
-            return note;
+            return new Note(p, noteLength);
         }
 
-        private void addNote(Note note)
+        private void addNoteToStaff(Note note)
         {
             var elem = Viewer.SelectedElement;
             if (elem == null)
@@ -288,36 +287,20 @@ namespace Piano
                 return;
             }
 
-            // Determine which staff in the score to write to
-            Score staffScore = elem.Staff.Score;
-            int staffIndex = 0;
-            foreach (Staff st in Viewer.InnerScore.Staves)
+            //If user selects the staff itself, append to last note. Else insert after selected note.
+            int staffIndex = model.Data.Staves.IndexOf(elem.Staff);
+            if (elem.GetType() == typeof(StaffFragment)) model.Data.Staves[staffIndex].Elements.Add(note);
+            else
             {
-                if (st.Id == staffScore.FirstStaff.Id)
-                {
-                    staffIndex = Viewer.InnerScore.Staves.IndexOf(st);
-                    break; // may be able to simplify -- if staffScore is a ref to st, should have the same id
-                    // May be able to simplify more -- if the staff in the viewer is the same as the staff in the score...
-                }
+                int index = elem.Staff.Elements.IndexOf(elem);
+                model.Data.Staves[staffIndex].Elements.Insert(index + 1, note);
             }
 
-            // If selected element is a staff, append to last note. Else insert after selected note.
-            //if (elem == elem.Staff) Viewer.InnerScore.Staves[staffIndex].Elements.Add(note);
-            //else
-            //{
-            //    var elems = elem.Staff.Elements;
-            //    int index = elems.IndexOf(elem);
-            //    Viewer.InnerScore.Staves[staffIndex].Elements.Insert(index + 1, note);
-            //}
+            // Recusively fix overflowing measures, starting from the current one
+            model.fitMeasure(note.Measure, new TimeSignature(TimeSignatureType.Numbers, beatsPerMeasure, (int) (1 / noteLength.ToDecimal())));
 
-            model.addNote(note);
-            //model.Data.FirstStaff.Elements.Add(note);
-            //model.forceUpdate();
-
-            
-
-            Viewer.UpdateLayout();
-            PianoCanvas.UpdateLayout();
+            // Trigger an update in the viewmodel
+            model.updateView();
         }
 
         /// <summary>
