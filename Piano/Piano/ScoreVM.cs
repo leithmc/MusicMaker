@@ -33,8 +33,19 @@ namespace Piano
             set { data = value; OnPropertyChanged(() => Data); }
         }
 
-       // public void forceUpdate() { OnPropertyChanged(() => Data); }
+        private Key keySig;
+        public Key KeySig
+        {
+            get { return keySig; }
+            set { keySig = value; }
+        }
 
+        private TimeSignature timeSig;
+        public TimeSignature TimeSig
+        {
+            get { return timeSig; }
+            set { timeSig = value; }
+        }
 
         /// <summary>
         /// Populates the note viewer with an empty default grand staff. Does not set fileName.
@@ -54,8 +65,10 @@ namespace Piano
         {
             var score = Score.CreateOneStaffScore();
             score.FirstStaff.Elements.Add(Clef.Treble);
-            score.FirstStaff.Elements.Add(new Key(0));
-            score.FirstStaff.Elements.Add(TimeSignature.CommonTime);
+            keySig = new Key(0);
+            score.FirstStaff.Elements.Add(keySig);
+            timeSig = TimeSignature.CommonTime;
+            score.FirstStaff.Elements.Add(timeSig);
             score.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Quarter));
             score.FirstStaff.Elements.Add(new Note(Pitch.B4, RhythmicDuration.Quarter));
             score.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Half));
@@ -63,37 +76,39 @@ namespace Piano
             return score;
         }
 
-        // Do not delete -- will want to put this back in later
         /// <summary>
         /// Generates an empty grand staff in the specified key and time signature.
         /// </summary>
         /// <param name="key">A Key enumeration value to specify the starting key of the piece</param>
         /// <param name="timeSig">A TimeSignature object representing the time signature of the piece</param>
         /// <returns>A score object containing a grand staff in the specified key and time signature</returns>
-        //public Score createGrandStaff(Key key, TimeSignature timeSig)
-        //{
-        //    var score = Score.CreateOneStaffScore();
-        //    score.FirstStaff.Elements.Add(Clef.Treble);
-        //    score.FirstStaff.Elements.Add(key);
-        //    score.FirstStaff.Elements.Add(timeSig);
-        //    score.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Quarter));
-        //    score.FirstStaff.Elements.Add(new Note(Pitch.B4, RhythmicDuration.Quarter));
-        //    score.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Half));
-        //    score.FirstStaff.Elements.Add(new Barline());
-        //    Staff bass = new Staff();
-        //    bass.Elements.Add(Clef.Bass);
-        //    bass.Elements.Add(key);
-        //    bass.Elements.Add(timeSig);
-        //    score.Staves.Add(bass);
-        //    return score;
-        //}
+        public Score createGrandStaff(Key key, TimeSignature timeSig)
+        {
+            var score = Score.CreateOneStaffScore();
+            score.FirstStaff.Elements.Add(Clef.Treble);
+            this.keySig = key;
+            score.FirstStaff.Elements.Add(keySig);
+            this.timeSig = timeSig;
+            score.FirstStaff.Elements.Add(timeSig);
+            score.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Quarter));
+            score.FirstStaff.Elements.Add(new Note(Pitch.B4, RhythmicDuration.Quarter));
+            score.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Half));
+            score.FirstStaff.Elements.Add(new Barline());
+            Staff bass = new Staff();
+            bass.Elements.Add(Clef.Bass);
+            bass.Elements.Add(key);
+            bass.Elements.Add(timeSig);
+            score.Staves.Add(bass);
+            keySig = key;
+            return score;
+        }
 
-            /// keep this for later
+        /// keep this for later
         /// <summary>
         /// Returns a default empty grand staff.
         /// </summary>
         /// <returns>A Score object containing an empty grand staff in C major and 4/4 time</returns>
-        //public Score createGrandStaff() { return createGrandStaff(new Key(0), TimeSignature.CommonTime); }
+        public Score createGrandStaff() { return createGrandStaff(new Key(0), TimeSignature.CommonTime); }
 
         /// <summary>
         /// Loads the viewer with a Score object generated from the specified MusicXml file.
@@ -185,7 +200,7 @@ namespace Piano
                 // If new time sig, update
                 if (item.GetType() == typeof(TimeSignature)) ts = (TimeSignature) item;
 
-                else if (item.GetType() == typeof(NoteOrRest))
+                else if (item.GetType() == typeof(Note) || item.GetType() == typeof(Rest))
                 {
                     NoteOrRest nr = (NoteOrRest)item;
                     double d = nr.Duration.ToDouble();
@@ -217,7 +232,7 @@ namespace Piano
                         // We had to fit this into a new measure, so make recursive call for the next measure.
                         fitMeasure(m.Staff.Elements[index + 2].Measure, ts);
                     }
-                    else if (overage == 0)
+                    else if (overage == 0) // right now it's creating a barline and pushing it to the end -- fix that
                     {
                         if (m.Staff.Elements.Count < index + 2
                             || m.Staff.Elements[index + 1].GetType() != typeof(Barline))

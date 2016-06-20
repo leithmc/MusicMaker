@@ -297,7 +297,7 @@ namespace Piano
             }
 
             // Recusively fix overflowing measures, starting from the current one
-            model.fitMeasure(note.Measure, new TimeSignature(TimeSignatureType.Numbers, beatsPerMeasure, (int) (1 / noteLength.ToDecimal())));
+            model.fitMeasure(note.Measure, model.TimeSig);
 
             // Trigger an update in the viewmodel
             model.updateView();
