@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -61,6 +61,8 @@ namespace Piano
             Data = createStartingStaff();   // This will switch to createGrandStaff once the note entry bugs are fixed
         }
 
+
+
         /// <summary>
         /// Generates an empty grand staff in the specified key and time signature.
         /// </summary>
@@ -87,6 +89,8 @@ namespace Piano
             score.FirstStaff.Elements.Add(new Barline());
             return score;
         }
+
+
 
         /// <summary>
         /// Generates an empty grand staff in the specified key and time signature.
@@ -116,12 +120,18 @@ namespace Piano
             return score;
         }
 
+
         /// keep this for later
         /// <summary>
         /// Returns a default empty grand staff.
         /// </summary>
         /// <returns>A Score object containing an empty grand staff in C major and 4/4 time</returns>
-        public Score createGrandStaff() { return createGrandStaff(new Key(0), TimeSignature.CommonTime); }
+        public Score createGrandStaff()
+        {
+            return createGrandStaff(new Key(0), TimeSignature.CommonTime);
+        }
+
+
 
         /// <summary>
         /// Loads the viewer with a Score object generated from the specified MusicXml file.
@@ -139,6 +149,8 @@ namespace Piano
             else throw new FileNotFoundException(fileName + " not found."); //This and any parser exceptions will be caught by the calling function
         }
 
+
+
         /// <summary>
         /// Creates a new score with the specified staff configuration and loads it into the viewer.
         /// </summary>
@@ -147,11 +159,15 @@ namespace Piano
         public void createNew(string title, Staff[] staves)
         {
             Score score = new Score();
-            foreach (Staff staff in staves) { score.Staves.Add(staff); }
+            foreach (Staff staff in staves)
+            {
+                score.Staves.Add(staff);
+            }
             // TODO: Figure out how to add a title. This may have to be done directly to the MusicXML while saving.
             // Replace existing socre object with newly defined score
             Data = score;
         }
+
 
 
         /// <summary>
@@ -213,7 +229,10 @@ namespace Piano
             foreach (MusicalSymbol item in m.Elements)//.FindAll(e => e.GetType() == typeof(NoteOrRest)))
             {
                 // If new time sig, update
-                if (item.GetType() == typeof(TimeSignature)) ts = (TimeSignature) item;
+                if (item.GetType() == typeof(TimeSignature))
+                {
+                    ts = (TimeSignature)item;
+                }
 
                 else if (item.GetType() == typeof(Note) || item.GetType() == typeof(Rest))
                 {
@@ -237,11 +256,13 @@ namespace Piano
                             firstPart = new Rest(getDuration(d1));
                             secondPart = new Rest(getDuration(overage));
                         }
-                        m.Staff.Elements.Insert(index, firstPart);    
+                        m.Staff.Elements.Insert(index, firstPart);
                         m.Staff.Elements.Remove(item);
-                        if (m.Staff.Elements.Count < index + 2 
-                            || m.Staff.Elements[index + 1].GetType() != typeof(Barline))
+                        if (m.Staff.Elements.Count < index + 2 || m.Staff.Elements[index + 1].GetType() != typeof(Barline))
+                        {
                             m.Staff.Elements.Insert(index + 1, new Barline());
+                        }
+
                         m.Staff.Elements.Insert(index + 2, secondPart);
 
                         // We had to fit this into a new measure, so make recursive call for the next measure.
@@ -249,9 +270,10 @@ namespace Piano
                     }
                     else if (overage == 0) // right now it's creating a barline and pushing it to the end -- fix that
                     {
-                        if (m.Staff.Elements.Count < index + 2
-                            || m.Staff.Elements[index + 1].GetType() != typeof(Barline))
+                        if (m.Staff.Elements.Count < index + 2 || m.Staff.Elements[index + 1].GetType() != typeof(Barline))
+                        {
                             m.Staff.Elements.Insert(index + 1, new Barline());
+                        }
                     }
                 }
             }
@@ -270,7 +292,10 @@ namespace Piano
             else rd = RhythmicDuration.D32nd;
 
             // Fill in dots if needed
-            while (rd.ToDouble() < d) rd.Dots++;
+            while (rd.ToDouble() < d)
+            {
+                rd.Dots++;
+            }
 
             return rd;
         }
