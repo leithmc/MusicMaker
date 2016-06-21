@@ -34,6 +34,9 @@ namespace Piano
         }
 
         private Key keySig;
+        /// <summary>
+        /// Holds the current key signature
+        /// </summary>
         public Key KeySig
         {
             get { return keySig; }
@@ -41,6 +44,9 @@ namespace Piano
         }
 
         private TimeSignature timeSig;
+        /// <summary>
+        /// Holds the current time signature
+        /// </summary>
         public TimeSignature TimeSig
         {
             get { return timeSig; }
@@ -48,11 +54,11 @@ namespace Piano
         }
 
         /// <summary>
-        /// Populates the note viewer with an empty default grand staff. Does not set fileName.
+        /// Populates the note viewer with an empty single staff. Does not set fileName.
         /// </summary>
         public void loadStartData()
         {
-            Data = createStartingStaff();
+            Data = createStartingStaff();   // This will switch to createGrandStaff once the note entry bugs are fixed
         }
 
         /// <summary>
@@ -63,12 +69,18 @@ namespace Piano
         /// <returns>A score object containing a grand staff in the specified key and time signature</returns>
         public Score createStartingStaff()
         {
+            // Create a score object with a single staff
             var score = Score.CreateOneStaffScore();
+            // Add treble clef
             score.FirstStaff.Elements.Add(Clef.Treble);
+            // add key signature. The 0 in the Key constructor means no sharps or flats. 
+            // negative numbers are flat keys, positive for sharp keys.
             keySig = new Key(0);
             score.FirstStaff.Elements.Add(keySig);
+            // Set time sig to 4/4
             timeSig = TimeSignature.CommonTime;
             score.FirstStaff.Elements.Add(timeSig);
+            // Add some notes for test purposes
             score.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Quarter));
             score.FirstStaff.Elements.Add(new Note(Pitch.B4, RhythmicDuration.Quarter));
             score.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Half));
@@ -84,7 +96,7 @@ namespace Piano
         /// <returns>A score object containing a grand staff in the specified key and time signature</returns>
         public Score createGrandStaff(Key key, TimeSignature timeSig)
         {
-            var score = Score.CreateOneStaffScore();
+            var score = Score.CreateOneStaffScore();    // See createStartingStaff for line by line comments
             score.FirstStaff.Elements.Add(Clef.Treble);
             this.keySig = key;
             score.FirstStaff.Elements.Add(keySig);
@@ -98,6 +110,7 @@ namespace Piano
             bass.Elements.Add(Clef.Bass);
             bass.Elements.Add(key);
             bass.Elements.Add(timeSig);
+            // Add bass staff
             score.Staves.Add(bass);
             keySig = key;
             return score;
@@ -118,13 +131,12 @@ namespace Piano
             this.fileName = fileName;
             if (File.Exists(fileName))
             {
-                // Validate file before loading
-                //if (!validateMusicXML(fileName)) throw new FileFormatException("File: " + fileName + " is not a valid MusicXML file.");
+                // Parser instance converts between Score object and MusicXML
                 var parser = new MusicXmlParser();
-                Score score = parser.Parse(XDocument.Load(fileName));
+                Score score = parser.Parse(XDocument.Load(fileName)); // Load the content of the specified file into Data
                 Data = score;
             }
-            else throw new FileNotFoundException(fileName + " not found.");
+            else throw new FileNotFoundException(fileName + " not found."); //This and any parser exceptions will be caught by the calling function
         }
 
         /// <summary>
@@ -137,12 +149,13 @@ namespace Piano
             Score score = new Score();
             foreach (Staff staff in staves) { score.Staves.Add(staff); }
             // TODO: Figure out how to add a title. This may have to be done directly to the MusicXML while saving.
+            // Replace existing socre object with newly defined score
             Data = score;
         }
 
 
         /// <summary>
-        /// Saves the current Score as a MusicXML file.
+        /// Saves the current Score as a MusicXML file. NOT FINISHED YET
         /// </summary>
         /// <returns></returns>
         public bool save()
@@ -174,17 +187,11 @@ namespace Piano
             return true;
         }
 
-        internal void addNote(Note note)
-        {
-            //var score = Score.CreateOneStaffScore();
-            //score.FirstStaff.Elements.AddRange(data.FirstStaff.Elements);
-            //score.FirstStaff.Elements.Add(note);
-            //Data = score;
-            Data.FirstStaff.Elements.Add(note);
-           // Data.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Half));
-            updateView();
-        }
 
+        /// <summary>
+        /// Forces the Score object to refresh its property tree. Have to do this
+        /// to update the content of the bound NoteViewer.
+        /// </summary>
         public void updateView()
         {
             var score = Data;
@@ -192,6 +199,14 @@ namespace Piano
             Data = score;
         }
 
+        ////// IN PROGRESS ////////
+        /// <summary>
+        /// Adds a barline to the current measure if needed, and breaks the last note of the measure if it
+        /// exceeds the allowed beats/measure, inserting the remainder into the next measure, then recursively calls
+        /// itself on subsequent measures until it hits a measure that does not overflow.
+        /// </summary>
+        /// <param name="m"></param>
+        /// <param name="ts"></param>
         internal void fitMeasure(Measure m, TimeSignature ts) // Still need to add support for deletion
         {
             double beats = 0.0;
@@ -242,9 +257,11 @@ namespace Piano
             }
         }
 
+        // Helper method to convert a double to a RhythmicDuration object.
         private RhythmicDuration getDuration(double d)
         {
             RhythmicDuration rd;
+            // Check fractions down to 1/32 and convert to the base note type
             if (d >= 1) rd = RhythmicDuration.Whole;
             else if (d >= .5) rd = RhythmicDuration.Half;
             else if (d >= .25) rd = RhythmicDuration.Quarter;
@@ -260,4 +277,3 @@ namespace Piano
 
     }
 }
-//////// Trim this down to single staff and simplify methods accordingly, then have another go at note input.

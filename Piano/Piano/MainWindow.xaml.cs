@@ -39,6 +39,8 @@ namespace Piano
         private string[] keySigs = { "F", "C", "G", "D", "A", "E", "B", "F#", "C#", "G#", "D#", "A#", "E#", "Bb", "Eb", "Ab", "Db", "Gb" };
         string[] validBeatsPerMeasure = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
         string[] validBeatLengths = { "2", "4", "8", "16" };
+        
+        // Dictionary to quickly map string inputs to RhythmicDuration objects. NoteLengths["HalfNote"] returns RhythmicDuration.Half.
         Dictionary<string, RhythmicDuration> NoteLengths = new Dictionary<string, RhythmicDuration>()
         {
             {"WholeNote", RhythmicDuration.Whole }, { "HalfNote", RhythmicDuration.Half }, {"QuarterNote", RhythmicDuration.Quarter },
@@ -97,8 +99,8 @@ namespace Piano
             BeatLengthCombo.ItemsSource = validBeatLengths;
             KeySignatureCombo.ItemsSource = keySigs;
 
-            // Reset selections to default values
-            BeatsMeasureCombo.SelectedIndex = 2;
+            // Reset selections to default values of 4/4 time, key of C, no title
+            BeatsMeasureCombo.SelectedIndex = 2; 
             BeatLengthCombo.SelectedIndex = 1;
             KeySignatureCombo.SelectedIndex = 1;
             TitleBox.Text = "";
@@ -119,7 +121,8 @@ namespace Piano
             // Close the popup
             ScoreCreationWindow.IsOpen = false;
 
-            // Calculate key signature
+            // Calculate key signature based on selected value from array
+            // If selected index < 13, keyIndex - seleted index -1, else keyIndex = selected index
             int keyIndex = (KeySignatureCombo.SelectedIndex < 13) ? KeySignatureCombo.SelectedIndex - 1 : 12 - KeySignatureCombo.SelectedIndex;
             Manufaktura.Controls.Model.Key key = new Manufaktura.Controls.Model.Key(keyIndex);
 
@@ -128,12 +131,13 @@ namespace Piano
 
             // Build grand staff for now -- later may add options for more or fewer staves
             Staff treble = new Staff();
-            MusicalSymbol[] elements = { Clef.Treble, key, timeSig };
+            MusicalSymbol[] elements = { Clef.Treble, key, timeSig }; // Add treble clef, key sig, time sig
             for (int i = 0; i < 3; i++) treble.Elements.Add(elements[i]);
             Staff bass = new Staff();
-            elements[0] = Clef.Bass;
+            elements[0] = Clef.Bass;        // Add bass clef, key sig, time sig
             for (int i = 0; i < 3; i++) bass.Elements.Add(elements[i]);
             Staff[] staves = { treble, bass };
+            // Pass the title and the treble and bass staves to createNew
             model.createNew(TitleBox.Text, staves);
         }
 
@@ -149,6 +153,7 @@ namespace Piano
             ScoreCreationWindow.IsOpen = false;
 
             string fileName;
+            // Use an OpenFile dilaog to get the file name
             Nullable<bool> result;
             OpenFileDialog dialog = new OpenFileDialog();
             try
@@ -166,14 +171,10 @@ namespace Piano
                 MessageBox.Show("File could not be opened.");
                 return;
             }
-            try
-            {
-                model.loadFile(fileName);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Could not parse file: " + ex.Message);
-            }
+
+            // Load the file
+            try { model.loadFile(fileName); }
+            catch (Exception ex) { MessageBox.Show("Could not parse file: " + ex.Message); }
         }
 
         /// <summary>
@@ -245,13 +246,22 @@ namespace Piano
             addNoteToStaff(note);
         }
 
+        /// <summary>
+        /// Parses the name of the piano key to determine pitch and creates a new Noe object with
+        /// the specified pitch and current note value.
+        /// </summary>
+        /// <param name="keyName">The name of the piano key from which to derive the pitch</param>
+        /// <returns></returns>
         private Note parseNoteFromInput(string keyName)
         {
+            // Start with a Pich object
             Pitch p;
-            if (keyName.Length == 2)
+            if (keyName.Length == 2) // If it's a white key...
+                // Note name is the first letter, octave number is the second letter. Pass both to the Pitch constructor
                 p = new Pitch(keyName.Substring(0, 1), 0, int.Parse(keyName.Substring(1, 1)));
             else
-            {
+            {   // black key...
+                // Determine if the current key uses sharps or flats (may be able to simplify this)
                 Manufaktura.Controls.Model.Key key = null;
                 foreach (var item in model.Data.FirstStaff.Elements)
                 {
@@ -261,25 +271,31 @@ namespace Piano
                         break;
                     }
                 }
+
                 string letter;
-                int mod;
-                if (key.Fifths > 0)
+                int mod;    // sharp or flat
+                if (key.Fifths > 0) // if sharp key, use the first letter and add a sharp
                 {
                     letter = keyName.Substring(1, 1);
                     mod = 1;
                 }
                 else
-                {
+                {       // flat key -- use the second letter and add a flat
                     letter = keyName.Substring(0, 1);
                     mod = -1;
                 }
-                p = new Pitch(letter, mod, int.Parse(keyName.Substring(2, 1)));
+                p = new Pitch(letter, mod, int.Parse(keyName.Substring(2, 1))); // Third argument is octave
             }
             return new Note(p, noteLength);
         }
 
+        /// <summary>
+        /// Adds the note to the staff in the correct location
+        /// </summary>
+        /// <param name="note">The note to add</param>
         private void addNoteToStaff(Note note)
         {
+            // Get the currently selected note, rest, or staff fragment
             var elem = Viewer.SelectedElement;
             if (elem == null)
             {
@@ -288,10 +304,10 @@ namespace Piano
             }
 
             //If user selects the staff itself, append to last note. Else insert after selected note.
-            int staffIndex = model.Data.Staves.IndexOf(elem.Staff);
-            if (elem.GetType() == typeof(StaffFragment)) model.Data.Staves[staffIndex].Elements.Add(note);
+            int staffIndex = model.Data.Staves.IndexOf(elem.Staff); // Get current staff
+            if (elem.GetType() == typeof(StaffFragment)) model.Data.Staves[staffIndex].Elements.Add(note);  // Staff fragment, so add note to end of staff
             else
-            {
+            {   // Not staff fragment, so insert note after selected element
                 int index = elem.Staff.Elements.IndexOf(elem);
                 model.Data.Staves[staffIndex].Elements.Insert(index + 1, note);
             }
@@ -301,6 +317,8 @@ namespace Piano
 
             // Trigger an update in the viewmodel
             model.updateView();
+
+            // TODO: handle when clefs and signatures are selected
         }
 
         /// <summary>
