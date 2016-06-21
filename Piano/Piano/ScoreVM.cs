@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -55,6 +55,8 @@ namespace Piano
             Data = createStartingStaff();
         }
 
+
+
         /// <summary>
         /// Generates an empty grand staff in the specified key and time signature.
         /// </summary>
@@ -75,6 +77,8 @@ namespace Piano
             score.FirstStaff.Elements.Add(new Barline());
             return score;
         }
+
+
 
         /// <summary>
         /// Generates an empty grand staff in the specified key and time signature.
@@ -103,12 +107,18 @@ namespace Piano
             return score;
         }
 
+
         /// keep this for later
         /// <summary>
         /// Returns a default empty grand staff.
         /// </summary>
         /// <returns>A Score object containing an empty grand staff in C major and 4/4 time</returns>
-        public Score createGrandStaff() { return createGrandStaff(new Key(0), TimeSignature.CommonTime); }
+        public Score createGrandStaff()
+        {
+            return createGrandStaff(new Key(0), TimeSignature.CommonTime);
+        }
+
+
 
         /// <summary>
         /// Loads the viewer with a Score object generated from the specified MusicXml file.
@@ -124,8 +134,13 @@ namespace Piano
                 Score score = parser.Parse(XDocument.Load(fileName));
                 Data = score;
             }
-            else throw new FileNotFoundException(fileName + " not found.");
+            else
+            {
+                throw new FileNotFoundException(fileName + " not found.");
+            }
         }
+
+
 
         /// <summary>
         /// Creates a new score with the specified staff configuration and loads it into the viewer.
@@ -135,10 +150,14 @@ namespace Piano
         public void createNew(string title, Staff[] staves)
         {
             Score score = new Score();
-            foreach (Staff staff in staves) { score.Staves.Add(staff); }
+            foreach (Staff staff in staves)
+            {
+                score.Staves.Add(staff);
+            }
             // TODO: Figure out how to add a title. This may have to be done directly to the MusicXML while saving.
             Data = score;
         }
+
 
 
         /// <summary>
@@ -174,6 +193,8 @@ namespace Piano
             return true;
         }
 
+
+
         internal void addNote(Note note)
         {
             //var score = Score.CreateOneStaffScore();
@@ -181,9 +202,10 @@ namespace Piano
             //score.FirstStaff.Elements.Add(note);
             //Data = score;
             Data.FirstStaff.Elements.Add(note);
-           // Data.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Half));
+            // Data.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Half));
             updateView();
         }
+
 
         public void updateView()
         {
@@ -192,13 +214,18 @@ namespace Piano
             Data = score;
         }
 
+
+
         internal void fitMeasure(Measure m, TimeSignature ts) // Still need to add support for deletion
         {
             double beats = 0.0;
             foreach (MusicalSymbol item in m.Elements)//.FindAll(e => e.GetType() == typeof(NoteOrRest)))
             {
                 // If new time sig, update
-                if (item.GetType() == typeof(TimeSignature)) ts = (TimeSignature) item;
+                if (item.GetType() == typeof(TimeSignature))
+                {
+                    ts = (TimeSignature)item;
+                }
 
                 else if (item.GetType() == typeof(Note) || item.GetType() == typeof(Rest))
                 {
@@ -222,11 +249,13 @@ namespace Piano
                             firstPart = new Rest(getDuration(d1));
                             secondPart = new Rest(getDuration(overage));
                         }
-                        m.Staff.Elements.Insert(index, firstPart);    
+                        m.Staff.Elements.Insert(index, firstPart);
                         m.Staff.Elements.Remove(item);
-                        if (m.Staff.Elements.Count < index + 2 
-                            || m.Staff.Elements[index + 1].GetType() != typeof(Barline))
+                        if (m.Staff.Elements.Count < index + 2 || m.Staff.Elements[index + 1].GetType() != typeof(Barline))
+                        {
                             m.Staff.Elements.Insert(index + 1, new Barline());
+                        }
+
                         m.Staff.Elements.Insert(index + 2, secondPart);
 
                         // We had to fit this into a new measure, so make recursive call for the next measure.
@@ -234,26 +263,50 @@ namespace Piano
                     }
                     else if (overage == 0) // right now it's creating a barline and pushing it to the end -- fix that
                     {
-                        if (m.Staff.Elements.Count < index + 2
-                            || m.Staff.Elements[index + 1].GetType() != typeof(Barline))
+                        if (m.Staff.Elements.Count < index + 2 || m.Staff.Elements[index + 1].GetType() != typeof(Barline))
+                        {
                             m.Staff.Elements.Insert(index + 1, new Barline());
+                        }
                     }
                 }
             }
         }
 
+
+
         private RhythmicDuration getDuration(double d)
         {
             RhythmicDuration rd;
-            if (d >= 1) rd = RhythmicDuration.Whole;
-            else if (d >= .5) rd = RhythmicDuration.Half;
-            else if (d >= .25) rd = RhythmicDuration.Quarter;
-            else if (d >= .125) rd = RhythmicDuration.Eighth;
-            else if (d >= .0625) rd = RhythmicDuration.Sixteenth;
-            else rd = RhythmicDuration.D32nd;
+            if (d >= 1)
+            {
+                rd = RhythmicDuration.Whole;
+            }
+            else if (d >= .5)
+            {
+                rd = RhythmicDuration.Half;
+            }
+            else if (d >= .25)
+            {
+                rd = RhythmicDuration.Quarter;
+            }
+            else if (d >= .125)
+            {
+                rd = RhythmicDuration.Eighth;
+            }
+            else if (d >= .0625)
+            {
+                rd = RhythmicDuration.Sixteenth;
+            }
+            else
+            {
+                rd = RhythmicDuration.D32nd;
+            }
 
             // Fill in dots if needed
-            while (rd.ToDouble() < d) rd.Dots++;
+            while (rd.ToDouble() < d)
+            {
+                rd.Dots++;
+            }
 
             return rd;
         }
