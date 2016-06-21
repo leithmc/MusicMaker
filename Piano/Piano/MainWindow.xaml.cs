@@ -3,7 +3,7 @@ using Manufaktura.Music.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,8 +24,8 @@ namespace Piano
     /// </summary>
     public partial class MainWindow : Window
     {
-       // private String KeyName;
-        private String scoreTitle;
+        // private String KeyName;
+        private String MusicTitle;
         private int beatsPerMeasure;
         private int beatLength;
         private String keySignature;
@@ -34,7 +34,7 @@ namespace Piano
         private RhythmicDuration noteLength = RhythmicDuration.Quarter;
         private bool dotted = false;
         private string keyboard_Input = "None";
-       // private Boolean FreshStart = true;
+        // private Boolean FreshStart = true;
 
         private string[] keySigs = { "F", "C", "G", "D", "A", "E", "B", "F#", "C#", "G#", "D#", "A#", "E#", "Bb", "Eb", "Ab", "Db", "Gb" };
         string[] validBeatsPerMeasure = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
@@ -46,6 +46,8 @@ namespace Piano
         };
 
 
+
+
         /// <summary>
         /// Constructor for main xaml window.
         /// </summary>
@@ -53,27 +55,25 @@ namespace Piano
         {
             // Initialize the base window
             InitializeComponent();
-            
+
             // Initialize the view model
             model = new ScoreVM();
             DataContext = model;
             model.loadStartData();
 
+            //looks more professional starting with a new slate.
+            OpenScoreCreationWindow();
+
             // Set viewer properties
             Viewer.RenderingMode = Manufaktura.Controls.Rendering.ScoreRenderingModes.SinglePage;
-
-            // Removign this for now -- user might want to start from an existing file.
-            //OpenScoreCreationWindow();
-
-            // Don't actually need this
-            //if (FreshStart == true)
-            //{
-            //    OpenScoreCreationWindow();
-            //}
+            
         }
+
+
 
         #region FileIO_EventHandlers
         /*** The code in this region handles the New, Load, Save, and Print buttons ***/
+        
 
         /// <summary>
         /// Called when the New button is clicked.
@@ -84,6 +84,8 @@ namespace Piano
         {
             OpenScoreCreationWindow();  // separate the event handler from the function so the function can be called from elsewhere
         }
+        
+
 
         /// <summary>
         /// Opens the score creation window, populates combo boxes, and sets to default values.
@@ -107,6 +109,9 @@ namespace Piano
             ScoreCreationWindow.IsOpen = true;
         }
 
+        
+
+
         /// <summary>
         /// Collects title, time, and key signature information from the Create New Score popup
         /// and uses them to create a new Score object and load it in the viewer.
@@ -119,23 +124,41 @@ namespace Piano
             // Close the popup
             ScoreCreationWindow.IsOpen = false;
 
+            Console.WriteLine(MusicTitle);
+
             // Calculate key signature
             int keyIndex = (KeySignatureCombo.SelectedIndex < 13) ? KeySignatureCombo.SelectedIndex - 1 : 12 - KeySignatureCombo.SelectedIndex;
             Manufaktura.Controls.Model.Key key = new Manufaktura.Controls.Model.Key(keyIndex);
 
             // Calculate time signature
             TimeSignature timeSig = new TimeSignature(TimeSignatureType.Numbers, beatsPerMeasure, beatLength);
+            
 
             // Build grand staff for now -- later may add options for more or fewer staves
             Staff treble = new Staff();
             MusicalSymbol[] elements = { Clef.Treble, key, timeSig };
-            for (int i = 0; i < 3; i++) treble.Elements.Add(elements[i]);
+
+            for (int i = 0; i < 3; i++)
+            {
+                treble.Elements.Add(elements[i]);
+            }
+
+
             Staff bass = new Staff();
             elements[0] = Clef.Bass;
-            for (int i = 0; i < 3; i++) bass.Elements.Add(elements[i]);
+            
+            for (int i = 0; i < 3; i++)
+            {
+                bass.Elements.Add(elements[i]);
+            }
+
             Staff[] staves = { treble, bass };
             model.createNew(TitleBox.Text, staves);
+            
         }
+        
+
+
 
         /// <summary>
         /// Called when the user clicks the 'Load' button.
@@ -152,29 +175,44 @@ namespace Piano
             Nullable<bool> result;
             OpenFileDialog dialog = new OpenFileDialog();
             try
-            {                
+            {
                 result = dialog.ShowDialog();
             }
+
             catch (Exception ex)
             {
                 MessageBox.Show("Could not open file dialog. " + ex.Message);
+                OpenScoreCreationWindow();
                 return;
             }
-            if (result == true) fileName = dialog.FileName;
+
+            if (result == true)
+            {
+                fileName = dialog.FileName;
+            }
+
             else
             {
                 MessageBox.Show("File could not be opened.");
+                OpenScoreCreationWindow();
                 return;
             }
+
             try
             {
                 model.loadFile(fileName);
             }
+
             catch (Exception ex)
             {
                 MessageBox.Show("Could not parse file: " + ex.Message);
+                OpenScoreCreationWindow();
             }
         }
+
+
+
+
 
         /// <summary>
         /// Saves the current score as a MusicXml file.
@@ -185,7 +223,10 @@ namespace Piano
         {
             model.save();
         }
-        
+
+
+
+
         /// <summary>
         /// Formats the current score into one or more 8 1/2 x 11 pages and then sends them to the selected printer.
         /// </summary>
@@ -203,7 +244,11 @@ namespace Piano
 
         #region PianoKeyHandlers
         /***** The code in this region handles everything to do with the piano keys. ****/
-      
+
+
+
+
+
         /// <summary>
         /// Called when the mouse passes over a piano key.
         /// Turns the key aqua.
@@ -211,7 +256,11 @@ namespace Piano
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void keyOver(object sender, MouseEventArgs e) { ((Rectangle)sender).Fill = Brushes.Aqua; }
-        
+
+
+
+
+
         /// <summary>
         /// Called when the mouse leaves a white key.
         /// Turns the key white.
@@ -219,7 +268,11 @@ namespace Piano
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void whiteKeyLeave(object sender, MouseEventArgs e) { ((Rectangle)sender).Fill = Brushes.White; }
-        
+
+
+
+
+
         /// <summary>
         /// Called when the mouse leaves a black key.
         /// Turns the key black.
@@ -227,6 +280,12 @@ namespace Piano
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void blackKeyLeave(object sender, MouseEventArgs e) { ((Rectangle)sender).Fill = Brushes.Black; }
+
+
+
+
+
+
 
         /// <summary>
         /// Called by the mouse_down event of the piano keys.
@@ -249,7 +308,10 @@ namespace Piano
         {
             Pitch p;
             if (keyName.Length == 2)
+            {
                 p = new Pitch(keyName.Substring(0, 1), 0, int.Parse(keyName.Substring(1, 1)));
+            }
+
             else
             {
                 Manufaktura.Controls.Model.Key key = null;
@@ -289,7 +351,12 @@ namespace Piano
 
             //If user selects the staff itself, append to last note. Else insert after selected note.
             int staffIndex = model.Data.Staves.IndexOf(elem.Staff);
-            if (elem.GetType() == typeof(StaffFragment)) model.Data.Staves[staffIndex].Elements.Add(note);
+
+            if (elem.GetType() == typeof(StaffFragment))
+            {
+                model.Data.Staves[staffIndex].Elements.Add(note);
+            }
+
             else
             {
                 int index = elem.Staff.Elements.IndexOf(elem);
@@ -302,6 +369,11 @@ namespace Piano
             // Trigger an update in the viewmodel
             model.updateView();
         }
+
+
+
+
+
 
         /// <summary>
         /// Called by the mouse_up event of the piano keys.
@@ -317,9 +389,14 @@ namespace Piano
         }
         #endregion
 
+
+
+
         #region NoteControls
         /**** The code in this region handles events from duration, key signature, time signature, and 
               any other controls that change the score except for the piano keys. ****/
+
+
 
         /// <summary>
         /// Note length Combo Box
@@ -333,9 +410,21 @@ namespace Piano
 
             //Grab the value name (default is set to Quarter Note)
             ComboBoxItem item = (ComboBoxItem)Length.SelectedItem;
-            if (item.Name == "Dot") dotted = true;
-            else noteLength = NoteLengths[item.Name];
+            if (item.Name == "Dot")
+            {
+                dotted = true;
+            }
+            else
+            {
+                noteLength = NoteLengths[item.Name];
+            }
         }
+
+
+
+
+
+
 
         /// <summary>
         /// Radio Buttons... tested Default is none
@@ -364,24 +453,44 @@ namespace Piano
         }
         #endregion
 
+
+
+
         #region ScoreSetup
         /**** Code in this region handles events for controls involved in creating a new score. ****/
         
+
         /// <summary>
         /// Music Sheet Name
+        /// Purged Input to only allow letters, Numbers and some specials
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void MusicName(object sender, EventArgs e)
         {
+            string TitlePurged = "";
             TextBox textbox = sender as TextBox;
             if (textbox != null)
             {
                 String TCount = textbox.Text;
-                Title = TCount;                
+
+                Match match = Regex.Match(TCount, @"([A-Za-z0-9(){} ])+");
+
+                if (match.Success)
+                {
+                    TitlePurged = TitlePurged + match.Value;
+                }
             }
+
+           // Console.WriteLine(TitlePurged);
+            MusicTitle = TitlePurged;
         }
-        
+
+
+
+
+
+
         /// <summary>
         /// Called when the user makes a selection from the Beats / Measure combobox.
         /// Stores the selected value and converts to int.
@@ -390,9 +499,14 @@ namespace Piano
         /// <param name="e"></param>
         private void BeatsMeasureComboSelection_Changed(object sender, SelectionChangedEventArgs e)
         {
-            string value = (string) BeatsMeasureCombo.SelectedValue;
+            string value = (string)BeatsMeasureCombo.SelectedValue;
             beatsPerMeasure = int.Parse(value);
         }
+
+
+
+
+
 
         /// <summary>
         /// Called when the user makes a selection from the Beat Length combobox.
@@ -403,10 +517,15 @@ namespace Piano
         //Combo Box Beat Length
         private void BeatLengthComboSelection_Changed(object sender, SelectionChangedEventArgs e)
         {
-            string value = (string) BeatLengthCombo.SelectedValue;
+            string value = (string)BeatLengthCombo.SelectedValue;
             beatLength = int.Parse(value);
         }
-       
+
+
+
+
+
+
         /// <summary>
         /// Called when the user makes a selection from the Key Signature combobox.
         /// Stores the selected value.
@@ -415,9 +534,14 @@ namespace Piano
         /// <param name="e"></param>
         private void KeySignatureComboSelection_Changed(object sender, SelectionChangedEventArgs e)
         {
-            keySignature = (string) KeySignatureCombo.SelectedValue;
+            keySignature = (string)KeySignatureCombo.SelectedValue;
         }
+
         
+
+
+
+
         /// <summary>
         /// Deletes the current score and replaces it with a blank default grand staff.
         /// </summary>
@@ -430,8 +554,12 @@ namespace Piano
         }
         #endregion
 
+
+
+
         #region Playback
         /**** Code in this region pertains to plaback controls. ****/
+        
 
         /// <summary>
         /// Converts teh score to MIDI and plays the MIDI.
@@ -443,7 +571,10 @@ namespace Piano
             // To be implemented
             TBI("Playback");
         }
-    
+        
+
+
+
         /// <summary>
         /// Stops playback.
         /// </summary>
@@ -455,6 +586,9 @@ namespace Piano
             TBI("Playback");
         }
         
+
+
+
         /// <summary>
         /// loop button
         /// </summary>
@@ -474,9 +608,13 @@ namespace Piano
             {
                 ((Button)sender).Background = Brushes.Green;
                 looped = true;
-            }           
+            }
         }
         #endregion
+
+
+
+
 
         #region HelperFunctions
         // Just a temporary helper method to show when something isn't implemented yet.
