@@ -172,43 +172,89 @@
 
 
             <!-- Beat Length-->
-            <ComboBox x:Name="Length" Canvas.Left="610" Canvas.Top="360" Width="50" Height="30" SelectionChanged="NoteLengthSelection_Changed">
-                <ComboBoxItem IsSelected="True" x:Name="QuarterNote">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="Resources\Images\Quarter_Note.jpg"/>
-                    </StackPanel>
-                </ComboBoxItem>
-                <ComboBoxItem x:Name="WholeNote">
-                    <StackPanel Orientation="Horizontal">
-                        <Image  Source="Resources\Images\Whole_note.jpg" />
-                    </StackPanel>
-                </ComboBoxItem>
-                <ComboBoxItem x:Name="HalfNote">
-                    <StackPanel Orientation="Horizontal">
-                        <Image  Source="Resources/Images/Half_Note.jpg"/>
-                    </StackPanel>
-                </ComboBoxItem>
-                <ComboBoxItem x:Name="EigthNote">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="Resources/Images/Eighth_Note.jpg"/>
-                    </StackPanel>
-                </ComboBoxItem>
-                <ComboBoxItem x:Name="SixteenthNote">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="Resources/Images/Sixteenth_Note.jpg"/>
-                    </StackPanel>
-                </ComboBoxItem>
-                <ComboBoxItem x:Name="ThirtySecondNote">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="Resources/Images/Thirtysecond_Note.jpg"/>
-                    </StackPanel>
-                </ComboBoxItem>
-                <ComboBoxItem x:Name="Dot">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="Resources/Images/Dot.jpg"/>
-                    </StackPanel>
-                </ComboBoxItem>
-            </ComboBox>
+            <Canvas  Width="287" Height="80" Canvas.Top="645" Canvas.Left="506.5">
+                <Rectangle x:Name="QuarterNote" Height="40" Width="40" Stroke="White" StrokeThickness="4" MouseDown="NoteLengthSelection" MouseEnter="NoteMouseEnter" MouseLeave="NoteMouseLeave">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="Resources\Images\Quarter_Note.jpg"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <Rectangle x:Name="WholeNote" Height="40" Width="40" Canvas.Left="41" Stroke="White" StrokeThickness="4" MouseDown="NoteLengthSelection" MouseEnter="NoteMouseEnter" MouseLeave="NoteMouseLeave">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="Resources\Images\Whole_note.jpg"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <Rectangle x:Name="HalfNote" Height="40" Width="40" Canvas.Left="82" Stroke="White" StrokeThickness="4" MouseDown="NoteLengthSelection" MouseEnter="NoteMouseEnter" MouseLeave="NoteMouseLeave">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="Resources/Images/Half_Note.jpg"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <Rectangle x:Name="EigthNote" Height="40" Width="40" Canvas.Left="123" Stroke="White" StrokeThickness="4" MouseDown="NoteLengthSelection" MouseEnter="NoteMouseEnter" MouseLeave="NoteMouseLeave">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="Resources/Images/Eighth_Note.jpg"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <Rectangle x:Name="SixteenthNote" Height="40" Width="40" Canvas.Left="164" Stroke="White" StrokeThickness="4" MouseDown="NoteLengthSelection" MouseEnter="NoteMouseEnter" MouseLeave="NoteMouseLeave">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="Resources/Images/Sixteenth_Note.jpg"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <Rectangle x:Name="ThirtySecondNote" Height="40" Width="40" Canvas.Left="205" Stroke="White" StrokeThickness="4" MouseDown="NoteLengthSelection" MouseEnter="NoteMouseEnter" MouseLeave="NoteMouseLeave">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="Resources/Images/Thirtysecond_Note.jpg"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <Rectangle x:Name="Dot" Height="40" Width="40" Canvas.Left="246" Stroke="White" StrokeThickness="4" MouseDown="NoteLengthSelection" MouseEnter="NoteMouseEnter" MouseLeave="NoteMouseLeave">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="Resources/Images/Dot.jpg"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                
+                
+                <!--Rests-->
+                <Rectangle x:Name="WholeRest" Height="40" Width="40" Canvas.Left="20" Canvas.Top="41" Stroke="White" StrokeThickness="4" MouseDown="NoteRestSelection" MouseEnter="NoteMouseEnter" MouseLeave="NoteMouseLeave">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="Resources/Images/Whole_Rest.jpg"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <Rectangle x:Name="HalfRest" Height="40" Width="40" Canvas.Left="61" Canvas.Top="41" Stroke="White" StrokeThickness="4" MouseDown="NoteRestSelection" MouseEnter="NoteMouseEnter" MouseLeave="NoteMouseLeave">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="/Resources/Images/Half_Rest.jpg"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <Rectangle x:Name="QuarterRest" Height="40" Width="40" Canvas.Left="102" Canvas.Top="41" Stroke="White" StrokeThickness="4" MouseDown="NoteRestSelection" MouseEnter="NoteMouseEnter" MouseLeave="NoteMouseLeave">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="Resources/Images/Quarter_Rest.jpg"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <Rectangle x:Name="EigthRest" Height="40" Width="40" Canvas.Left="143" Canvas.Top="41" Stroke="White" StrokeThickness="4" MouseDown="NoteRestSelection" MouseEnter="NoteMouseEnter" MouseLeave="NoteMouseLeave">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="Resources/Images/Eigth_Rest.jpg"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <Rectangle x:Name="SixteenthRest" Height="40" Width="40" Canvas.Left="184" Canvas.Top="41" Stroke="White" StrokeThickness="4" MouseDown="NoteRestSelection" MouseEnter="NoteMouseEnter" MouseLeave="NoteMouseLeave">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="Resources/Images/Sixteenth_Rest.jpg"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+                <Rectangle x:Name="ThirtySecondRest" Height="40" Width="40" Canvas.Left="225" Canvas.Top="41" Stroke="White" StrokeThickness="4" MouseDown="NoteRestSelection" MouseEnter="NoteMouseEnter" MouseLeave="NoteMouseLeave">
+                    <Rectangle.Fill>
+                        <ImageBrush ImageSource="Resources/Images/Thirty-Second_Rest.jpg"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+
+            </Canvas>
 
             <Button x:Name="Load" Content="Load" Canvas.Left="350" Canvas.Top="240" Width="50" Click="LoadButton_Click" />
             <Button x:Name="Save" Content="Save" Canvas.Left="350" Canvas.Top="280" Width="50" Click="SaveButton_Click" />
@@ -230,8 +276,8 @@
 
             <!--Radio Button, Keyboard Control-->
             <Canvas Width="725" Height="30" Canvas.Left="256" Canvas.Top="430">
-                <RadioButton x:Name="rbNumber"  Content="1-0 Keyboard Binding" Canvas.Left="150" Height="30"  VerticalAlignment="Top" Width="150" Foreground="White" BorderBrush="White" Checked="KeyboardMappingSelection_Changed"/>                
-                <RadioButton x:Name="rbLetter"  Content="Letter (ASDFGHJKL) Keyboard Binding"  Canvas.Left="500" Height="30"  VerticalAlignment="Top" Width="220" Foreground="White" BorderBrush="White" Checked="KeyboardMappingSelection_Changed"/>                
+                <RadioButton x:Name="rbNumber"  Content="1-0 Keyboard Binding" Canvas.Left="150" Height="30"  VerticalAlignment="Top" Width="150" Foreground="White" BorderBrush="White" Checked="KeyboardMappingSelection_Changed"/>
+                <RadioButton x:Name="rbLetter"  Content="Letter (ASDFGHJKL) Keyboard Binding"  Canvas.Left="500" Height="30"  VerticalAlignment="Top" Width="220" Foreground="White" BorderBrush="White" Checked="KeyboardMappingSelection_Changed"/>
                 <RadioButton x:Name="rbNone"  Content="No Keyboard Binding"  Canvas.Left="325" Height="30" IsChecked="True" VerticalAlignment="Top" Width="150" Foreground="White" BorderBrush="White" Checked="KeyboardMappingSelection_Changed"/>
             </Canvas>
         </Canvas>
