@@ -39,7 +39,7 @@ namespace Piano
         private string[] keySigs = { "F", "C", "G", "D", "A", "E", "B", "F#", "C#", "G#", "D#", "A#", "E#", "Bb", "Eb", "Ab", "Db", "Gb" };
         string[] validBeatsPerMeasure = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
         string[] validBeatLengths = { "2", "4", "8", "16" };
-        
+
         // Dictionary to quickly map string inputs to RhythmicDuration objects. NoteLengths["HalfNote"] returns RhythmicDuration.Half.
         Dictionary<string, RhythmicDuration> NoteLengths = new Dictionary<string, RhythmicDuration>()
         {
@@ -68,14 +68,14 @@ namespace Piano
 
             // Set viewer properties
             Viewer.RenderingMode = Manufaktura.Controls.Rendering.ScoreRenderingModes.SinglePage;
-            
+
         }
 
 
 
         #region FileIO_EventHandlers
         /*** The code in this region handles the New, Load, Save, and Print buttons ***/
-        
+
 
         /// <summary>
         /// Called when the New button is clicked.
@@ -86,7 +86,7 @@ namespace Piano
         {
             OpenScoreCreationWindow();  // separate the event handler from the function so the function can be called from elsewhere
         }
-        
+
 
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Piano
             KeySignatureCombo.ItemsSource = keySigs;
 
             // Reset selections to default values of 4/4 time, key of C, no title
-            BeatsMeasureCombo.SelectedIndex = 2; 
+            BeatsMeasureCombo.SelectedIndex = 2;
             BeatLengthCombo.SelectedIndex = 1;
             KeySignatureCombo.SelectedIndex = 1;
             TitleBox.Text = "";
@@ -111,7 +111,7 @@ namespace Piano
             ScoreCreationWindow.IsOpen = true;
         }
 
-        
+
 
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace Piano
 
             // Calculate time signature
             TimeSignature timeSig = new TimeSignature(TimeSignatureType.Numbers, beatsPerMeasure, beatLength);
-            
+
 
             // Build grand staff for now -- later may add options for more or fewer staves
             Staff treble = new Staff();
@@ -150,7 +150,7 @@ namespace Piano
 
             Staff bass = new Staff();
             elements[0] = Clef.Bass;        // Add bass clef, key sig, time sig
-            
+
             for (int i = 0; i < 3; i++)
             {
                 bass.Elements.Add(elements[i]);
@@ -159,9 +159,9 @@ namespace Piano
             Staff[] staves = { treble, bass };
             // Pass the title and the treble and bass staves to createNew
             model.createNew(TitleBox.Text, staves);
-            
+
         }
-        
+
 
 
 
@@ -268,8 +268,7 @@ namespace Piano
         /// <param name="e"></param>
         private void whiteKeyLeave(object sender, MouseEventArgs e) { ((Rectangle)sender).Fill = Brushes.White; }
 
-
-
+        
 
 
         /// <summary>
@@ -314,7 +313,7 @@ namespace Piano
             // Start with a Pich object
             Pitch p;
             if (keyName.Length == 2) // If it's a white key...
-                // Note name is the first letter, octave number is the second letter. Pass both to the Pitch constructor
+                                     // Note name is the first letter, octave number is the second letter. Pass both to the Pitch constructor
             {
                 p = new Pitch(keyName.Substring(0, 1), 0, int.Parse(keyName.Substring(1, 1)));
             }
@@ -348,6 +347,8 @@ namespace Piano
             }
             return new Note(p, noteLength);
         }
+
+
 
         /// <summary>
         /// Adds the note to the staff in the correct location
@@ -414,26 +415,43 @@ namespace Piano
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void NoteLengthSelection_Changed(object sender, SelectionChangedEventArgs e)
+        private void NoteLengthSelection(object sender, MouseButtonEventArgs e)
         {
-            // Assume the new note value is not dotted unless this is a dot
-            dotted = false;
+            string NoteName = (((FrameworkElement)e.Source).Name);
+            ((Rectangle)sender).Stroke = Brushes.Yellow;
 
-            //Grab the value name (default is set to Quarter Note)
-            ComboBoxItem item = (ComboBoxItem)Length.SelectedItem;
-            if (item.Name == "Dot")
+            if (NoteName == "Dot")
             {
                 dotted = true;
             }
             else
             {
-                noteLength = NoteLengths[item.Name];
+                noteLength = NoteLengths[NoteName];
             }
         }
 
+        private void NoteMouseLeave(object sender, MouseEventArgs e)
+        {
+            
+           ((Rectangle)sender).Stroke = Brushes.White;
+            
+        }
 
 
+        private void NoteMouseEnter(object sender, MouseEventArgs e)
+        {
+            
+           ((Rectangle)sender).Stroke = Brushes.Aqua;
+            
+        }
 
+        //rest selection
+        private void NoteRestSelection(object sender, MouseButtonEventArgs e)
+        {
+            string NoteRestName = (((FrameworkElement)e.Source).Name);
+            ((Rectangle)sender).Stroke = Brushes.Yellow;
+
+        }
 
 
 
@@ -469,7 +487,7 @@ namespace Piano
 
         #region ScoreSetup
         /**** Code in this region handles events for controls involved in creating a new score. ****/
-        
+
 
         /// <summary>
         /// Music Sheet Name
@@ -493,7 +511,7 @@ namespace Piano
                 }
             }
 
-           // Console.WriteLine(TitlePurged);
+            // Console.WriteLine(TitlePurged);
             MusicTitle = TitlePurged;
         }
 
@@ -548,7 +566,7 @@ namespace Piano
             keySignature = (string)KeySignatureCombo.SelectedValue;
         }
 
-        
+
 
 
 
@@ -570,7 +588,7 @@ namespace Piano
 
         #region Playback
         /**** Code in this region pertains to plaback controls. ****/
-        
+
 
         /// <summary>
         /// Converts teh score to MIDI and plays the MIDI.
@@ -582,7 +600,7 @@ namespace Piano
             // To be implemented
             TBI("Playback");
         }
-        
+
 
 
 
@@ -596,7 +614,7 @@ namespace Piano
             // To be implemented
             TBI("Playback");
         }
-        
+
 
 
 
