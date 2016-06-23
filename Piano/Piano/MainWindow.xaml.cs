@@ -95,6 +95,9 @@ namespace Piano
         private void OpenScoreCreationWindow()
         {
             //FreshStart = false;
+            MusicSheet.Visibility = Visibility.Hidden;
+            Notes_Rest.Visibility = Visibility.Hidden;
+            Keyboard_Controls.Visibility = Visibility.Hidden;
 
             // Populate the combo boxes
             BeatsMeasureCombo.ItemsSource = validBeatsPerMeasure;
@@ -108,7 +111,7 @@ namespace Piano
             TitleBox.Text = "";
 
             // Open the popup
-            ScoreCreationWindow.IsOpen = true;
+            ScoreCreationWindow.Visibility = Visibility.Visible;
         }
 
 
@@ -124,7 +127,10 @@ namespace Piano
         private void createNew(object sender, RoutedEventArgs e)
         {
             // Close the popup
-            ScoreCreationWindow.IsOpen = false;
+            ScoreCreationWindow.Visibility = Visibility.Hidden;
+            MusicSheet.Visibility = Visibility.Visible;
+            Notes_Rest.Visibility = Visibility.Visible;
+            Keyboard_Controls.Visibility = Visibility.Visible;
 
             // Calculate key signature based on selected value from array
             // If selected index < 13, keyIndex - seleted index -1, else keyIndex = selected index
@@ -174,7 +180,7 @@ namespace Piano
         private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
             // Close the score creation window if open
-            ScoreCreationWindow.IsOpen = false;
+            //ScoreCreationWindow.IsOpen = false;
 
             string fileName;
             // Use an OpenFile dilaog to get the file name
