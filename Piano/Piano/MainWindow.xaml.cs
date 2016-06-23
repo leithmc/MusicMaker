@@ -88,16 +88,21 @@ namespace Piano
         }
 
 
-
         /// <summary>
         /// Opens the score creation window, populates combo boxes, and sets to default values.
         /// </summary>
         private void OpenScoreCreationWindow()
         {
-            //FreshStart = false;
+            //hide parts of piano
             MusicSheet.Visibility = Visibility.Hidden;
             Notes_Rest.Visibility = Visibility.Hidden;
             Keyboard_Controls.Visibility = Visibility.Hidden;
+            Piano_Black_Keys.Visibility = Visibility.Hidden;
+            Piano_KeyBoard_layout.Visibility = Visibility.Hidden;
+            Piano_White_Keys.Visibility = Visibility.Hidden;
+
+            //cover keyboard like real piano
+            KeyCover.Visibility = Visibility.Visible; 
 
             // Populate the combo boxes
             BeatsMeasureCombo.ItemsSource = validBeatsPerMeasure;
@@ -127,7 +132,13 @@ namespace Piano
         private void createNew(object sender, RoutedEventArgs e)
         {
             // Close the popup
+            KeyCover.Visibility = Visibility.Hidden;
             ScoreCreationWindow.Visibility = Visibility.Hidden;
+
+            //make keys, music sheet, notes and keyboard control visible
+            Piano_KeyBoard_layout.Visibility = Visibility.Visible;
+            Piano_White_Keys.Visibility = Visibility.Visible;
+            Piano_Black_Keys.Visibility = Visibility.Visible;            
             MusicSheet.Visibility = Visibility.Visible;
             Notes_Rest.Visibility = Visibility.Visible;
             Keyboard_Controls.Visibility = Visibility.Visible;
@@ -179,8 +190,8 @@ namespace Piano
         /// <param name="e"></param>
         private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
-            // Close the score creation window if open
-            //ScoreCreationWindow.IsOpen = false;
+            // Close the score creation window if open   
+            ScoreCreationWindow.Visibility = Visibility.Hidden;
 
             string fileName;
             // Use an OpenFile dilaog to get the file name
@@ -211,7 +222,20 @@ namespace Piano
             }
 
             // Load the file
-            try { model.loadFile(fileName); }
+            try
+            {
+                model.loadFile(fileName);
+                //hide key cover
+                KeyCover.Visibility = Visibility.Hidden;
+
+                //make music sheet, keys, notes, keyboard settings visible
+                MusicSheet.Visibility = Visibility.Visible;
+                Notes_Rest.Visibility = Visibility.Visible;
+                Keyboard_Controls.Visibility = Visibility.Visible;                
+                Piano_KeyBoard_layout.Visibility = Visibility.Visible;
+                Piano_White_Keys.Visibility = Visibility.Visible;
+                Piano_Black_Keys.Visibility = Visibility.Visible;
+            }
             catch (Exception ex) { MessageBox.Show("Could not parse file: " + ex.Message); }
         }
 
