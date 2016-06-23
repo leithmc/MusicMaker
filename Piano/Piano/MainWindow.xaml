@@ -52,8 +52,7 @@
             <Ellipse Fill="White" Height="315" Canvas.Left="1028" Canvas.Top="-15" Width="187"/>
 
 
-            <!--Piano Keyboard Background-->
-            <Rectangle x:Name="Piano_KeyBoard_layout" Fill="BurlyWood" Width="1100" Height="145" Canvas.Left="90" Canvas.Top="469"/>
+            
 
 
             <!-- Piano Top Trim-->
@@ -82,7 +81,29 @@
             </Path>
 
 
-            <!--Piano Left Side-->
+            
+            <!--Piano Keyboard Background-->
+            <Canvas  x:Name="Piano_KeyBoard_layout" Visibility="Visible">
+                <Rectangle  Fill="BurlyWood" Width="1100" Height="145" Canvas.Left="90" Canvas.Top="469"/>
+            </Canvas>
+
+            
+            <!--KeyBoard Cover-->
+            <Canvas x:Name="KeyCover" Visibility="Hidden">
+                <Rectangle  Stroke="Gray" StrokeThickness="2" Fill="Black" Height="145" Width="1040" Canvas.Top="469" Canvas.Left="120" />
+            <Path Stroke="Goldenrod" StrokeThickness="4">
+                <Path.Data>
+                    <PathGeometry>
+                        <PathFigure StartPoint="635,613">
+                            <ArcSegment Point="675,613" Size="20,8" RotationAngle="0" IsLargeArc="False"/>
+                        </PathFigure>
+                    </PathGeometry>
+                </Path.Data>
+            </Path>
+            </Canvas>
+
+
+                    <!--Piano Left Side-->
             <Rectangle x:Name="PianoLeftTrim" Fill="Black" Width="40" Height="195" Canvas.Left="80" Canvas.Top="420"/>
             <Ellipse Fill="Black" Height="100" Canvas.Left="80" Canvas.Top="540" Width="40"/>
 
@@ -140,7 +161,9 @@
             <!--Bench-->
             <Rectangle x:Name="Bench" Fill="Brown" Height="100" Canvas.Left="500" Canvas.Top="635" Width="300"/>
             <Rectangle Fill="Black" Stroke="Gray" Height="90" Canvas.Left="505" Canvas.Top="640" Width="290"/>
-            <!--End of Piano Design Canvas-->
+
+            
+                <!--End of Piano Design Canvas-->
 
 
 
@@ -183,16 +206,16 @@
 
 
             <!--Note viewer/ Music Sheet-->
-            <Canvas x:Name="MusicSheet" Canvas.Left="229" Canvas.Top="90" Width="670" Height="290" Visibility="Hidden">
-                <WPF:NoteViewer Name="Viewer" Visibility="Visible" ScoreSource="{Binding Data}" Height="290" Width="660" ClipToBounds="True" />
-                <Button  x:Name="Play"  Content=" Play/ Pause" Canvas.Left="268" Canvas.Top="342"  Height="20" Width="75" Click="PlayButton_Click" />
-                <Button x:Name="Stop" Content="Stop" Canvas.Left="378" Canvas.Top="342" Width="50"  Height="20" Click="StopButton_Click" />
-                <Button x:Name="Reset" Content="Reset" Canvas.Left="463" Canvas.Top="342" Width="50" Height="20"  Click="ResetButton_Click" />
-                <Button x:Name="Loop" Canvas.Left="542" Canvas.Top="342" Width="26" Height="20" Background="White" Click="LoopButton_Click">
+            <Canvas x:Name="MusicSheet" Canvas.Left="229" Canvas.Top="90" Width="670" Height="300" Visibility="Hidden">
+                <WPF:NoteViewer Name="Viewer" Visibility="Visible" ScoreSource="{Binding Data}" Height="300" Width="670" ClipToBounds="True" />
+                <Button x:Name="Loop" Canvas.Left="280" Canvas.Top="342" Width="26" Height="20" Background="White" Click="LoopButton_Click">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Width="26">
                         <Image Source="/Resources/Images/Loop.png" Width="25" Height="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </StackPanel>
                 </Button>
+                <Button  x:Name="Play"  Content=" Play/ Pause" Canvas.Left="330" Canvas.Top="342"  Height="20" Width="75" Click="PlayButton_Click" />
+                <Button x:Name="Stop" Content="Stop" Canvas.Left="433" Canvas.Top="342" Width="50"  Height="20" Click="StopButton_Click" />
+                <Button x:Name="Reset" Content="Reset" Canvas.Left="510" Canvas.Top="342" Width="50" Height="20"  Click="ResetButton_Click" />                
             </Canvas>
 
 
@@ -293,7 +316,7 @@
 
         <!--Piano Key Canvases-->
         <!--Piano White Keys -->
-        <Canvas x:Name="Piano_White_Keys" Margin="98,455,26.2,145.4" ClipToBounds="True">
+        <Canvas x:Name="Piano_White_Keys" Margin="98,455,26.2,145.4" ClipToBounds="True" Visibility="Hidden">
 
             <Rectangle x:Name="A1" Fill="White"  Width="16" Height="140" Canvas.Left="0" Canvas.Top="0"  MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="B1" Fill="White"  Width="16" Height="140" Canvas.Left="20" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
@@ -364,7 +387,7 @@
         </Canvas>
 
         <!--Piano Black Keys -->
-        <Canvas x:Name="Piano_Black_Keys" Margin="98,455,26.2,145.4" ClipToBounds="True">
+        <Canvas x:Name="Piano_Black_Keys" Margin="98,455,26.2,145.4" ClipToBounds="True" Visibility="Hidden">
 
             <Rectangle x:Name="BA1" Fill="Black"  Width="12" Height="90" Canvas.Left="12" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="DC1" Fill="Black"  Width="12" Height="90" Canvas.Left="52" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
