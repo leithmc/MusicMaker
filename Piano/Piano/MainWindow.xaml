@@ -14,10 +14,10 @@
             <ColumnDefinition Width="53*"/>
         </Grid.ColumnDefinitions>
         <Grid Height="768" Width="1240" Grid.ColumnSpan="2" Margin="0,0,-6.4,-29.6" />
-       
-        
-        
-<!--Piano Design Canvases-->
+
+
+
+        <!--Piano Design Canvases-->
         <!--Piano Canvas-->
         <Canvas Name="PianoCanvas" Height="768" Width="1240" Margin="-24,-15,17.6,-14.6" ClipToBounds="True" Grid.ColumnSpan="2">
 
@@ -51,7 +51,7 @@
 
             <Ellipse Fill="White" Height="315" Canvas.Left="1028" Canvas.Top="-15" Width="187"/>
 
-            
+
             <!--Piano Keyboard Background-->
             <Rectangle x:Name="Piano_KeyBoard_layout" Fill="BurlyWood" Width="1100" Height="145" Canvas.Left="90" Canvas.Top="469"/>
 
@@ -140,26 +140,26 @@
             <!--Bench-->
             <Rectangle x:Name="Bench" Fill="Brown" Height="100" Canvas.Left="500" Canvas.Top="635" Width="300"/>
             <Rectangle Fill="Black" Stroke="Gray" Height="90" Canvas.Left="505" Canvas.Top="640" Width="290"/>
-<!--End of Piano Design Canvas-->
+            <!--End of Piano Design Canvas-->
 
-      
-            
-<!--Static Placed Buttons-->
+
+
+            <!--Static Placed Buttons-->
             <!--New,Load,Save, Print Buttons-->
-            <Button x:Name="New" Content="New" Canvas.Left="350" Canvas.Top="200" Width="50" Click="NewButton_Click"/>
-            <Button x:Name="Load" Content="Load" Canvas.Left="350" Canvas.Top="240" Width="50" Click="LoadButton_Click" />
-            <Button x:Name="Save" Content="Save" Canvas.Left="350" Canvas.Top="280" Width="50" Click="SaveButton_Click" />
-            <Button x:Name="Print" Content="Print" Canvas.Left="350" Canvas.Top="320" Width="50" Click="PrintButton_Click" />
-<!--End Static Placed Buttons-->
+            <Button x:Name="New" Content="New" Canvas.Left="124" Canvas.Top="200" Width="50" Click="NewButton_Click"/>
+            <Button x:Name="Load" Content="Load" Canvas.Left="124" Canvas.Top="240" Width="50" Click="LoadButton_Click" />
+            <Button x:Name="Save" Content="Save" Canvas.Left="124" Canvas.Top="280" Width="50" Click="SaveButton_Click" />
+            <Button x:Name="Print" Content="Print" Canvas.Left="124" Canvas.Top="320" Width="50" Click="PrintButton_Click" />
+            <!--End Static Placed Buttons-->
 
 
-            
 
-<!--Music sheet and beats Canvases-->
-            
+
+            <!--Music sheet and beats Canvases-->
+
             <!--Blank rectangle for music sheet background-->
-            <Rectangle Fill="AntiqueWhite" Height="340" Canvas.Left="400" Stroke="Black" Canvas.Top="90" Width="500"/>            
-           
+            <Rectangle Fill="AntiqueWhite" Height="382" Canvas.Left="202" Stroke="Black" Canvas.Top="48" Width="718"/>
+
             <!--New Score Window-->
             <Canvas x:Name="ScoreCreationWindow" Visibility="Hidden" Height="339" Width="499" Background="AntiqueWhite" Canvas.Top="90" Canvas.Left="400">
 
@@ -183,19 +183,19 @@
 
 
             <!--Note viewer/ Music Sheet-->
-            <Canvas x:Name="MusicSheet" Canvas.Left="400" Canvas.Top="90" Width="500" Height="290" Visibility="Hidden">
-                <WPF:NoteViewer Name="Viewer" Visibility="Visible" ScoreSource="{Binding Data}" Height="290" Width="500" />
-                <Button  x:Name="Play"  Content=" Play/ Pause" Canvas.Left="540" Canvas.Top="409" Width="75" Click="PlayButton_Click" />
-                <Button x:Name="Stop" Content="Stop" Canvas.Left="650" Canvas.Top="409" Width="50" Click="StopButton_Click" />
-                <Button x:Name="Reset" Content="Reset" Canvas.Left="735" Canvas.Top="409" Width="50" Click="ResetButton_Click" />
-                <Button x:Name="Loop" Canvas.Left="480" Canvas.Top="409" Width="26" Height="20" Background="White" Click="LoopButton_Click">
+            <Canvas x:Name="MusicSheet" Canvas.Left="229" Canvas.Top="90" Width="670" Height="290" Visibility="Hidden">
+                <WPF:NoteViewer Name="Viewer" Visibility="Visible" ScoreSource="{Binding Data}" Height="290" Width="660" ClipToBounds="True" />
+                <Button  x:Name="Play"  Content=" Play/ Pause" Canvas.Left="268" Canvas.Top="342"  Height="20" Width="75" Click="PlayButton_Click" />
+                <Button x:Name="Stop" Content="Stop" Canvas.Left="378" Canvas.Top="342" Width="50"  Height="20" Click="StopButton_Click" />
+                <Button x:Name="Reset" Content="Reset" Canvas.Left="463" Canvas.Top="342" Width="50" Height="20"  Click="ResetButton_Click" />
+                <Button x:Name="Loop" Canvas.Left="542" Canvas.Top="342" Width="26" Height="20" Background="White" Click="LoopButton_Click">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Width="26">
                         <Image Source="/Resources/Images/Loop.png" Width="25" Height="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </StackPanel>
                 </Button>
             </Canvas>
 
-            
+
             <!-- Beat Length-->
             <Canvas x:Name="Notes_Rest" Visibility="Hidden" Width="287" Height="80" Canvas.Top="645" Canvas.Left="506.5">
                 <Rectangle x:Name="QuarterNote" Height="40" Width="40" Stroke="White" StrokeThickness="4" MouseDown="NoteLengthSelection" MouseEnter="NoteMouseEnter" MouseLeave="NoteMouseLeave">
@@ -277,21 +277,21 @@
                     </Rectangle.Fill>
                 </Rectangle>
             </Canvas>
-            
+
 
             <!--Radio Button, Keyboard Control-->
-            <Canvas x:Name="Keyboard_Controls" Visibility="Hidden" Width="725" Height="30" Canvas.Left="256" Canvas.Top="430">
-                <RadioButton x:Name="rbNumber"  Content="1-0 Keyboard Binding" Canvas.Left="150" Height="30"  VerticalAlignment="Top" Width="150" Foreground="White" BorderBrush="White" Checked="KeyboardMappingSelection_Changed"/>
-                <RadioButton x:Name="rbLetter"  Content="Letter (ASDFGHJKL) Keyboard Binding"  Canvas.Left="500" Height="30"  VerticalAlignment="Top" Width="220" Foreground="White" BorderBrush="White" Checked="KeyboardMappingSelection_Changed"/>
-                <RadioButton x:Name="rbNone"  Content="No Keyboard Binding"  Canvas.Left="325" Height="30" IsChecked="True" VerticalAlignment="Top" Width="150" Foreground="White" BorderBrush="White" Checked="KeyboardMappingSelection_Changed"/>
+            <Canvas x:Name="Keyboard_Controls" Visibility="Hidden" Width="220" Height="90" Canvas.Left="938" Canvas.Top="333">
+                <RadioButton x:Name="rbNumber"  Content="1-0 Keyboard Binding" Height="30"  VerticalAlignment="Top" Width="150" Foreground="White" BorderBrush="White" Checked="KeyboardMappingSelection_Changed" Canvas.Top="30"/>
+                <RadioButton x:Name="rbLetter"  Content="Letter (ASDFGHJKL) Keyboard Binding" Height="30"  VerticalAlignment="Top" Width="220" Foreground="White" BorderBrush="White" Checked="KeyboardMappingSelection_Changed" Canvas.Top="60"/>
+                <RadioButton x:Name="rbNone"  Content="No Keyboard Binding" Height="30" IsChecked="True" VerticalAlignment="Top" Width="150" Foreground="White" BorderBrush="White" Checked="KeyboardMappingSelection_Changed" Canvas.Top="0"/>
             </Canvas>
         </Canvas>
 
-<!--End Music sheet and beats Canvases-->
+        <!--End Music sheet and beats Canvases-->
 
 
-        
-<!--Piano Key Canvases-->      
+
+        <!--Piano Key Canvases-->
         <!--Piano White Keys -->
         <Canvas x:Name="Piano_White_Keys" Margin="98,455,26.2,145.4" ClipToBounds="True">
 
@@ -418,7 +418,7 @@
             <Rectangle x:Name="BA8" Fill="Black"  Width="12" Height="90" Canvas.Left="992" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
 
         </Canvas>
-<!--End Piano Key Canvases-->
+        <!--End Piano Key Canvases-->
 
     </Grid>
 </Window>

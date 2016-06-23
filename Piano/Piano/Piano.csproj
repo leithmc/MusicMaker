@@ -113,6 +113,12 @@
   <ItemGroup>
     <Content Include="Manufaktura.Controls.Desktop.dll" />
     <Content Include="Manufaktura.Controls.Desktop.pdb" />
+    <Resource Include="Resources\Images\Whole_Rest.jpg" />
+    <Resource Include="Resources\Images\Thirty-Second_Rest.jpg" />
+    <Resource Include="Resources\Images\Sixteenth_Rest.jpg" />
+    <Resource Include="Resources\Images\Quarter_Rest.jpg" />
+    <Resource Include="Resources\Images\Half_Rest.jpg" />
+    <Resource Include="Resources\Images\Eigth_Rest.jpg" />
     <Resource Include="Resources\Images\Dot.jpg" />
     <Resource Include="Resources\Images\Eighth_Note.jpg" />
     <Resource Include="Resources\Images\Half_Note.jpg" />
