@@ -2,6 +2,7 @@ using Manufaktura.Controls.Model;
 using Manufaktura.Music.Model;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -114,6 +115,7 @@ namespace Piano
             BeatLengthCombo.SelectedIndex = 1;
             KeySignatureCombo.SelectedIndex = 1;
             TitleBox.Text = "";
+            MusicNameLabel.Content = "";
 
             // Open the popup
             ScoreCreationWindow.Visibility = Visibility.Visible;
@@ -146,6 +148,7 @@ namespace Piano
             // Calculate key signature based on selected value from array
             // If selected index < 13, keyIndex - seleted index -1, else keyIndex = selected index
             Console.WriteLine(MusicTitle);
+            MusicNameLabel.Content = MusicTitle;
 
             // Calculate key signature
             int keyIndex = (KeySignatureCombo.SelectedIndex < 13) ? KeySignatureCombo.SelectedIndex - 1 : 12 - KeySignatureCombo.SelectedIndex;
@@ -190,6 +193,8 @@ namespace Piano
         /// <param name="e"></param>
         private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
+            MusicNameLabel.Content = "";
+
             // Close the score creation window if open   
             ScoreCreationWindow.Visibility = Visibility.Hidden;
 
@@ -205,7 +210,6 @@ namespace Piano
             catch (Exception ex)
             {
                 MessageBox.Show("Could not open file dialog. " + ex.Message);
-                OpenScoreCreationWindow();
                 return;
             }
 
@@ -217,7 +221,6 @@ namespace Piano
             else
             {
                 MessageBox.Show("File could not be opened.");
-                OpenScoreCreationWindow();
                 return;
             }
 
@@ -267,8 +270,46 @@ namespace Piano
             // One way to do this would be to generate a xaml popup like the one used for creating a new score,
             // but sized like a piece of paper, put a NoteViewer object in at the right size to match typical page margins,
             // load the score into the new noteViewer, and then print it from the xaml. http://www.c-sharpcorner.com/uploadfile/mahesh/printing-in-wpf/
-            TBI("Printing");
+
+            
+
+            PrintDialog dialog = new PrintDialog();
+
+            if (dialog.ShowDialog() == true)
+            {
+                Canvas music = new Canvas();
+                music.Visibility = Visibility.Hidden;
+                music = MusicSheet;
+                music.Height = 300;
+                music.Width = 670;                
+                music.Margin = new Thickness(-150, 50, 50, 75);
+
+                Play.Visibility = Visibility.Hidden;
+                Stop.Visibility = Visibility.Hidden;
+                Loop.Visibility = Visibility.Hidden;
+                Reset.Visibility = Visibility.Hidden;
+
+                dialog.PrintVisual(music, "");
+
+                music.Visibility = Visibility.Hidden;
+            }
+
+            Play.Visibility = Visibility.Visible;
+            Stop.Visibility = Visibility.Visible;
+            Loop.Visibility = Visibility.Visible;
+            Reset.Visibility = Visibility.Visible;
+            MusicSheet.Margin = new Thickness(0, 0, 0, 0);
+            MusicSheet.Visibility = Visibility.Visible;
+
+            // Viewer.Margin = new Thickness(0, 0, 0, 0);
+            // Viewer.Height = 300;
+            // Viewer.Width = 670;
         }
+
+       
+
+
+
         #endregion
 
         #region PianoKeyHandlers
