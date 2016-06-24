@@ -2,6 +2,7 @@ using Manufaktura.Controls.Model;
 using Manufaktura.Music.Model;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -34,6 +35,7 @@ namespace Piano
         private RhythmicDuration noteLength = RhythmicDuration.Quarter;
         private bool dotted = false;
         private string keyboard_Input = "None";
+        private bool Loaded = false;
         // private Boolean FreshStart = true;
 
         private string[] keySigs = { "F", "C", "G", "D", "A", "E", "B", "F#", "C#", "G#", "D#", "A#", "E#", "Bb", "Eb", "Ab", "Db", "Gb" };
@@ -84,6 +86,7 @@ namespace Piano
         /// <param name="e"></param>
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
+            Loaded = false;
             OpenScoreCreationWindow();  // separate the event handler from the function so the function can be called from elsewhere
         }
 
@@ -93,30 +96,39 @@ namespace Piano
         /// </summary>
         private void OpenScoreCreationWindow()
         {
-            //hide parts of piano
-            MusicSheet.Visibility = Visibility.Hidden;
-            Notes_Rest.Visibility = Visibility.Hidden;
-            Keyboard_Controls.Visibility = Visibility.Hidden;
-            Piano_Black_Keys.Visibility = Visibility.Hidden;
-            Piano_KeyBoard_layout.Visibility = Visibility.Hidden;
-            Piano_White_Keys.Visibility = Visibility.Hidden;
+            if (Loaded == false)
+            {
+                //hide parts of piano
+                Print.Visibility = Visibility.Hidden;
+                MusicSheet.Visibility = Visibility.Hidden;
+                Notes_Rest.Visibility = Visibility.Hidden;
+                Keyboard_Controls.Visibility = Visibility.Hidden;
+                Piano_Black_Keys.Visibility = Visibility.Hidden;
+                Piano_KeyBoard_layout.Visibility = Visibility.Hidden;
+                Piano_White_Keys.Visibility = Visibility.Hidden;
 
-            //cover keyboard like real piano
-            KeyCover.Visibility = Visibility.Visible; 
+                //cover keyboard like real piano
+                KeyCover.Visibility = Visibility.Visible;
 
-            // Populate the combo boxes
-            BeatsMeasureCombo.ItemsSource = validBeatsPerMeasure;
-            BeatLengthCombo.ItemsSource = validBeatLengths;
-            KeySignatureCombo.ItemsSource = keySigs;
+                // Populate the combo boxes
+                BeatsMeasureCombo.ItemsSource = validBeatsPerMeasure;
+                BeatLengthCombo.ItemsSource = validBeatLengths;
+                KeySignatureCombo.ItemsSource = keySigs;
 
-            // Reset selections to default values of 4/4 time, key of C, no title
-            BeatsMeasureCombo.SelectedIndex = 2;
-            BeatLengthCombo.SelectedIndex = 1;
-            KeySignatureCombo.SelectedIndex = 1;
-            TitleBox.Text = "";
+                // Reset selections to default values of 4/4 time, key of C, no title
+                BeatsMeasureCombo.SelectedIndex = 2;
+                BeatLengthCombo.SelectedIndex = 1;
+                KeySignatureCombo.SelectedIndex = 1;
+                TitleBox.Text = "";
+                MusicNameLabel.Content = "";
 
-            // Open the popup
-            ScoreCreationWindow.Visibility = Visibility.Visible;
+                // Open the popup
+                ScoreCreationWindow.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                return;
+            }
         }
 
 
@@ -132,10 +144,12 @@ namespace Piano
         private void createNew(object sender, RoutedEventArgs e)
         {
             // Close the popup
+            Loaded = false;
             KeyCover.Visibility = Visibility.Hidden;
             ScoreCreationWindow.Visibility = Visibility.Hidden;
 
             //make keys, music sheet, notes and keyboard control visible
+            Print.Visibility = Visibility.Visible;
             Piano_KeyBoard_layout.Visibility = Visibility.Visible;
             Piano_White_Keys.Visibility = Visibility.Visible;
             Piano_Black_Keys.Visibility = Visibility.Visible;            
@@ -146,6 +160,7 @@ namespace Piano
             // Calculate key signature based on selected value from array
             // If selected index < 13, keyIndex - seleted index -1, else keyIndex = selected index
             Console.WriteLine(MusicTitle);
+            MusicNameLabel.Content = MusicTitle;
 
             // Calculate key signature
             int keyIndex = (KeySignatureCombo.SelectedIndex < 13) ? KeySignatureCombo.SelectedIndex - 1 : 12 - KeySignatureCombo.SelectedIndex;
@@ -190,6 +205,8 @@ namespace Piano
         /// <param name="e"></param>
         private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
+            MusicNameLabel.Content = "";
+
             // Close the score creation window if open   
             ScoreCreationWindow.Visibility = Visibility.Hidden;
 
@@ -225,10 +242,14 @@ namespace Piano
             try
             {
                 model.loadFile(fileName);
+                Loaded = true;
+
+
                 //hide key cover
                 KeyCover.Visibility = Visibility.Hidden;
 
                 //make music sheet, keys, notes, keyboard settings visible
+                Print.Visibility = Visibility.Visible;
                 MusicSheet.Visibility = Visibility.Visible;
                 Notes_Rest.Visibility = Visibility.Visible;
                 Keyboard_Controls.Visibility = Visibility.Visible;                
@@ -236,7 +257,12 @@ namespace Piano
                 Piano_White_Keys.Visibility = Visibility.Visible;
                 Piano_Black_Keys.Visibility = Visibility.Visible;
             }
-            catch (Exception ex) { MessageBox.Show("Could not parse file: " + ex.Message); }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not parse file: " + ex.Message);
+                OpenScoreCreationWindow();
+            }
         }
 
 
@@ -267,8 +293,42 @@ namespace Piano
             // One way to do this would be to generate a xaml popup like the one used for creating a new score,
             // but sized like a piece of paper, put a NoteViewer object in at the right size to match typical page margins,
             // load the score into the new noteViewer, and then print it from the xaml. http://www.c-sharpcorner.com/uploadfile/mahesh/printing-in-wpf/
-            TBI("Printing");
+
+            
+
+            PrintDialog dialog = new PrintDialog();
+
+            if (dialog.ShowDialog() == true)
+            {
+                Canvas music = new Canvas();
+                music.Visibility = Visibility.Hidden;
+                music = MusicSheet;
+                music.Height = 300;
+                music.Width = 670;                
+                music.Margin = new Thickness(-150, 50, 50, 75);
+
+                Play.Visibility = Visibility.Hidden;
+                Stop.Visibility = Visibility.Hidden;
+                Loop.Visibility = Visibility.Hidden;
+                Reset.Visibility = Visibility.Hidden;
+
+                dialog.PrintVisual(music, "Print Music Sheet");
+
+                music.Visibility = Visibility.Hidden;
+            }
+
+            Play.Visibility = Visibility.Visible;
+            Stop.Visibility = Visibility.Visible;
+            Loop.Visibility = Visibility.Visible;
+            Reset.Visibility = Visibility.Visible;
+            MusicSheet.Margin = new Thickness(0, 0, 0, 0);
+            MusicSheet.Visibility = Visibility.Visible;
         }
+
+       
+
+
+
         #endregion
 
         #region PianoKeyHandlers
@@ -309,10 +369,7 @@ namespace Piano
         /// <param name="e"></param>
         private void blackKeyLeave(object sender, MouseEventArgs e) { ((Rectangle)sender).Fill = Brushes.Black; }
 
-
-
-
-
+        
 
 
         /// <summary>
@@ -331,6 +388,7 @@ namespace Piano
             // Add note to staff
             addNoteToStaff(note);
         }
+
 
         /// <summary>
         /// Parses the name of the piano key to determine pitch and creates a new Noe object with
@@ -474,6 +532,7 @@ namespace Piano
            ((Rectangle)sender).Stroke = Brushes.Aqua;
             
         }
+
 
         //rest selection
         private void NoteRestSelection(object sender, MouseButtonEventArgs e)
