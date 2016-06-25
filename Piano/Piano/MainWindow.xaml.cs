@@ -29,8 +29,11 @@ namespace Piano
         private bool dotted = false;
         private string keyboard_Input = "None";
         private bool Loaded = false;
+        private String Selected = "QuarterNote";
+        private Object SelectedNote;
         // private Boolean FreshStart = true;
 
+            
         private string[] keySigs = { "F", "C", "G", "D", "A", "E", "B", "F#", "C#", "G#", "D#", "A#", "E#", "Bb", "Eb", "Ab", "Db", "Gb" };
         string[] validBeatsPerMeasure = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
         string[] validBeatLengths = { "2", "4", "8", "16" };
@@ -53,13 +56,15 @@ namespace Piano
             // Initialize the base window
             InitializeComponent();
 
+            SelectedNote = QuarterNote;            
+
             // Initialize the view model
             model = new ScoreVM();
             DataContext = model;
             model.loadStartData();
 
             Viewer.MouseUp += Viewer_MouseUp;
-            
+
 
             //looks more professional starting with a new slate.
             OpenScoreCreationWindow();
@@ -403,11 +408,11 @@ namespace Piano
                 p = new Pitch(keyName.Substring(0, 1), 0, int.Parse(keyName.Substring(1, 1)));
 
             else // Black key. AB3 means A# or Bb in third octave.
-            {   
+            {
                 // Get the current key
                 //var key = (Manufaktura.Controls.Model.Key) model.Data.FirstStaff.Elements.First(k => k.GetType() == typeof(Manufaktura.Controls.Model.Key));
                 // TODO: MAKE SURE KEYSIG IS BEING SET IN BOTH THE LOAD HANDLER AND IN THE COMBOBOX
-  
+
                 string letter;
                 int mod;    // sharp or flat
                 if (model.KeySig.Fifths > 0) // if sharp key, use the first letter and add a sharp
@@ -487,50 +492,82 @@ namespace Piano
         /**** The code in this region handles events from duration, key signature, time signature, and 
               any other controls that change the score except for the piano keys. ****/
 
-
-
+            
         /// <summary>
         /// Note length Combo Box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void NoteLengthSelection(object sender, MouseButtonEventArgs e)
-        {
+        {            
             string NoteName = (((FrameworkElement)e.Source).Name);
+
+            //Change previos selected note outline to white
+            if (SelectedNote != sender )
+            {
+                ((Rectangle)SelectedNote).Stroke = Brushes.White;
+            }
+
+            SelectedNote = sender;
+
+            Selected = (((FrameworkElement)e.Source).Name);
+
             ((Rectangle)sender).Stroke = Brushes.Yellow;
 
             if (NoteName == "Dot")
-            {
-                dotted = true;
-                noteLength.Dots++;
-            }
+                {
+                    dotted = true;
+                    noteLength.Dots++;
+                }
             else
-            {
-                noteLength = NoteLengths[NoteName];
-                noteLength.Dots = 0;
-            }
+                {
+                    noteLength = NoteLengths[NoteName];
+                    noteLength.Dots = 0;
+                }
         }
 
+
+
+        //Note mouse leave, If note is selected return
         private void NoteMouseLeave(object sender, MouseEventArgs e)
         {
+            String Over = (((FrameworkElement)e.Source).Name);
+            if (Over == Selected)
+            {
+                return;
+            }
 
-            ((Rectangle)sender).Stroke = Brushes.White;
-
+            else
+            {
+                ((Rectangle)sender).Stroke = Brushes.White;
+            }
         }
+        
 
 
+        //Note mouse over, If note is selected return
         private void NoteMouseEnter(object sender, MouseEventArgs e)
         {
+            String Over = (((FrameworkElement)e.Source).Name);
+            if (Over == Selected)
+            {
+                return;
+            }
 
-            ((Rectangle)sender).Stroke = Brushes.Aqua;
+            else
+            {
+                ((Rectangle)sender).Stroke = Brushes.Aqua;
+            }
 
         }
+        
 
 
         //rest selection
         private void NoteRestSelection(object sender, MouseButtonEventArgs e)
         {
             string NoteRestName = (((FrameworkElement)e.Source).Name);
+
             ((Rectangle)sender).Stroke = Brushes.Yellow;
 
             // Update note value to match the rest
@@ -563,7 +600,7 @@ namespace Piano
             addNoteOrRestToStaff(new Rest(noteLength));
         }
 
-
+        
 
         /// <summary>
         /// Radio Buttons... tested Default is none
@@ -649,6 +686,8 @@ namespace Piano
             string value = (string)BeatLengthCombo.SelectedValue;
             beatLength = int.Parse(value);
         }
+
+
 
         /// <summary>
         /// Called when the user makes a selection from the Key Signature combobox.
