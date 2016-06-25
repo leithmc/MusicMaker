@@ -17,12 +17,19 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Windows;
 using System.Runtime.Serialization.Formatters.Binary;
+using Manufaktura.Controls.Audio;
+using Manufaktura.Controls.Desktop.Audio;
 
 namespace Piano
 {
     public class ScoreVM : ViewModel
     {
         private string fileName = "";   // Name of the file to load from or save to.
+        private ScorePlayer player;
+        public ScorePlayer Player => player;
+
+        public PlayCommand PlayCommand { get; }
+        public StopCommand StopCommand { get; }
 
         private Score data;
         /// <summary>
@@ -31,7 +38,17 @@ namespace Piano
         public Score Data
         {
             get { return data; }
-            set { data = value; OnPropertyChanged(() => Data); }
+            set
+            {
+                data = value;
+                OnPropertyChanged(() => Data);
+                if (player != null) ((IDisposable)player).Dispose(); //This is needed in Midi player. Otherwise it can throw a "Device not ready" exception.
+                player = new MidiTaskScorePlayer(data);
+                OnPropertyChanged();
+                OnPropertyChanged(() => Player);
+                PlayCommand?.FireCanExecuteChanged();
+                StopCommand?.FireCanExecuteChanged();
+            }
         }
 
         private Key keySig;
@@ -320,7 +337,8 @@ namespace Piano
             }
 
             //**********THIS STILL NEEDS SOME WORK******
-            //    Insertion is putting 
+            //    Insertion is putting barlines in funny places
+            // I think the recursion is putting barlines progressively closer together
 
             // While the current measure has too many beats, push the extra into the next measure
             while (getDurations(m).Sum() > ts.WholeNoteCapacity)
@@ -480,5 +498,67 @@ namespace Piano
             return d;
         }
 
+    }
+
+    public abstract class PlayerCommand : System.Windows.Input.ICommand
+    {
+
+        public event EventHandler CanExecuteChanged;
+
+
+        protected ScoreVM viewModel;
+
+        protected PlayerCommand(ScoreVM viewModel)
+        {
+            this.viewModel = viewModel;
+        }
+
+        public void FireCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, new EventArgs());
+        }
+
+        public abstract bool CanExecute(object parameter);
+
+        public abstract void Execute(object parameter);
+
+    }
+
+    public class PlayCommand : PlayerCommand
+    {
+
+        public PlayCommand(ScoreVM viewModel) : base(viewModel)
+        {
+        }
+
+
+
+        public override bool CanExecute(object parameter)
+        {
+            return viewModel.Player != null;
+        }
+
+        public override void Execute(object parameter)
+        {
+            viewModel.Player?.Play();
+        }
+
+    }
+
+    public class StopCommand : PlayerCommand
+    {
+        public StopCommand(ScoreVM viewModel) : base(viewModel)
+        {
+        }
+
+        public override bool CanExecute(object parameter)
+        {
+            return viewModel.Player != null;
+        }
+
+        public override void Execute(object parameter)
+        {
+            viewModel.Player?.Stop();
+        }
     }
 }
