@@ -207,7 +207,7 @@
 
             <!--Note viewer/ Music Sheet-->
             <Canvas x:Name="MusicSheet" Canvas.Left="229" Canvas.Top="90" Width="670" Height="300" Visibility="Visible" Margin="0,0,0,0">
-                <WPF:NoteViewer Name="Viewer" Visibility="Visible" ScoreSource="{Binding Data}" Height="300" Width="670" ClipToBounds="True">
+                <WPF:NoteViewer Name="Viewer" RenderingMode="SinglePage" Visibility="Visible" ScoreSource="{Binding Data}" Height="300" Width="670" ClipToBounds="True">
                 </WPF:NoteViewer>
                 <!-- bind to Label-->
                 <Label x:Name="MusicNameLabel" Content=""  Width="670" HorizontalContentAlignment="Center" Canvas.Top="-40"/>

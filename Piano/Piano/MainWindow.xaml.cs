@@ -2,7 +2,6 @@ using Manufaktura.Controls.Model;
 using Manufaktura.Music.Model;
 using System;
 using System.Collections.Generic;
-using System.Drawing.Printing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -62,6 +61,7 @@ namespace Piano
 
             // Initialize the view model
             model = new ScoreVM();
+            //Viewer.RenderingMode = Manufaktura.Controls.Rendering.ScoreRenderingModes.
             DataContext = model;
             model.loadStartData();
 
@@ -69,7 +69,7 @@ namespace Piano
             OpenScoreCreationWindow();
 
             // Set viewer properties
-            Viewer.RenderingMode = Manufaktura.Controls.Rendering.ScoreRenderingModes.SinglePage;
+            //Viewer.RenderingMode = Manufaktura.Controls.Rendering.ScoreRenderingModes.SinglePage;
 
         }
 
