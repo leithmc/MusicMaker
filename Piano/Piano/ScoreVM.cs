@@ -319,6 +319,9 @@ namespace Piano
                 nextMeasureChanged = true;
             }
 
+            //**********THIS STILL NEEDS SOME WORK******
+            //    Insertion is putting 
+
             // While the current measure has too many beats, push the extra into the next measure
             while (getDurations(m).Sum() > ts.WholeNoteCapacity)
             {
