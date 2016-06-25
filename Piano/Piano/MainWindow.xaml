@@ -290,7 +290,7 @@
                     </Rectangle.Fill>
                 </Rectangle>
 
-                <Rectangle x:Name="EigthRest" Height="40" Width="40" Canvas.Left="143" Canvas.Top="41" Stroke="White" StrokeThickness="4" MouseDown="NoteRestSelection" MouseEnter="NoteMouseEnter" MouseLeave="NoteMouseLeave">
+                <Rectangle x:Name="EighthRest" Height="40" Width="40" Canvas.Left="143" Canvas.Top="41" Stroke="White" StrokeThickness="4" MouseDown="NoteRestSelection" MouseEnter="NoteMouseEnter" MouseLeave="NoteMouseLeave">
                     <Rectangle.Fill>
                         <ImageBrush ImageSource="Resources/Images/Eigth_Rest.jpg"/>
                     </Rectangle.Fill>
@@ -326,8 +326,8 @@
         <!--Piano White Keys -->
         <Canvas x:Name="Piano_White_Keys" Margin="98,455,26.2,145.4" ClipToBounds="True" Visibility="Hidden">
 
-            <Rectangle x:Name="A1" Fill="White"  Width="16" Height="140" Canvas.Left="0" Canvas.Top="0"  MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
-            <Rectangle x:Name="B1" Fill="White"  Width="16" Height="140" Canvas.Left="20" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="A0" Fill="White"  Width="16" Height="140" Canvas.Left="0" Canvas.Top="0"  MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="B0" Fill="White"  Width="16" Height="140" Canvas.Left="20" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="C1" Fill="White"  Width="16" Height="140" Canvas.Left="40" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="D1" Fill="White"  Width="16" Height="140" Canvas.Left="60" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="E1" Fill="White"  Width="16" Height="140" Canvas.Left="80" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
@@ -335,8 +335,8 @@
             <Rectangle x:Name="G1" Fill="White"  Width="16" Height="140" Canvas.Left="120" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
 
 
-            <Rectangle x:Name="A2" Fill="White"  Width="16" Height="140" Canvas.Left="140" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
-            <Rectangle x:Name="B2" Fill="White"  Width="16" Height="140" Canvas.Left="160" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="A1" Fill="White"  Width="16" Height="140" Canvas.Left="140" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="B1" Fill="White"  Width="16" Height="140" Canvas.Left="160" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="C2" Fill="White"  Width="16" Height="140" Canvas.Left="180" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="D2" Fill="White"  Width="16" Height="140" Canvas.Left="200" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="E2" Fill="White"  Width="16" Height="140" Canvas.Left="220" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
@@ -344,8 +344,8 @@
             <Rectangle x:Name="G2" Fill="White"  Width="16" Height="140" Canvas.Left="260" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
 
 
-            <Rectangle x:Name="A3" Fill="White"  Width="16" Height="140" Canvas.Left="280" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
-            <Rectangle x:Name="B3" Fill="White"  Width="16" Height="140" Canvas.Left="300" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="A2" Fill="White"  Width="16" Height="140" Canvas.Left="280" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="B2" Fill="White"  Width="16" Height="140" Canvas.Left="300" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="C3" Fill="White"  Width="16" Height="140" Canvas.Left="320" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="D3" Fill="White"  Width="16" Height="140" Canvas.Left="340" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="E3" Fill="White"  Width="16" Height="140" Canvas.Left="360" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
@@ -353,8 +353,8 @@
             <Rectangle x:Name="G3" Fill="White"  Width="16" Height="140" Canvas.Left="400" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
 
 
-            <Rectangle x:Name="A4" Fill="White"  Width="16" Height="140" Canvas.Left="420" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
-            <Rectangle x:Name="B4" Fill="White"  Width="16" Height="140" Canvas.Left="440" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="A3" Fill="White"  Width="16" Height="140" Canvas.Left="420" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="B3" Fill="White"  Width="16" Height="140" Canvas.Left="440" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="C4" Fill="White"  Width="16" Height="140" Canvas.Left="460" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="D4" Fill="White"  Width="16" Height="140" Canvas.Left="480" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="E4" Fill="White"  Width="16" Height="140" Canvas.Left="500" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
@@ -362,8 +362,8 @@
             <Rectangle x:Name="G4" Fill="White"  Width="16" Height="140" Canvas.Left="540" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
 
 
-            <Rectangle x:Name="A5" Fill="White"  Width="16" Height="140" Canvas.Left="560" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
-            <Rectangle x:Name="B5" Fill="White"  Width="16" Height="140" Canvas.Left="580" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="A4" Fill="White"  Width="16" Height="140" Canvas.Left="560" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="B4" Fill="White"  Width="16" Height="140" Canvas.Left="580" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="C5" Fill="White"  Width="16" Height="140" Canvas.Left="600" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="D5" Fill="White"  Width="16" Height="140" Canvas.Left="620" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="E5" Fill="White"  Width="16" Height="140" Canvas.Left="640" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
@@ -371,8 +371,8 @@
             <Rectangle x:Name="G5" Fill="White"  Width="16" Height="140" Canvas.Left="680" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
 
 
-            <Rectangle x:Name="A6" Fill="White"  Width="16" Height="140" Canvas.Left="700" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
-            <Rectangle x:Name="B6" Fill="White"  Width="16" Height="140" Canvas.Left="720" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="A5" Fill="White"  Width="16" Height="140" Canvas.Left="700" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="B5" Fill="White"  Width="16" Height="140" Canvas.Left="720" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="C6" Fill="White"  Width="16" Height="140" Canvas.Left="740" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="D6" Fill="White"  Width="16" Height="140" Canvas.Left="760" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="E6" Fill="White"  Width="16" Height="140" Canvas.Left="780" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
@@ -380,8 +380,8 @@
             <Rectangle x:Name="G6" Fill="White"  Width="16" Height="140" Canvas.Left="820" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
 
 
-            <Rectangle x:Name="A7" Fill="White"  Width="16" Height="140" Canvas.Left="840" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
-            <Rectangle x:Name="B7" Fill="White"  Width="16" Height="140" Canvas.Left="860" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="A6" Fill="White"  Width="16" Height="140" Canvas.Left="840" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="B6" Fill="White"  Width="16" Height="140" Canvas.Left="860" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="C7" Fill="White"  Width="16" Height="140" Canvas.Left="880" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="D7" Fill="White"  Width="16" Height="140" Canvas.Left="900" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="E7" Fill="White"  Width="16" Height="140" Canvas.Left="920" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
@@ -389,64 +389,64 @@
             <Rectangle x:Name="G7" Fill="White"  Width="16" Height="140" Canvas.Left="960" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
 
 
-            <Rectangle x:Name="A8" Fill="White"  Width="16" Height="140" Canvas.Left="980" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
-            <Rectangle x:Name="B8" Fill="White"  Width="16" Height="140" Canvas.Left="1000" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="A7" Fill="White"  Width="16" Height="140" Canvas.Left="980" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="B7" Fill="White"  Width="16" Height="140" Canvas.Left="1000" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="C8" Fill="White"  Width="16" Height="140" Canvas.Left="1020" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="whiteKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
         </Canvas>
 
         <!--Piano Black Keys -->
         <Canvas x:Name="Piano_Black_Keys" Margin="98,455,26.2,145.4" ClipToBounds="True" Visibility="Hidden">
 
-            <Rectangle x:Name="BA1" Fill="Black"  Width="12" Height="90" Canvas.Left="12" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="BA0" Fill="Black"  Width="12" Height="90" Canvas.Left="12" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="DC1" Fill="Black"  Width="12" Height="90" Canvas.Left="52" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="ED1" Fill="Black"  Width="12" Height="90" Canvas.Left="72" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="GF1" Fill="Black"  Width="12" Height="90" Canvas.Left="112" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="AG1" Fill="Black"  Width="12" Height="90" Canvas.Left="132" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
 
 
-            <Rectangle x:Name="BA2" Fill="Black"  Width="12" Height="90" Canvas.Left="152" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="BA1" Fill="Black"  Width="12" Height="90" Canvas.Left="152" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="DC2" Fill="Black"  Width="12" Height="90" Canvas.Left="192" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="ED2" Fill="Black"  Width="12" Height="90" Canvas.Left="212" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="GF2" Fill="Black"  Width="12" Height="90" Canvas.Left="252" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="AG2" Fill="Black"  Width="12" Height="90" Canvas.Left="272" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
 
 
-            <Rectangle x:Name="BA3" Fill="Black"  Width="12" Height="90" Canvas.Left="292" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="BA2" Fill="Black"  Width="12" Height="90" Canvas.Left="292" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="DC3" Fill="Black"  Width="12" Height="90" Canvas.Left="332" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="ED3" Fill="Black"  Width="12" Height="90" Canvas.Left="352" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="GF3" Fill="Black"  Width="12" Height="90" Canvas.Left="392" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="AG3" Fill="Black"  Width="12" Height="90" Canvas.Left="412" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
 
 
-            <Rectangle x:Name="BA4" Fill="Black"  Width="12" Height="90" Canvas.Left="432" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="BA3" Fill="Black"  Width="12" Height="90" Canvas.Left="432" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="DC4" Fill="Black"  Width="12" Height="90" Canvas.Left="472" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="ED4" Fill="Black"  Width="12" Height="90" Canvas.Left="492" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="GF4" Fill="Black"  Width="12" Height="90" Canvas.Left="532" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="AG4" Fill="Black"  Width="12" Height="90" Canvas.Left="552" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
 
 
-            <Rectangle x:Name="BA5" Fill="Black"  Width="12" Height="90" Canvas.Left="572" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="BA4" Fill="Black"  Width="12" Height="90" Canvas.Left="572" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="DC5" Fill="Black"  Width="12" Height="90" Canvas.Left="612" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="ED5" Fill="Black"  Width="12" Height="90" Canvas.Left="632" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="GF5" Fill="Black"  Width="12" Height="90" Canvas.Left="672" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="AG5" Fill="Black"  Width="12" Height="90" Canvas.Left="692" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
 
 
-            <Rectangle x:Name="BA6" Fill="Black"  Width="12" Height="90" Canvas.Left="712" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="BA5" Fill="Black"  Width="12" Height="90" Canvas.Left="712" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="DC6" Fill="Black"  Width="12" Height="90" Canvas.Left="752" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="ED6" Fill="Black"  Width="12" Height="90" Canvas.Left="772" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="GF6" Fill="Black"  Width="12" Height="90" Canvas.Left="812" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="AG6" Fill="Black"  Width="12" Height="90" Canvas.Left="832" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
 
 
-            <Rectangle x:Name="BA7" Fill="Black"  Width="12" Height="90" Canvas.Left="852" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="BA6" Fill="Black"  Width="12" Height="90" Canvas.Left="852" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="DC7" Fill="Black"  Width="12" Height="90" Canvas.Left="892" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="ED7" Fill="Black"  Width="12" Height="90" Canvas.Left="912" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="GF7" Fill="Black"  Width="12" Height="90" Canvas.Left="952" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
             <Rectangle x:Name="AG7" Fill="Black"  Width="12" Height="90" Canvas.Left="972" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
 
 
-            <Rectangle x:Name="BA8" Fill="Black"  Width="12" Height="90" Canvas.Left="992" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
+            <Rectangle x:Name="BA7" Fill="Black"  Width="12" Height="90" Canvas.Left="992" Canvas.Top="0" MouseEnter="keyOver" MouseLeave="blackKeyLeave" MouseLeftButtonDown="pianoKeyDown" MouseLeftButtonUp="pianoKeyUp"/>
 
         </Canvas>
         <!--End Piano Key Canvases-->
