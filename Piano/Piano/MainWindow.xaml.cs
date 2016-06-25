@@ -570,6 +570,8 @@ namespace Piano
 
             ((Rectangle)sender).Stroke = Brushes.Yellow;
 
+            RhythmicDuration previousNoteLength = noteLength;
+
             // Update note value to match the rest
             switch (NoteRestName)
             {
@@ -598,6 +600,9 @@ namespace Piano
 
             // Add the rest to the score
             addNoteOrRestToStaff(new Rest(noteLength));
+
+            // Restore to previous value
+            noteLength = previousNoteLength;
         }
 
         

@@ -42,8 +42,8 @@ namespace Piano
             {
                 data = value;
                 OnPropertyChanged(() => Data);
-                if (player != null) ((IDisposable)player).Dispose(); //This is needed in Midi player. Otherwise it can throw a "Device not ready" exception.
-                player = new MidiTaskScorePlayer(data);
+                //if (player != null) ((IDisposable)player).Dispose(); //This is needed in Midi player. Otherwise it can throw a "Device not ready" exception.
+                //if (data != null) player = new MidiTaskScorePlayer(data);
                 OnPropertyChanged();
                 OnPropertyChanged(() => Player);
                 PlayCommand?.FireCanExecuteChanged();
