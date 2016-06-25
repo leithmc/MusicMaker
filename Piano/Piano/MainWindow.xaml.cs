@@ -4,17 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Xml;
 using Microsoft.Win32;
 
 namespace Piano
@@ -61,7 +55,6 @@ namespace Piano
 
             // Initialize the view model
             model = new ScoreVM();
-            //Viewer.RenderingMode = Manufaktura.Controls.Rendering.ScoreRenderingModes.
             DataContext = model;
             model.loadStartData();
 
@@ -69,7 +62,6 @@ namespace Piano
             OpenScoreCreationWindow();
 
             // Set viewer properties
-            //Viewer.RenderingMode = Manufaktura.Controls.Rendering.ScoreRenderingModes.SinglePage;
 
         }
 
@@ -106,6 +98,7 @@ namespace Piano
                 Piano_Black_Keys.Visibility = Visibility.Hidden;
                 Piano_KeyBoard_layout.Visibility = Visibility.Hidden;
                 Piano_White_Keys.Visibility = Visibility.Hidden;
+                WorkingButtons.Visibility = Visibility.Hidden;
 
                 //cover keyboard like real piano
                 KeyCover.Visibility = Visibility.Visible;
@@ -152,10 +145,11 @@ namespace Piano
             Print.Visibility = Visibility.Visible;
             Piano_KeyBoard_layout.Visibility = Visibility.Visible;
             Piano_White_Keys.Visibility = Visibility.Visible;
-            Piano_Black_Keys.Visibility = Visibility.Visible;            
+            Piano_Black_Keys.Visibility = Visibility.Visible;
             MusicSheet.Visibility = Visibility.Visible;
             Notes_Rest.Visibility = Visibility.Visible;
             Keyboard_Controls.Visibility = Visibility.Visible;
+            WorkingButtons.Visibility = Visibility.Visible;
 
             // Calculate key signature based on selected value from array
             // If selected index < 13, keyIndex - seleted index -1, else keyIndex = selected index
@@ -252,10 +246,11 @@ namespace Piano
                 Print.Visibility = Visibility.Visible;
                 MusicSheet.Visibility = Visibility.Visible;
                 Notes_Rest.Visibility = Visibility.Visible;
-                Keyboard_Controls.Visibility = Visibility.Visible;                
+                Keyboard_Controls.Visibility = Visibility.Visible;
                 Piano_KeyBoard_layout.Visibility = Visibility.Visible;
                 Piano_White_Keys.Visibility = Visibility.Visible;
                 Piano_Black_Keys.Visibility = Visibility.Visible;
+                WorkingButtons.Visibility = Visibility.Visible;
             }
 
             catch (Exception ex)
@@ -294,7 +289,7 @@ namespace Piano
             // but sized like a piece of paper, put a NoteViewer object in at the right size to match typical page margins,
             // load the score into the new noteViewer, and then print it from the xaml. http://www.c-sharpcorner.com/uploadfile/mahesh/printing-in-wpf/
 
-            
+
 
             PrintDialog dialog = new PrintDialog();
 
@@ -303,9 +298,8 @@ namespace Piano
                 Canvas music = new Canvas();
                 music.Visibility = Visibility.Hidden;
                 music = MusicSheet;
-                music.Height = 300;
-                music.Width = 670;                
-                music.Margin = new Thickness(-150, 50, 50, 75);
+                music.Height = 1200;
+                music.Width = 900;
 
                 Play.Visibility = Visibility.Hidden;
                 Stop.Visibility = Visibility.Hidden;
@@ -321,11 +315,11 @@ namespace Piano
             Stop.Visibility = Visibility.Visible;
             Loop.Visibility = Visibility.Visible;
             Reset.Visibility = Visibility.Visible;
-            MusicSheet.Margin = new Thickness(0, 0, 0, 0);
+            MusicSheet.Margin = new Thickness(225, 75, 0, 0);
             MusicSheet.Visibility = Visibility.Visible;
         }
 
-       
+
 
 
 
@@ -358,7 +352,7 @@ namespace Piano
         /// <param name="e"></param>
         private void whiteKeyLeave(object sender, MouseEventArgs e) { ((Rectangle)sender).Fill = Brushes.White; }
 
-        
+
 
 
         /// <summary>
@@ -369,7 +363,7 @@ namespace Piano
         /// <param name="e"></param>
         private void blackKeyLeave(object sender, MouseEventArgs e) { ((Rectangle)sender).Fill = Brushes.Black; }
 
-        
+
 
 
         /// <summary>
@@ -520,17 +514,17 @@ namespace Piano
 
         private void NoteMouseLeave(object sender, MouseEventArgs e)
         {
-            
-           ((Rectangle)sender).Stroke = Brushes.White;
-            
+
+            ((Rectangle)sender).Stroke = Brushes.White;
+
         }
 
 
         private void NoteMouseEnter(object sender, MouseEventArgs e)
         {
-            
-           ((Rectangle)sender).Stroke = Brushes.Aqua;
-            
+
+            ((Rectangle)sender).Stroke = Brushes.Aqua;
+
         }
 
 
