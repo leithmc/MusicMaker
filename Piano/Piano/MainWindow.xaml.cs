@@ -602,7 +602,7 @@ namespace Piano
             addNoteOrRestToStaff(new Rest(noteLength));
 
             // Restore to previous value
-            noteLength = previousNoteLength;
+            noteLength = previousNoteLength;    
         }
 
         
