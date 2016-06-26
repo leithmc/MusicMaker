@@ -498,6 +498,12 @@ namespace Piano
             return d;
         }
 
+        public XmlDocument ScoreToXml(Score score)
+        {
+            // Not yet implemented
+            return new XmlDocument();
+        }
+
     }
 
     public abstract class PlayerCommand : System.Windows.Input.ICommand
