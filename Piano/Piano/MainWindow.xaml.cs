@@ -31,9 +31,12 @@ namespace Piano
         private bool Loaded = false;
         private String Selected = "QuarterNote";
         private Object SelectedNote;
+        private object DottedSelected;
+        private String HoldSelected = "";
+
         // private Boolean FreshStart = true;
 
-            
+
         private string[] keySigs = { "F", "C", "G", "D", "A", "E", "B", "F#", "C#", "G#", "D#", "A#", "E#", "Bb", "Eb", "Ab", "Db", "Gb" };
         string[] validBeatsPerMeasure = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
         string[] validBeatLengths = { "2", "4", "8", "16" };
@@ -56,7 +59,7 @@ namespace Piano
             // Initialize the base window
             InitializeComponent();
 
-            SelectedNote = QuarterNote;            
+            SelectedNote = QuarterNote;
 
             // Initialize the view model
             model = new ScoreVM();
@@ -163,6 +166,10 @@ namespace Piano
             Keyboard_Controls.Visibility = Visibility.Visible;
             WorkingButtons.Visibility = Visibility.Visible;
 
+            //reset note selection to quarter note
+            NoteSelectionReset();
+            
+
             // Calculate key signature based on selected value from array
             // If selected index < 13, keyIndex - seleted index -1, else keyIndex = selected index
             Console.WriteLine(MusicTitle);
@@ -254,6 +261,8 @@ namespace Piano
                 model.loadFile(fileName);
                 Loaded = true;
 
+                //reset note selection to quarter note
+                NoteSelectionReset();
 
                 //hide key cover
                 KeyCover.Visibility = Visibility.Hidden;
@@ -327,17 +336,17 @@ namespace Piano
             MusicSheet.Margin = new Thickness(225, 75, 0, 0);
             MusicSheet.Visibility = Visibility.Visible;
         }
-
-
-
-
+        
 
         #endregion
 
+
+
+
+
+
         #region PianoKeyHandlers
         /***** The code in this region handles everything to do with the piano keys. ****/
-
-
 
 
 
@@ -349,8 +358,7 @@ namespace Piano
         /// <param name="e"></param>
         private void keyOver(object sender, MouseEventArgs e) { ((Rectangle)sender).Fill = Brushes.Aqua; }
 
-
-
+        
 
 
         /// <summary>
@@ -392,6 +400,7 @@ namespace Piano
             // Add note to staff
             addNoteOrRestToStaff(note);
         }
+
 
 
         /// <summary>
@@ -466,9 +475,7 @@ namespace Piano
             model.updateView();
         }
 
-
-
-
+        
 
 
         /// <summary>
@@ -483,7 +490,12 @@ namespace Piano
             //KeyName = "";
             //Console.WriteLine(KeyName);
         }
+
+
         #endregion
+
+
+
 
 
 
@@ -492,75 +504,100 @@ namespace Piano
         /**** The code in this region handles events from duration, key signature, time signature, and 
               any other controls that change the score except for the piano keys. ****/
 
-            
+
         /// <summary>
         /// Note length Combo Box
+        /// Selected not defined at beginning on mainwindow to start.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void NoteLengthSelection(object sender, MouseButtonEventArgs e)
-        {            
+        {
             string NoteName = (((FrameworkElement)e.Source).Name);
 
-            //Change previos selected note outline to white
-            if (SelectedNote != sender )
+
+            if (DottedSelected != null)
             {
-                ((Rectangle)SelectedNote).Stroke = Brushes.White;
+                if (DottedSelected != sender)
+                {
+                    ((Rectangle)DottedSelected).Stroke = Brushes.White;
+                    DottedSelected = null;
+                }
             }
-
-            SelectedNote = sender;
-
-            Selected = (((FrameworkElement)e.Source).Name);
-
-            ((Rectangle)sender).Stroke = Brushes.Yellow;
+        
 
             if (NoteName == "Dot")
-                {
-                    dotted = true;
-                    noteLength.Dots++;
-                }
+            {
+                //hold previous selected note for color
+                object HoldSelectedwithDot = SelectedNote;
+                ((Rectangle)HoldSelectedwithDot).Stroke = Brushes.Yellow;
+                HoldSelected = (((FrameworkElement)HoldSelectedwithDot).Name);
+
+
+                //bring in dot and hold color
+                DottedSelected = sender;
+                dotted = true;
+                noteLength.Dots++;
+                ((Rectangle)DottedSelected).Stroke = Brushes.Yellow;
+                Selected = (((FrameworkElement)e.Source).Name);
+            }
+
+
+
             else
+            {
+                noteLength = NoteLengths[NoteName];
+                noteLength.Dots = 0;
+
+
+                //Change previos selected note outline to white
+                if (SelectedNote != sender)
                 {
-                    noteLength = NoteLengths[NoteName];
-                    noteLength.Dots = 0;
+                    ((Rectangle)SelectedNote).Stroke = Brushes.White;
                 }
+                
+                SelectedNote = sender;
+
+                Selected = (((FrameworkElement)e.Source).Name);
+
+                ((Rectangle)sender).Stroke = Brushes.Yellow;
+            }
+
+            
         }
 
 
 
-        //Note mouse leave, If note is selected return
-        private void NoteMouseLeave(object sender, MouseEventArgs e)
+        //reset Note Selection to default on load and new
+        private void NoteSelectionReset()
         {
-            String Over = (((FrameworkElement)e.Source).Name);
-            if (Over == Selected)
+            object PreviousSelected = SelectedNote;
+
+            if (DottedSelected != null)
+            {
+                ((Rectangle)DottedSelected).Stroke = Brushes.White;
+                DottedSelected = null;
+                noteLength.Dots = 0;
+            }
+
+            SelectedNote = QuarterNote;
+            HoldSelected = "";
+            Selected = "QuarterNote";
+
+            if(SelectedNote != PreviousSelected)
+            {
+
+                ((Rectangle)PreviousSelected).Stroke = Brushes.White;
+                ((Rectangle)SelectedNote).Stroke = Brushes.Yellow;
+                noteLength = RhythmicDuration.Quarter;
+                Selected = "QuarterNote";
+            }
+            else
             {
                 return;
             }
-
-            else
-            {
-                ((Rectangle)sender).Stroke = Brushes.White;
-            }
         }
-        
 
-
-        //Note mouse over, If note is selected return
-        private void NoteMouseEnter(object sender, MouseEventArgs e)
-        {
-            String Over = (((FrameworkElement)e.Source).Name);
-            if (Over == Selected)
-            {
-                return;
-            }
-
-            else
-            {
-                ((Rectangle)sender).Stroke = Brushes.Aqua;
-            }
-
-        }
-        
 
 
         //rest selection
@@ -568,7 +605,7 @@ namespace Piano
         {
             string NoteRestName = (((FrameworkElement)e.Source).Name);
 
-            ((Rectangle)sender).Stroke = Brushes.Yellow;
+            
 
             RhythmicDuration previousNoteLength = noteLength;
 
@@ -602,10 +639,46 @@ namespace Piano
             addNoteOrRestToStaff(new Rest(noteLength));
 
             // Restore to previous value
-            noteLength = previousNoteLength;    
+            noteLength = previousNoteLength;
+        }
+
+
+        //Note mouse leave, If note is selected return
+        private void NoteMouseLeave(object sender, MouseEventArgs e)
+        {
+            String Over = (((FrameworkElement)e.Source).Name);
+            if (Over == Selected || Over == HoldSelected)
+            {
+                return;
+            }
+
+            else
+            {
+                ((Rectangle)sender).Stroke = Brushes.White;
+            }
+        }
+
+
+
+
+        //Note mouse over, If note is selected return
+        private void NoteMouseEnter(object sender, MouseEventArgs e)
+        {
+            String Over = (((FrameworkElement)e.Source).Name);
+            if (Over == Selected || Over ==HoldSelected)
+            {
+                return;
+            }
+
+            else
+            {
+                ((Rectangle)sender).Stroke = Brushes.Aqua;
+            }
+
         }
 
         
+
 
         /// <summary>
         /// Radio Buttons... tested Default is none
@@ -667,6 +740,7 @@ namespace Piano
             MusicTitle = TitlePurged;
         }
 
+
         /// <summary>
         /// Called when the user makes a selection from the Beats / Measure combobox.
         /// Stores the selected value and converts to int.
@@ -678,6 +752,7 @@ namespace Piano
             string value = (string)BeatsMeasureCombo.SelectedValue;
             beatsPerMeasure = int.Parse(value);
         }
+
 
         /// <summary>
         /// Called when the user makes a selection from the Beat Length combobox.
@@ -706,6 +781,7 @@ namespace Piano
             //int keyIndex = (KeySignatureCombo.SelectedIndex < 13) ? KeySignatureCombo.SelectedIndex - 1 : 12 - KeySignatureCombo.SelectedIndex;
             //model.KeySig = new Manufaktura.Controls.Model.Key(keyIndex);
         }
+
 
         /// <summary>
         /// Deletes the current score and replaces it with a blank default grand staff.
