@@ -34,21 +34,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Manufaktura.Controls">
-      <HintPath>Manufactura\Demo1.2.7\Manufaktura.Controls.dll</HintPath>
+    <Reference Include="Manufaktura.Controls, Version=1.2.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Demo 1.2.8\Manufaktura.Controls.dll</HintPath>
     </Reference>
     <Reference Include="Manufaktura.Controls.Desktop, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>Manufactura\Demo1.2.7\Manufaktura.Controls.Desktop.dll</HintPath>
+      <HintPath>..\..\..\Demo 1.2.8\Manufaktura.Controls.Desktop.dll</HintPath>
     </Reference>
-    <Reference Include="Manufaktura.Controls.WPF">
-      <HintPath>Manufactura\Demo1.2.7\Manufaktura.Controls.WPF.dll</HintPath>
+    <Reference Include="Manufaktura.Controls.WPF, Version=1.2.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Demo 1.2.8\Manufaktura.Controls.WPF.dll</HintPath>
     </Reference>
-    <Reference Include="Manufaktura.Model">
-      <HintPath>Manufactura\Demo1.2.7\Manufaktura.Model.dll</HintPath>
+    <Reference Include="Manufaktura.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Demo 1.2.8\Manufaktura.Model.dll</HintPath>
     </Reference>
-    <Reference Include="Manufaktura.Music">
-      <HintPath>Manufactura\Demo1.2.7\Manufaktura.Music.dll</HintPath>
+    <Reference Include="Manufaktura.Music, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Demo 1.2.8\Manufaktura.Music.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

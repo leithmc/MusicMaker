@@ -1,5 +1,8 @@
 using Manufaktura.Controls.Model;
 using Manufaktura.Music.Model;
+using Manufaktura.Controls.Audio;
+using Manufaktura.Controls.Desktop.Audio;
+using Manufaktura.Controls.Desktop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +36,7 @@ namespace Piano
         private Object SelectedNote;
         private object DottedSelected;
         private String HoldSelected = "";
+        private MidiTaskScorePlayer player;
 
         // private Boolean FreshStart = true;
 
@@ -65,6 +69,9 @@ namespace Piano
             model = new ScoreVM();
             DataContext = model;
             model.loadStartData();
+
+            // Iinitialize the player
+            //player = new MidiTaskScorePlayer(model.Data);
 
             Viewer.MouseUp += Viewer_MouseUp;
 
@@ -472,7 +479,15 @@ namespace Piano
             }
 
             // Trigger an update in the viewmodel
-            model.updateView();
+            //model.updateView();
+
+
+            // Play the note
+            if (nr.GetType() == typeof(Note))
+            {
+                if (player == null) player = new MidiTaskScorePlayer(model.Data);
+                player.PlayElement(nr);
+            }
         }
 
         
@@ -808,8 +823,8 @@ namespace Piano
         /// <param name="e"></param>
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            // To be implemented
-            TBI("Playback");
+            player = new MidiTaskScorePlayer(model.Data);
+            player.Play();
         }
 
 

@@ -19,6 +19,7 @@ using System.Windows;
 using System.Runtime.Serialization.Formatters.Binary;
 using Manufaktura.Controls.Audio;
 using Manufaktura.Controls.Desktop.Audio;
+using Manufaktura.Controls.Desktop;
 
 namespace Piano
 {
@@ -44,10 +45,10 @@ namespace Piano
                 OnPropertyChanged(() => Data);
                 //if (player != null) ((IDisposable)player).Dispose(); //This is needed in Midi player. Otherwise it can throw a "Device not ready" exception.
                 //if (data != null) player = new MidiTaskScorePlayer(data);
-                OnPropertyChanged();
-                OnPropertyChanged(() => Player);
-                PlayCommand?.FireCanExecuteChanged();
-                StopCommand?.FireCanExecuteChanged();
+                //OnPropertyChanged();
+                //OnPropertyChanged(() => Player);
+                //PlayCommand?.FireCanExecuteChanged();
+                //StopCommand?.FireCanExecuteChanged();
             }
         }
 
@@ -91,6 +92,17 @@ namespace Piano
         {
             // Create a score object with a single staff
             var score = Score.CreateOneStaffScore();
+
+            // Put the one staff in a part IDEALLY THIS SHOULD BE HERE BUT IT HAS TO BE IN SAVE SO THE PARTS DON"T DISAPPEAR
+            //Part p1 = new Part(score.FirstStaff);
+            //p1.Name = "FirstPart";
+            //p1.PartId = "01";
+            //PartGroup pg1 = new PartGroup();
+            //p1.Group = pg1;
+            //score.PartGroups.Add(pg1);
+            //score.Parts.Add(p1);
+
+
             // Add treble clef
             score.FirstStaff.Elements.Add(Clef.Treble);
             // add key signature. The 0 in the Key constructor means no sharps or flats. 
@@ -100,11 +112,7 @@ namespace Piano
             // Set time sig to 4/4
             timeSig = TimeSignature.CommonTime;
             score.FirstStaff.Elements.Add(timeSig);
-            // Add some notes for test purposes
-            //score.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Quarter));
-            //score.FirstStaff.Elements.Add(new Note(Pitch.B4, RhythmicDuration.Quarter));
-            //score.FirstStaff.Elements.Add(new Note(Pitch.C5, RhythmicDuration.Half));
-            //score.FirstStaff.Elements.Add(new Barline());
+
             return score;
         }
 
@@ -209,7 +217,6 @@ namespace Piano
 
         /// <summary>
         /// Saves the current Score as a MusicXML file.
-        /// PENDING PARSER IMPLEMENTATION FROM MANUFACTURA
         /// </summary>
         /// <returns></returns>
         public bool save()
@@ -223,7 +230,7 @@ namespace Piano
                 dialog.CheckPathExists = true;
                 dialog.ValidateNames = true;
 
-                dialog.Filter = "Music Maker Score|*.mms|Music XML|*.mml";
+                dialog.Filter = "Music XML|*.mml";
 
 
                 Nullable<bool> result = dialog.ShowDialog();
@@ -231,45 +238,18 @@ namespace Piano
                 fileName = dialog.FileName;
             }
 
-            if (dialog.FilterIndex == 1)    // Native binary format
+            try    // MusicXML format (not yet implemented in Manufactura)
             {
-                //Score
-                try
-                {
-                    BinaryFormatter bf = new BinaryFormatter();
-                    byte[] outBytes;
-                    using (var ms = new MemoryStream())
-                    {
-                        foreach (Staff s in data.Staves)
-                        {
-                            foreach (MusicalSymbol item in s.Elements)
-                            {
-                                if (item.GetType().IsSubclassOf(typeof(NoteOrRest)) || item.GetType() == typeof(Barline))
-                                    bf.Serialize(ms, item);
-                            }
-                        }
-                        bf.Serialize(ms, data);
-                        outBytes = ms.ToArray();
-                    }
-                    using (FileStream stream = new FileStream(fileName, FileMode.Create))
-                    {
-                        using (BinaryWriter writer = new BinaryWriter(stream))
-                        {
-                            writer.Write(outBytes);
-                            writer.Close();
-                        }
-                    }
-                }
+                // Put the one staff in a part
+                Part p1 = new Part(data.FirstStaff);
+                p1.Name = "FirstPart";
+                p1.PartId = "01";
+                PartGroup pg1 = new PartGroup();
+                p1.Group = pg1;
+                data.PartGroups.Add(pg1);
+                data.Parts.Add(p1);
 
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Could not save to " + fileName + ".\n" + ex.Message);
-                    fileName = "";
-                    save();
-                }
-            }
-            else try    // MusicXML format (not yet implemented in Manufactura)
-            {
+
                 var parser = new MusicXmlParser();
                 var outputXml = parser.ParseBack(data);
                 outputXml.Save(fileName);
@@ -291,9 +271,9 @@ namespace Piano
         /// </summary>
         public void updateView()
         {
-            var score = Data;
-            Data = null;
-            Data = score;
+            //var score = Data;
+            //Data = null;
+            //Data = score;
         }
 
         /// <summary>
@@ -432,13 +412,16 @@ namespace Piano
         internal void breakStaffIfNeeded()
         {
             var systems = new LinkedList<StaffSystem>();
-            for (int i = 0; i < data.FirstStaff.Measures.Count / 4 + 1; i++)
+            for (int i = 0; i < data.FirstStaff.Measures.Count ; i++)
             {
-                StaffSystem sys = new StaffSystem(data);
-                for (int j = 0; j < 4; j++)
+                if (i % 4 == 0)
                 {
-                    //sys.
+                    var ps = new PrintSuggestion();
+                    ps.IsSystemBreak = true;
+                    data.FirstStaff.Measures[i].Elements.Add(ps);
                 }
+
+                //if (i % 4 == 0) data.FirstStaff.Measures[i].
             }
         }
 
