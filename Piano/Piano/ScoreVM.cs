@@ -407,22 +407,33 @@ namespace Piano
             return d;
         }
 
-        // Temporary hack -- enforces four measures to a line
-        // Not implemented for multiple staves
+        // Puts line breaks in every 4th measure
         internal void breakStaffIfNeeded()
         {
-            var systems = new LinkedList<StaffSystem>();
-            for (int i = 0; i < data.FirstStaff.Measures.Count ; i++)
+            foreach (Staff staff in data.Staves)
             {
-                if (i % 4 == 0)
+                StaffSystem s = staff.Measures[0].System;
+                foreach (Measure m in staff.Measures)
                 {
-                    var ps = new PrintSuggestion();
-                    ps.IsSystemBreak = true;
-                    data.FirstStaff.Measures[i].Elements.Add(ps);
+                    if (m.Number > 4 && (m.Number - 1) % 4 == 0) breakStaffAt(m);
+                    //if (m.System.Width > 250) breakStaffAt(m);
+                    //else unbreakStaffAt(m);
                 }
-
-                //if (i % 4 == 0) data.FirstStaff.Measures[i].
             }
+        }
+
+        internal void breakStaffAt(Measure m)
+        {
+            if (m.Elements.Any(ms => ms.GetType() == typeof(PrintSuggestion))) return;
+            var ps = new PrintSuggestion();
+            ps.IsSystemBreak = true;
+            m.Elements.Insert(0, ps);
+            m.Staff.Elements.Insert(m.Staff.Elements.IndexOf(m.Elements[1]), ps);
+        }
+
+        internal void unbreakStaffAt(Measure m)
+        {
+            m.Elements.RemoveAll(e => e.GetType() == typeof(PrintSuggestion));
         }
 
         // Returns the total beat durations of notes and rests in the measure minus the allowed amount

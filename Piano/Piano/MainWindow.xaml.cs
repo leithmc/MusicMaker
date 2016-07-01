@@ -477,6 +477,7 @@ namespace Piano
                 elem.Staff.Elements.Add(nr);  // Staff fragment, so add note to end of staff
                 model.fitMeasure(nr.Measure, model.TimeSig);
             }
+            model.breakStaffIfNeeded();
 
             // Trigger an update in the viewmodel
             //model.updateView();
