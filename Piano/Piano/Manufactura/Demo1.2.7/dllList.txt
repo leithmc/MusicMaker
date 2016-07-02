@@ -1,8 +1,0 @@
-E:\Git\MusicMaker\Piano\Piano\Manufactura\Demo1.2.7\Manufaktura.Controls.Desktop.dll
-E:\Git\MusicMaker\Piano\Piano\Manufactura\Demo1.2.7\Manufaktura.Controls.dll
-E:\Git\MusicMaker\Piano\Piano\Manufactura\Demo1.2.7\Manufaktura.Controls.Legacy.dll
-E:\Git\MusicMaker\Piano\Piano\Manufactura\Demo1.2.7\Manufaktura.Controls.WPF.dll
-E:\Git\MusicMaker\Piano\Piano\Manufactura\Demo1.2.7\Manufaktura.Model.dll
-E:\Git\MusicMaker\Piano\Piano\Manufactura\Demo1.2.7\Manufaktura.Model.Legacy.dll
-E:\Git\MusicMaker\Piano\Piano\Manufactura\Demo1.2.7\Manufaktura.Music.dll
-E:\Git\MusicMaker\Piano\Piano\Manufactura\Demo1.2.7\Manufaktura.Music.Legacy.dll
