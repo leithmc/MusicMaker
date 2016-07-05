@@ -41,10 +41,6 @@ C:\Users\Judith\Documents\GitHub\MusicMaker\Piano\Piano\obj\Debug\Piano.pdb
 C:\Users\Judith\Documents\GitHub\MusicMaker\Piano\Piano\bin\Debug\Piano.exe
 C:\Users\Judith\Documents\GitHub\MusicMaker\Piano\Piano\bin\Debug\Piano.pdb
 C:\Users\Judith\Documents\GitHub\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Controls.Desktop.dll
-C:\Users\Judith\Documents\GitHub\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Controls.dll
-C:\Users\Judith\Documents\GitHub\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Controls.WPF.dll
-C:\Users\Judith\Documents\GitHub\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Model.dll
-C:\Users\Judith\Documents\GitHub\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Music.dll
 C:\Users\Judith\Documents\GitHub\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Controls.pdb
 C:\Users\Judith\Documents\GitHub\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Controls.Desktop.pdb
 C:\Users\Judith\Documents\GitHub\MusicMaker\Piano\Piano\bin\Debug\Manufaktura.Controls.WPF.pdb

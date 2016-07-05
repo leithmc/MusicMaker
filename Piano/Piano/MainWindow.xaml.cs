@@ -37,6 +37,7 @@ namespace Piano
         private object DottedSelected;
         private String HoldSelected = "";
         private MidiTaskScorePlayer player;
+        private RoutedCommand cmdDelete;
 
         // private Boolean FreshStart = true;
 
@@ -75,6 +76,10 @@ namespace Piano
 
             Viewer.MouseUp += Viewer_MouseUp;
 
+            cmdDelete = new RoutedCommand();
+            cmdDelete.InputGestures.Add(new KeyGesture(System.Windows.Input.Key.Delete));
+            CommandBindings.Add(new CommandBinding(cmdDelete, delete));
+
 
             //looks more professional starting with a new slate.
             OpenScoreCreationWindow();
@@ -83,9 +88,26 @@ namespace Piano
 
         }
 
+        // Deletes the selected note or rest.
+        private void delete(object sender, ExecutedRoutedEventArgs e)
+        {
+            var elem = Viewer.SelectedElement;
+            if (elem != null && elem.GetType().IsSubclassOf(typeof(NoteOrRest)))
+            {
+                Staff s = elem.Staff;
+                Measure m = elem.Measure;
+                if (s != null) s.Elements.Remove(elem);
+                if (m != null) m.Elements.Remove(elem);
+                model.fitMeasures(m);
+                model.breakStaffIfNeeded();
+                Viewer.SelectedElement = null;
+            }
+            else MessageBox.Show("You must select a note or rest to delete. To delete all, click the Reset button.");
+        }
+
         private void Viewer_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            model.updateView(); // Needed to keep the notes from jumping around when you click on them
+            //model.updateView(); // Needed to keep the notes from jumping around when you click on them
         }
 
 
@@ -456,32 +478,34 @@ namespace Piano
         {
             // Get the currently selected note, rest, or staff fragment
             var elem = Viewer.SelectedElement;
-            if (elem == null)
+            Measure m = model.Data.FirstStaff.Measures.Last();
+            bool isInsertion = false;
+            if (elem == null)   // Nothing is selected, add to end of staff
             {
-                //MessageBox.Show("You must select a staff to write to or a note to insert after.");
-                //return;
-                elem = model.Data.FirstStaff.Elements[0];
+                model.Data.FirstStaff.Elements.Add(nr);
             }
+            else if (elem.GetType().IsSubclassOf(typeof(NoteOrRest))) // A note or rest is selected, so add after
+            {   
+                isInsertion = true;
+                int indexInStaff = elem.Staff.Elements.IndexOf(elem);
+                MusicalSymbol nextElem = elem.Staff.Elements[indexInStaff + 1];
+                if (nextElem != null && nextElem.GetType() == typeof(Barline)) indexInStaff++;
+                elem.Staff.Elements.Insert(indexInStaff + 1, nr);                
+                m = elem.Measure;
 
-            //If user selects the staff itself, append to last note. Else insert after selected note.
-            //int staffIndex = model.Data.Staves.IndexOf(elem.Staff); // Get current staff **PROBABLY NOT NEEDED**
-            if (elem.GetType().IsSubclassOf(typeof(NoteOrRest)))
-            {   // Not staff fragment, so insert note after selected element
-                int index = elem.Staff.Elements.IndexOf(elem);
-                elem.Staff.Elements.Insert(index + 1, nr);
-                elem.Measure.Elements.Insert(elem.Measure.Elements.IndexOf(elem) + 1, nr);
-                model.fitMeasure(elem.Measure, model.TimeSig);
+                // Temporary work-around for Manufactura bug -- remove this line once the bug is fixed
+                m.Staff.Measures.Last().Elements.Remove(nr);
+
+                m.Elements.Insert(m.Elements.IndexOf(elem) + 1, nr);
+                Viewer.SelectedElement = nr;
             }
-            else
+            else    // Something other than a note or rest is selected
             {
-                elem.Staff.Elements.Add(nr);  // Staff fragment, so add note to end of staff
-                model.fitMeasure(nr.Measure, model.TimeSig);
+                elem.Staff.Elements.Add(nr);  // Staff fragment, so add note to end of staff                
             }
-            model.breakStaffIfNeeded();
-
-            // Trigger an update in the viewmodel
-            //model.updateView();
-
+            var newCursor = model.fitMeasures(m);
+            if (newCursor != null) Viewer.SelectedElement = newCursor;
+                model.breakStaffIfNeeded();
 
             // Play the note
             if (nr.GetType() == typeof(Note))
