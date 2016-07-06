@@ -36,8 +36,10 @@ namespace Piano
         private Object SelectedNote;
         private object DottedSelected;
         private String HoldSelected = "";
-        private MidiTaskScorePlayer player;
+        //private MidiTaskScoremodel.Player model.Player;
         private RoutedCommand cmdDelete;
+        private bool isPlaying = false;
+        private bool isPaused = false;
 
         // private Boolean FreshStart = true;
 
@@ -71,8 +73,8 @@ namespace Piano
             DataContext = model;
             model.loadStartData();
 
-            // Iinitialize the player
-            //player = new MidiTaskScorePlayer(model.Data);
+            // Iinitialize the model.Player
+            //model.Player = new MidiTaskScoremodel.Player(model.Data);
 
             Viewer.MouseUp += Viewer_MouseUp;
 
@@ -238,6 +240,8 @@ namespace Piano
 
             // Create a single staff score
             model.createNew(key, timeSig);
+            Viewer.ScoreSource = model.Data;
+            model.ResetPlayer();
         }
 
 
@@ -490,8 +494,9 @@ namespace Piano
                 int indexInStaff = elem.Staff.Elements.IndexOf(elem);
                 MusicalSymbol nextElem = elem.Staff.Elements[indexInStaff + 1];
                 if (nextElem != null && nextElem.GetType() == typeof(Barline)) indexInStaff++;
-                elem.Staff.Elements.Insert(indexInStaff + 1, nr);                
-                m = elem.Measure;
+                elem.Staff.Elements.Insert(indexInStaff + 1, nr);
+                //m = elem.Measure;
+                m = elem.Staff.Measures.First(e => e.Elements.Contains(elem));
 
                 // Temporary work-around for Manufactura bug -- remove this line once the bug is fixed
                 m.Staff.Measures.Last().Elements.Remove(nr);
@@ -510,8 +515,7 @@ namespace Piano
             // Play the note
             if (nr.GetType() == typeof(Note))
             {
-                if (player == null) player = new MidiTaskScorePlayer(model.Data);
-                player.PlayElement(nr);
+                model.PlayNote((Note)nr);
             }
         }
 
@@ -830,7 +834,10 @@ namespace Piano
         /// <param name="e"></param>
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
+            model.Data = null;
             model.createNew(model.KeySig, model.TimeSig);
+            Viewer.ScoreSource = model.Data;
+            model.ResetPlayer();
         }
         #endregion
 
@@ -842,28 +849,45 @@ namespace Piano
 
 
         /// <summary>
-        /// Converts teh score to MIDI and plays the MIDI.
+        /// Plays the current score through the default MIDI model.Player.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void PlayButton_Click(object sender, RoutedEventArgs e)
+        private async void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            player = new MidiTaskScorePlayer(model.Data);
-            player.Play();
+            switch (model.Player.State)
+            {
+                case ScorePlayer.PlaybackState.Idle:
+                    do model.Play();
+                    while (looped);
+                    break;
+                case ScorePlayer.PlaybackState.Paused:
+                    await model.Resume();
+                    while (looped) await model.Play();
+                    break;
+                case ScorePlayer.PlaybackState.Playing:
+                    model.Pause();
+                    break;
+                default:
+                    break;
+            }
         }
 
 
 
 
         /// <summary>
-        /// Stops playback.
+        /// Stops MIDI playback.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void StopButton_Click(object sender, RoutedEventArgs e)
         {
-            // To be implemented
-            TBI("Playback");
+            bool loopState = looped;
+            looped = false;
+            if (model.Player.State != ScorePlayer.PlaybackState.Idle) model.Stop();
+            System.Threading.Thread.Sleep(10);
+            looped = loopState;
         }
 
 
