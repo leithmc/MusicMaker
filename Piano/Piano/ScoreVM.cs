@@ -33,6 +33,15 @@ namespace Piano
         public StopCommand StopCommand { get; }
 
         private Score data;
+
+        public ScoreVM()
+        {
+            PlayCommand = new PlayCommand(this);
+            StopCommand = new StopCommand(this);
+        }
+
+
+
         /// <summary>
         /// Holds the current Score object. Refreshing the public property updates the viewer.
         /// </summary>
@@ -42,13 +51,13 @@ namespace Piano
             set
             {
                 data = value;
-                OnPropertyChanged(() => Data);
                 //if (player != null) ((IDisposable)player).Dispose(); //This is needed in Midi player. Otherwise it can throw a "Device not ready" exception.
                 //if (data != null) player = new MidiTaskScorePlayer(data);
-                //OnPropertyChanged();
-                //OnPropertyChanged(() => Player);
-                //PlayCommand?.FireCanExecuteChanged();
-                //StopCommand?.FireCanExecuteChanged();
+                OnPropertyChanged();
+                OnPropertyChanged(() => Player);
+                OnPropertyChanged(() => Data);
+                PlayCommand?.FireCanExecuteChanged();
+                StopCommand?.FireCanExecuteChanged();
             }
         }
 
@@ -63,6 +72,11 @@ namespace Piano
         }
 
         private TimeSignature timeSig;
+        private static bool isPaused;
+        private static bool isPlaying;
+        private static bool isLooped;
+        private static bool stopping;
+
         /// <summary>
         /// Holds the current time signature
         /// </summary>
@@ -72,12 +86,15 @@ namespace Piano
             set { timeSig = value; }
         }
 
+        public bool isLooping { get; internal set; }
+
         /// <summary>
         /// Populates the note viewer with an empty single staff. Does not set fileName.
         /// </summary>
         public void loadStartData()
         {
             Data = createStartingStaff();   // This will switch to createGrandStaff once the note entry bugs are fixed
+            ResetPlayer();
         }
 
 
@@ -112,7 +129,6 @@ namespace Piano
             // Set time sig to 4/4
             timeSig = TimeSignature.CommonTime;
             score.FirstStaff.Elements.Add(timeSig);
-
             return score;
         }
 
@@ -211,7 +227,9 @@ namespace Piano
                 system.Width = 4;
             }
 
+            Data = null;
             Data = score;
+            //updateView();
         }
 
 
@@ -271,9 +289,9 @@ namespace Piano
         /// </summary>
         public void updateView()
         {
-            //var score = Data;
-            //Data = null;
-            //Data = score;
+            var score = Data;
+            Data = null;
+            Data = score;
         }
 
 
@@ -332,14 +350,22 @@ namespace Piano
 
                     if (itemInPlace != null)
                     {
-                        staff.Elements.Insert(lastItemIndex, itemInPlace);
+                        staff.Elements.Insert(lastItemIndex, itemInPlace); //If trouble, switch to insertElement
                     }
 
-                    if (m.Number == staff.Measures.Count) m.Elements.Add(new Barline());
-                    int destIndexInStaff = staff.Elements.IndexOf(staff.Measures[i + 1].Elements[0]);
-                    insertElement(staff, destIndexInStaff, itemToMove);
-                    getNextMeasure(m).Elements.Insert(0, itemToMove);
-                    if (m == editedMeasure && lastDurationValue > overage) newCursor = itemToMove;
+                    if (m.Number == staff.Measures.Count)
+                    {
+                        m.Elements.Add(new Barline());
+                        staff.Elements.Add(itemToMove);
+                    }
+
+                    else
+                    {
+                        int destIndexInStaff = staff.Elements.IndexOf(staff.Measures[i + 1].Elements[0]);
+                        insertElement(staff, destIndexInStaff, itemToMove);
+                    }
+                    //getNextMeasure(m).Elements.Insert(0, itemToMove);
+                    if (m == editedMeasure) newCursor = itemToMove;
                 }
             }
             //breakStaffIfNeeded();
@@ -621,10 +647,63 @@ namespace Piano
             return d;
         }
 
-        public XmlDocument ScoreToXml(Score score)
+        public async Task Play()
         {
-            // Not yet implemented
-            return new XmlDocument();
+            stopping = false;
+            if (player != null)
+            {
+                ((IDisposable)player).Dispose();
+                player = null;
+            }
+            player = new MidiTaskScorePlayer(data);
+            isPlaying = true;
+            player.Play();
+            while (!stopping && player.CurrentElement != data.FirstStaff.Elements[data.FirstStaff.Elements.Count - 1])
+            {
+                System.Threading.Thread.Sleep(1);
+            }
+            player.Stop();
+        }
+
+        public void Pause()
+        {
+            player?.Pause();
+            isPaused = true;
+        }
+
+        public async Task Resume()
+        {
+            stopping = false;
+            isPaused = false;
+            player.Play();
+            while (!stopping && player.CurrentElement != data.FirstStaff.Elements[data.FirstStaff.Elements.Count - 1])
+            {
+                System.Threading.Thread.Sleep(1);
+            }
+            isPlaying = false;
+            ((IDisposable)player).Dispose();
+        }
+
+        public void Stop()
+        {
+            //player?.Stop();
+            stopping = true;
+            //isPlaying = false;
+          //  isPaused = false;
+        }
+
+        public void PlayNote(Note note)
+        {
+            if (player == null) player = new MidiTaskScorePlayer(data);
+            player.PlayElement(note);
+        }
+
+        public void ResetPlayer()
+        {
+            if (player != null) ((IDisposable)player).Dispose();
+            player = null;
+            player = new MidiTaskScorePlayer(data);
+
         }
 
     }
@@ -669,7 +748,13 @@ namespace Piano
 
         public override void Execute(object parameter)
         {
-            viewModel.Player?.Play();
+            if (viewModel.Player.CurrentElement == viewModel.Data.FirstStaff.Elements[viewModel.Data.FirstStaff.Elements.Count - 1])
+            {
+                viewModel.Player?.Stop();
+            }
+
+            if (viewModel.Player.State == ScorePlayer.PlaybackState.Playing) viewModel.Player.Pause();
+            else viewModel.Player?.Play();
         }
 
     }
