@@ -207,7 +207,9 @@
 
             <!--Note viewer/ Music Sheet-->
             <Canvas x:Name="MusicSheet"  Margin="225,75,0,0"  Width="670" Height="300" Visibility="Visible">
-                <WPF:NoteViewer Name="Viewer" RenderingMode="SinglePage" Visibility="Visible" ScoreSource="{Binding Data}" Height="300" Width="670" ClipToBounds="True">
+                <WPF:NoteViewer Name="Viewer" RenderingMode="SinglePage" Visibility="Visible" ScoreSource="{Binding Data}" PlaybackCursorPosition="{Binding Player.CurrentPosition}" 
+                                Height="300" Width="670" ClipToBounds="True">
+
                 </WPF:NoteViewer>
                 <!-- bind to Label-->
                 <Label x:Name="MusicNameLabel" Content=""  Width="670" HorizontalContentAlignment="Center" Canvas.Top="-27"/>
@@ -220,8 +222,11 @@
                         <Image Source="/Resources/Images/Loop.png" Width="25" Height="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </StackPanel>
                 </Button>
-                <Button  x:Name="Play"  Content=" Play/ Pause" Canvas.Left="330" Canvas.Top="342"  Height="20" Width="75" Click="PlayButton_Click" Command="{Binding PlayCommand}"/>
+                <!--<Button  x:Name="Play"  Content=" Play/ Pause" Canvas.Left="330" Canvas.Top="342"  Height="20" Width="75" Click="PlayButton_Click" Command="{Binding PlayCommand}"/>
                 <Button x:Name="Stop" Content="Stop" Canvas.Left="433" Canvas.Top="342" Width="50"  Height="20" Click="StopButton_Click" Command="{Binding StopCommand}"/>
+                <Button x:Name="Reset" Content="Reset" Canvas.Left="510" Canvas.Top="342" Width="50" Height="20"  Click="ResetButton_Click" />-->
+                <Button  x:Name="Play"  Content=" Play/ Pause" Canvas.Left="330" Canvas.Top="342"  Height="20" Width="75" Command="{Binding PlayCommand}"/>
+                <Button x:Name="Stop" Content="Stop" Canvas.Left="433" Canvas.Top="342" Width="50"  Height="20" Command="{Binding StopCommand}"/>
                 <Button x:Name="Reset" Content="Reset" Canvas.Left="510" Canvas.Top="342" Width="50" Height="20"  Click="ResetButton_Click" />
             </Canvas>
 
