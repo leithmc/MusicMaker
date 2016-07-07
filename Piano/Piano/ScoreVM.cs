@@ -72,10 +72,6 @@ namespace Piano
         }
 
         private TimeSignature timeSig;
-        private static bool isPaused;
-        private static bool isPlaying;
-        private static bool isLooped;
-        private static bool stopping;
 
         /// <summary>
         /// Holds the current time signature
@@ -110,18 +106,9 @@ namespace Piano
             // Create a score object with a single staff
             var score = Score.CreateOneStaffScore();
 
-            // Put the one staff in a part IDEALLY THIS SHOULD BE HERE BUT IT HAS TO BE IN SAVE SO THE PARTS DON"T DISAPPEAR
-            //Part p1 = new Part(score.FirstStaff);
-            //p1.Name = "FirstPart";
-            //p1.PartId = "01";
-            //PartGroup pg1 = new PartGroup();
-            //p1.Group = pg1;
-            //score.PartGroups.Add(pg1);
-            //score.Parts.Add(p1);
-
-
             // Add treble clef
             score.FirstStaff.Elements.Add(Clef.Treble);
+
             // add key signature. The 0 in the Key constructor means no sharps or flats. 
             // negative numbers are flat keys, positive for sharp keys.
             keySig = new Key(0);
@@ -256,7 +243,7 @@ namespace Piano
                 fileName = dialog.FileName;
             }
 
-            try    // MusicXML format (not yet implemented in Manufactura)
+            try    // MusicXML format
             {
                 // Put the one staff in a part
                 Part p1 = new Part(data.FirstStaff);
@@ -296,10 +283,10 @@ namespace Piano
 
 
         // EXPERIMENTAL
-        internal NoteOrRest fitMeasures(Measure editedMeasure) // Still need to add support for deletion
+        internal bool fitMeasures(Measure editedMeasure) // Still need to add support for deletion
         {
             Staff staff = editedMeasure.Staff;
-            NoteOrRest newCursor = null;
+            bool lastNoteBroken = false;
             
             // Last measure case
             if (editedMeasure.Number == staff.Measures.Count)
@@ -307,10 +294,9 @@ namespace Piano
                 double overage = getOverage(editedMeasure);
                 if (overage >= 0)
                     staff.Elements.Add(new Barline());
-                if (overage <= 0) return null;
+                if (overage <= 0) return false;
             }
 
-            bool done = false;
             for (int i = staff.Measures.IndexOf(editedMeasure); i < staff.Measures.Count; i++)
             {
                 Measure m = staff.Measures[i];
@@ -348,32 +334,31 @@ namespace Piano
                     staff.Elements.Remove(lastNoteOrRest);
                     m.Elements.Remove(lastNoteOrRest);
 
-                    if (itemInPlace != null)
-                    {
-                        staff.Elements.Insert(lastItemIndex, itemInPlace); //If trouble, switch to insertElement
-                    }
-
+                    if (itemInPlace != null) insertElement(staff, lastItemIndex, itemInPlace);
+                    
                     if (m.Number == staff.Measures.Count)
                     {
-                        m.Elements.Add(new Barline());
+                        staff.Elements.Add(new Barline());
                         staff.Elements.Add(itemToMove);
                     }
 
+                    else if (staff.Measures[i + 1].Elements.Count == 0) staff.Elements.Add(itemToMove);
+                    
                     else
                     {
                         int destIndexInStaff = staff.Elements.IndexOf(staff.Measures[i + 1].Elements[0]);
                         insertElement(staff, destIndexInStaff, itemToMove);
                     }
                     //getNextMeasure(m).Elements.Insert(0, itemToMove);
-                    if (m == editedMeasure) newCursor = itemToMove;
+                    if (m == editedMeasure && itemInPlace != null) lastNoteBroken = true;
                 }
             }
             //breakStaffIfNeeded();
-            return newCursor; 
+            return lastNoteBroken; 
         }
 
         // Replaces the buggy Staff.Elements.Insert method
-        private void insertElement(Staff staff, int index, MusicalSymbol elem)
+        internal void insertElement(Staff staff, int index, MusicalSymbol elem)
         {
             staff.Elements.Insert(index, elem);
             staff.Measures.Last().Elements.Remove(elem);
@@ -524,22 +509,7 @@ namespace Piano
 
             m.Elements.Remove(itemToSteal);
             staff.Elements.Remove(itemToSteal);
-            //dest.Elements.Insert(destIndexInMeasure, nr);
             staff.Elements.Insert(insertionPoint, itemToSteal);
-        }
-
-        // Moves the next barline to the position immediately after the specified element. If there are no more barlines on
-        // the staff, creates a new one.
-        private Barline moveOrAddBarlineAfter(MusicalSymbol item)
-        {
-            if (item.GetType() == typeof(Barline)) return (Barline)item;
-            var elems = item.Staff.Elements;
-            int itemPosition = elems.IndexOf(item);
-            Barline bar = (Barline) elems.FirstOrDefault(b => elems.IndexOf(b) > itemPosition && b.GetType() == typeof(Barline));
-            if (bar == null) bar = new Barline();
-            else item.Staff.Elements.Remove(bar);
-            item.Staff.Elements.Insert(itemPosition + 1, bar);
-            return bar;
         }
 
         // Helper methods to get the next measure and the first note or rest in a measure
@@ -645,51 +615,6 @@ namespace Piano
                 dot = dot / 2;
             }
             return d;
-        }
-
-        public async Task Play()
-        {
-            stopping = false;
-            if (player != null)
-            {
-                ((IDisposable)player).Dispose();
-                player = null;
-            }
-            player = new MidiTaskScorePlayer(data);
-            isPlaying = true;
-            player.Play();
-            while (!stopping && player.CurrentElement != data.FirstStaff.Elements[data.FirstStaff.Elements.Count - 1])
-            {
-                System.Threading.Thread.Sleep(1);
-            }
-            player.Stop();
-        }
-
-        public void Pause()
-        {
-            player?.Pause();
-            isPaused = true;
-        }
-
-        public async Task Resume()
-        {
-            stopping = false;
-            isPaused = false;
-            player.Play();
-            while (!stopping && player.CurrentElement != data.FirstStaff.Elements[data.FirstStaff.Elements.Count - 1])
-            {
-                System.Threading.Thread.Sleep(1);
-            }
-            isPlaying = false;
-            ((IDisposable)player).Dispose();
-        }
-
-        public void Stop()
-        {
-            //player?.Stop();
-            stopping = true;
-            //isPlaying = false;
-          //  isPaused = false;
         }
 
         public void PlayNote(Note note)

@@ -25,25 +25,17 @@ namespace Piano
         private String MusicTitle;
         private int beatsPerMeasure;
         private int beatLength;
-        private String keySignature;
         private ScoreVM model;
         private Boolean looped = false;
         private RhythmicDuration noteLength = RhythmicDuration.Quarter;
-        private bool dotted = false;
         private string keyboard_Input = "None";
-        private bool Loaded = false;
+        private bool isLoaded = false;
         private String Selected = "QuarterNote";
         private Object SelectedNote;
         private object DottedSelected;
         private String HoldSelected = "";
         //private MidiTaskScoremodel.Player model.Player;
         private RoutedCommand cmdDelete;
-        private bool isPlaying = false;
-        private bool isPaused = false;
-
-        // private Boolean FreshStart = true;
-
-
         private string[] keySigs = { "F", "C", "G", "D", "A", "E", "B", "F#", "C#", "G#", "D#", "A#", "E#", "Bb", "Eb", "Ab", "Db", "Gb" };
         string[] validBeatsPerMeasure = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
         string[] validBeatLengths = { "2", "4", "8", "16" };
@@ -124,7 +116,7 @@ namespace Piano
         /// <param name="e"></param>
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
-            Loaded = false;
+            isLoaded = false;
             OpenScoreCreationWindow();  // separate the event handler from the function so the function can be called from elsewhere
         }
 
@@ -134,7 +126,7 @@ namespace Piano
         /// </summary>
         private void OpenScoreCreationWindow()
         {
-            if (Loaded == false)
+            if (isLoaded == false)
             {
                 //hide parts of piano
                 Print.Visibility = Visibility.Hidden;
@@ -183,7 +175,7 @@ namespace Piano
         private void createNew(object sender, RoutedEventArgs e)
         {
             // Close the popup
-            Loaded = false;
+            isLoaded = false;
             KeyCover.Visibility = Visibility.Hidden;
             ScoreCreationWindow.Visibility = Visibility.Hidden;
 
@@ -292,7 +284,7 @@ namespace Piano
             try
             {
                 model.loadFile(fileName);
-                Loaded = true;
+                isLoaded = true;
 
                 //reset note selection to quarter note
                 NoteSelectionReset();
@@ -428,9 +420,6 @@ namespace Piano
             string keyName = (((FrameworkElement)e.Source).Name);
             Console.WriteLine(keyName);
             Note note = parseNoteFromInput(keyName);
-            //model.updateView();
-
-            // Add note to staff
             addNoteOrRestToStaff(note);
         }
 
@@ -483,43 +472,43 @@ namespace Piano
             // Get the currently selected note, rest, or staff fragment
             var elem = Viewer.SelectedElement;
             Measure m = model.Data.FirstStaff.Measures.Last();
-            bool isInsertion = false;
+            int indexInStaff = 0;
+            // Append case
             if (elem == null)   // Nothing is selected, add to end of staff
             {
                 model.Data.FirstStaff.Elements.Add(nr);
             }
+            // Insertion case
             else if (elem.GetType().IsSubclassOf(typeof(NoteOrRest))) // A note or rest is selected, so add after
             {   
-                isInsertion = true;
-                int indexInStaff = elem.Staff.Elements.IndexOf(elem);
+                indexInStaff = elem.Staff.Elements.IndexOf(elem);
                 MusicalSymbol nextElem = elem.Staff.Elements[indexInStaff + 1];
-                if (nextElem != null && nextElem.GetType() == typeof(Barline)) indexInStaff++;
-                elem.Staff.Elements.Insert(indexInStaff + 1, nr);
-                //m = elem.Measure;
-                m = elem.Staff.Measures.First(e => e.Elements.Contains(elem));
-
-                // Temporary work-around for Manufactura bug -- remove this line once the bug is fixed
-                m.Staff.Measures.Last().Elements.Remove(nr);
-
-                m.Elements.Insert(m.Elements.IndexOf(elem) + 1, nr);
+                model.insertElement(elem.Staff, indexInStaff + 1, nr);
+                m = elem.Measure;
                 Viewer.SelectedElement = nr;
             }
             else    // Something other than a note or rest is selected
             {
                 elem.Staff.Elements.Add(nr);  // Staff fragment, so add note to end of staff                
             }
-            var newCursor = model.fitMeasures(m);
-            if (newCursor != null) Viewer.SelectedElement = newCursor;
-                model.breakStaffIfNeeded();
+            bool lastNoteBroken = model.fitMeasures(m);
+            if (indexInStaff != 0 
+                && elem.Staff.Elements[indexInStaff + 2].GetType() == typeof(Barline)
+                && lastNoteBroken)
+            {
+                Viewer.SelectedElement = elem.Staff.Elements[indexInStaff + 3];
+            }
+
+            model.breakStaffIfNeeded();
 
             // Play the note
             if (nr.GetType() == typeof(Note))
             {
                 model.PlayNote((Note)nr);
             }
-        }
 
-        
+            model.updateView();
+        }        
 
 
         /// <summary>
@@ -580,7 +569,6 @@ namespace Piano
 
                 //bring in dot and hold color
                 DottedSelected = sender;
-                dotted = true;
                 noteLength.Dots++;
                 ((Rectangle)DottedSelected).Stroke = Brushes.Yellow;
                 Selected = (((FrameworkElement)e.Source).Name);
@@ -828,7 +816,7 @@ namespace Piano
 
 
         /// <summary>
-        /// Deletes the current score and replaces it with a blank default grand staff.
+        /// Deletes the current score and replaces it with a blank default staff.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -846,52 +834,6 @@ namespace Piano
 
         #region Playback
         /**** Code in this region pertains to plaback controls. ****/
-
-
-        /// <summary>
-        /// Plays the current score through the default MIDI model.Player.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private async void PlayButton_Click(object sender, RoutedEventArgs e)
-        {
-            switch (model.Player.State)
-            {
-                case ScorePlayer.PlaybackState.Idle:
-                    do model.Play();
-                    while (looped);
-                    break;
-                case ScorePlayer.PlaybackState.Paused:
-                    await model.Resume();
-                    while (looped) await model.Play();
-                    break;
-                case ScorePlayer.PlaybackState.Playing:
-                    model.Pause();
-                    break;
-                default:
-                    break;
-            }
-        }
-
-
-
-
-        /// <summary>
-        /// Stops MIDI playback.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void StopButton_Click(object sender, RoutedEventArgs e)
-        {
-            bool loopState = looped;
-            looped = false;
-            if (model.Player.State != ScorePlayer.PlaybackState.Idle) model.Stop();
-            System.Threading.Thread.Sleep(10);
-            looped = loopState;
-        }
-
-
-
 
         /// <summary>
         /// loop button
