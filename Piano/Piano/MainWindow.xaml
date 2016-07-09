@@ -36,7 +36,7 @@
                 </Rectangle.RenderTransform>
             </Rectangle>
 
-            <Ellipse Fill="Black" Height="225" Canvas.Left="975" Canvas.Top="295" Width="225"/>
+            <Ellipse Fill="Black" Height="225" Canvas.Left="976" Canvas.Top="293" Width="225"/>
 
             <Rectangle Fill="Black" Height="354" Canvas.Left="864" Canvas.Top="67" Width="203" RenderTransformOrigin="0.5,0.5">
                 <Rectangle.RenderTransform>
@@ -49,7 +49,7 @@
                 </Rectangle.RenderTransform>
             </Rectangle>
 
-            <Ellipse Fill="White" Height="315" Canvas.Left="1028" Canvas.Top="-15" Width="187" />
+            <Ellipse Fill="White" Height="315" Canvas.Left="1028" Canvas.Top="-18" Width="187" />
 
 
 
@@ -75,6 +75,17 @@
                         <PathFigure StartPoint="120,380">
                             <LineSegment Point="1160,380"/>
 
+                        </PathFigure>
+                    </PathGeometry>
+                </Path.Data>
+            </Path>
+            
+            <Path Stroke="Gray" StrokeThickness="1">
+                <Path.Data>
+                    <PathGeometry>
+                        <PathFigure StartPoint="120,10">
+                            <LineSegment Point="970,10"/>
+                            
                         </PathFigure>
                     </PathGeometry>
                 </Path.Data>
@@ -129,6 +140,15 @@
                     </PathGeometry>
                 </Path.Data>
             </Path>
+            <Path Stroke="Gray" StrokeThickness="1">
+                <Path.Data>
+                    <PathGeometry>
+                        <PathFigure StartPoint="120,470">
+                            <LineSegment Point="120,000"/>                            
+                        </PathFigure>
+                    </PathGeometry>
+                </Path.Data>
+            </Path>
 
 
             <!--Piano Right Side-->
@@ -157,6 +177,49 @@
                     </PathGeometry>
                 </Path.Data>
             </Path>
+            
+            <Path Stroke="Gray" StrokeThickness="1">
+                <Path.Data>
+                    <PathGeometry>
+                        <PathFigure StartPoint="1160,460">
+                            <LineSegment Point="1160,319"/>                           
+                        </PathFigure>
+                    </PathGeometry>
+                </Path.Data>
+            </Path>
+
+            <Path Stroke="Gray" StrokeThickness="1">
+                <Path.Data>
+                    <PathGeometry>
+                        <PathFigure StartPoint="1015,150">                            
+                            <ArcSegment Point="1125,315" Size="145,155" RotationAngle="0" IsLargeArc="False"/>
+                        </PathFigure>
+                    </PathGeometry>
+                </Path.Data>
+            </Path>
+
+            <Path Stroke="Gray" StrokeThickness="1">
+                <Path.Data>
+                    <PathGeometry>
+                        <PathFigure StartPoint="1160,335">
+                            <ArcSegment Point="1125,315" Size="80,140" RotationAngle="0" IsLargeArc="False"/>
+                        </PathFigure>
+                    </PathGeometry>
+                </Path.Data>
+            </Path>
+
+            <Path Stroke="Gray" StrokeThickness="1">
+                <Path.Data>
+                    <PathGeometry>
+                        <PathFigure StartPoint="1015,150">
+                            <ArcSegment Point="955,10" Size="145,155" RotationAngle="0" IsLargeArc="False"/>
+                        </PathFigure>
+                    </PathGeometry>
+                </Path.Data>
+            </Path>
+
+            
+
 
             <!--Bench-->
             <Rectangle x:Name="Bench" Fill="Brown" Height="100" Canvas.Left="500" Canvas.Top="635" Width="300"/>
