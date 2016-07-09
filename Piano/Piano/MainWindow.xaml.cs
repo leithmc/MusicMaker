@@ -1,4 +1,4 @@
-using Manufaktura.Controls.Model;
+ing Manufaktura.Controls.Model;
 using Manufaktura.Music.Model;
 using Manufaktura.Controls.Audio;
 using Manufaktura.Controls.Desktop.Audio;
@@ -186,12 +186,12 @@ namespace Piano
             Piano_Black_Keys.Visibility = Visibility.Visible;
             MusicSheet.Visibility = Visibility.Visible;
             Notes_Rest.Visibility = Visibility.Visible;
-            Keyboard_Controls.Visibility = Visibility.Visible;
+            //Keyboard_Controls.Visibility = Visibility.Visible;
             WorkingButtons.Visibility = Visibility.Visible;
 
             //reset note selection to quarter note
             NoteSelectionReset();
-            
+
 
             // Calculate key signature based on selected value from array
             // If selected index < 13, keyIndex - seleted index -1, else keyIndex = selected index
@@ -296,7 +296,7 @@ namespace Piano
                 Print.Visibility = Visibility.Visible;
                 MusicSheet.Visibility = Visibility.Visible;
                 Notes_Rest.Visibility = Visibility.Visible;
-                Keyboard_Controls.Visibility = Visibility.Visible;
+               // Keyboard_Controls.Visibility = Visibility.Visible;
                 Piano_KeyBoard_layout.Visibility = Visibility.Visible;
                 Piano_White_Keys.Visibility = Visibility.Visible;
                 Piano_Black_Keys.Visibility = Visibility.Visible;
@@ -361,7 +361,7 @@ namespace Piano
             MusicSheet.Margin = new Thickness(225, 75, 0, 0);
             MusicSheet.Visibility = Visibility.Visible;
         }
-        
+
 
         #endregion
 
@@ -383,7 +383,7 @@ namespace Piano
         /// <param name="e"></param>
         private void keyOver(object sender, MouseEventArgs e) { ((Rectangle)sender).Fill = Brushes.Aqua; }
 
-        
+
 
 
         /// <summary>
@@ -480,7 +480,7 @@ namespace Piano
             }
             // Insertion case
             else if (elem.GetType().IsSubclassOf(typeof(NoteOrRest))) // A note or rest is selected, so add after
-            {   
+            {
                 indexInStaff = elem.Staff.Elements.IndexOf(elem);
                 MusicalSymbol nextElem = elem.Staff.Elements[indexInStaff + 1];
                 model.insertElement(elem.Staff, indexInStaff + 1, nr);
@@ -492,7 +492,7 @@ namespace Piano
                 elem.Staff.Elements.Add(nr);  // Staff fragment, so add note to end of staff                
             }
             bool lastNoteBroken = model.fitMeasures(m);
-            if (indexInStaff != 0 
+            if (indexInStaff != 0
                 && elem.Staff.Elements[indexInStaff + 2].GetType() == typeof(Barline)
                 && lastNoteBroken)
             {
@@ -508,7 +508,7 @@ namespace Piano
             }
 
             model.updateView();
-        }        
+        }
 
 
         /// <summary>
@@ -557,7 +557,7 @@ namespace Piano
                     DottedSelected = null;
                 }
             }
-        
+
 
             if (NoteName == "Dot")
             {
@@ -587,7 +587,7 @@ namespace Piano
                 {
                     ((Rectangle)SelectedNote).Stroke = Brushes.White;
                 }
-                
+
                 SelectedNote = sender;
 
                 Selected = (((FrameworkElement)e.Source).Name);
@@ -595,7 +595,7 @@ namespace Piano
                 ((Rectangle)sender).Stroke = Brushes.Yellow;
             }
 
-            
+
         }
 
 
@@ -616,7 +616,7 @@ namespace Piano
             HoldSelected = "";
             Selected = "QuarterNote";
 
-            if(SelectedNote != PreviousSelected)
+            if (SelectedNote != PreviousSelected)
             {
 
                 ((Rectangle)PreviousSelected).Stroke = Brushes.White;
@@ -637,7 +637,7 @@ namespace Piano
         {
             string NoteRestName = (((FrameworkElement)e.Source).Name);
 
-            
+
 
             RhythmicDuration previousNoteLength = noteLength;
 
@@ -697,7 +697,7 @@ namespace Piano
         private void NoteMouseEnter(object sender, MouseEventArgs e)
         {
             String Over = (((FrameworkElement)e.Source).Name);
-            if (Over == Selected || Over ==HoldSelected)
+            if (Over == Selected || Over == HoldSelected)
             {
                 return;
             }
@@ -709,7 +709,7 @@ namespace Piano
 
         }
 
-        
+
 
 
         /// <summary>
