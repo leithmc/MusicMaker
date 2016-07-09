@@ -217,7 +217,7 @@
 
 
             <Canvas x:Name="WorkingButtons"  Canvas.Top="90" Canvas.Left="230" Visibility="Visible">
-                <Button x:Name="Loop" Canvas.Left="280" Canvas.Top="342" Width="26" Height="20" Background="White" Click="LoopButton_Click">
+                <Button x:Name="Loop" Visibility="Hidden" Canvas.Left="280" Canvas.Top="342" Width="26" Height="20" Background="White" Click="LoopButton_Click">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Width="26">
                         <Image Source="/Resources/Images/Loop.png" Width="25" Height="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </StackPanel>
@@ -234,12 +234,12 @@
 
             <!-- Beat Length-->
             <Canvas x:Name="Notes_Rest" Visibility="Hidden" Width="287" Height="80" Canvas.Top="645" Canvas.Left="506.5">
-                
+
                 <Rectangle x:Name="WholeNote" Height="40" Width="40"  Stroke="White" StrokeThickness="4" MouseDown="NoteLengthSelection" MouseEnter="NoteMouseEnter" MouseLeave="NoteMouseLeave">
                     <Rectangle.Fill>
                         <ImageBrush ImageSource="Resources\Images\Whole_note.jpg"/>
                     </Rectangle.Fill>
-                </Rectangle>                
+                </Rectangle>
 
                 <Rectangle x:Name="HalfNote" Height="40" Width="40" Canvas.Left="41" Stroke="White" StrokeThickness="4" MouseDown="NoteLengthSelection" MouseEnter="NoteMouseEnter" MouseLeave="NoteMouseLeave">
                     <Rectangle.Fill>
