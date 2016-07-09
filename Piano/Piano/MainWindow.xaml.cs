@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using LData;
 
 namespace Piano
 {
@@ -63,7 +64,7 @@ namespace Piano
             // Initialize the view model
             model = new ScoreVM();
             DataContext = model;
-            model.loadStartData();
+            //model.loadStartData(); // Don't need anymore?
 
             // Iinitialize the model.Player
             //model.Player = new MidiTaskScoremodel.Player(model.Data);
@@ -86,15 +87,10 @@ namespace Piano
         private void delete(object sender, ExecutedRoutedEventArgs e)
         {
             var elem = Viewer.SelectedElement;
-            if (elem != null && elem.GetType().IsSubclassOf(typeof(NoteOrRest)))
+            if (elem != null & elem.Staff.Elements.Contains(elem))
             {
-                Staff s = elem.Staff;
-                Measure m = elem.Measure;
-                if (s != null) s.Elements.Remove(elem);
-                if (m != null) m.Elements.Remove(elem);
-                model.fitMeasures(m);
-                model.breakStaffIfNeeded();
                 Viewer.SelectedElement = null;
+                model.staves[model.Data.Staves.IndexOf(elem.Staff)].Remove(elem);
             }
             else MessageBox.Show("You must select a note or rest to delete. To delete all, click the Reset button.");
         }
@@ -423,6 +419,19 @@ namespace Piano
             addNoteOrRestToStaff(note);
         }
 
+        private LStaff getLStaff(MusicalSymbol elem)
+        {
+            if (elem == null) return model.staves[0];
+            int index = model.Data.Staves.IndexOf(elem.Staff);
+            return model.staves[index];
+        }
+
+        private bool isValidTarget(MusicalSymbol elem)
+        {
+            if (elem == null) return false;
+            return (elem.GetType().IsSubclassOf(typeof(NoteOrRest)));
+        }
+
 
 
         /// <summary>
@@ -469,37 +478,19 @@ namespace Piano
         /// <param name="nr">The note to add</param>
         private void addNoteOrRestToStaff(NoteOrRest nr)
         {
-            // Get the currently selected note, rest, or staff fragment
+            // New for LStaff
             var elem = Viewer.SelectedElement;
-            Measure m = model.Data.FirstStaff.Measures.Last();
-            int indexInStaff = 0;
-            // Append case
-            if (elem == null)   // Nothing is selected, add to end of staff
+            LStaff staff = getLStaff(elem);
+            if (isValidTarget(elem))
             {
-                model.Data.FirstStaff.Elements.Add(nr);
+                LMeasure measure = staff.FirstOrDefault(m => m.Contains(elem));
+                staff.AddAfter(elem, nr);
+                if (measure.Contains(nr)) Viewer.SelectedElement = nr;
+                else if (measure.Node.Next != null && measure.Node.Next.Value.Count > 0)
+                    Viewer.SelectedElement = measure.Node.Next.Value.First.Value;
             }
-            // Insertion case
-            else if (elem.GetType().IsSubclassOf(typeof(NoteOrRest))) // A note or rest is selected, so add after
-            {   
-                indexInStaff = elem.Staff.Elements.IndexOf(elem);
-                MusicalSymbol nextElem = elem.Staff.Elements[indexInStaff + 1];
-                model.insertElement(elem.Staff, indexInStaff + 1, nr);
-                m = elem.Measure;
-                Viewer.SelectedElement = nr;
-            }
-            else    // Something other than a note or rest is selected
-            {
-                elem.Staff.Elements.Add(nr);  // Staff fragment, so add note to end of staff                
-            }
-            bool lastNoteBroken = model.fitMeasures(m);
-            if (indexInStaff != 0 
-                && elem.Staff.Elements[indexInStaff + 2].GetType() == typeof(Barline)
-                && lastNoteBroken)
-            {
-                Viewer.SelectedElement = elem.Staff.Elements[indexInStaff + 3];
-            }
-
-            model.breakStaffIfNeeded();
+            else staff.Add(nr);
+            //// model.breakStaffIfNeeded();
 
             // Play the note
             if (nr.GetType() == typeof(Note))
@@ -669,7 +660,7 @@ namespace Piano
 
             // Add the rest to the score
             addNoteOrRestToStaff(new Rest(noteLength));
-
+            
             // Restore to previous value
             noteLength = previousNoteLength;
         }

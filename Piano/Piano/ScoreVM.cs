@@ -20,6 +20,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Manufaktura.Controls.Audio;
 using Manufaktura.Controls.Desktop.Audio;
 using Manufaktura.Controls.Desktop;
+using LData;
 
 namespace Piano
 {
@@ -33,6 +34,8 @@ namespace Piano
         public StopCommand StopCommand { get; }
 
         private Score data;
+
+        internal List<LStaff> staves;
 
         public ScoreVM()
         {
@@ -116,6 +119,10 @@ namespace Piano
             // Set time sig to 4/4
             timeSig = TimeSignature.CommonTime;
             score.FirstStaff.Elements.Add(timeSig);
+
+            // SHIFT TO LSTAVES
+            staves = new List<LStaff>();
+            staves.Add(new LStaff(score.FirstStaff, Clef.Treble, keySig, timeSig));
             return score;
         }
 
@@ -206,13 +213,15 @@ namespace Piano
         {
             Score score = Score.CreateOneStaffScore();
             MusicalSymbol[] elements = { Clef.Treble, key, timeSig }; // Add treble clef, key sig, time sig
+            staves = new List<LStaff>();
+            staves.Add(new LStaff(score.FirstStaff, Clef.Treble, key, timeSig));
             for (int i = 0; i < 3; i++) score.FirstStaff.Elements.Add(elements[i]);
-
+ 
             // See if this fixes wrap around
-            foreach (var system in score.Systems)
-            {
-                system.Width = 4;
-            }
+            //foreach (var system in score.Systems)
+            //{
+            //    system.Width = 4;
+            //}
 
             Data = null;
             Data = score;
@@ -282,236 +291,6 @@ namespace Piano
         }
 
 
-        // EXPERIMENTAL
-        internal bool fitMeasures(Measure editedMeasure) // Still need to add support for deletion
-        {
-            Staff staff = editedMeasure.Staff;
-            bool lastNoteBroken = false;
-            
-            // Last measure case
-            if (editedMeasure.Number == staff.Measures.Count)
-            {
-                double overage = getOverage(editedMeasure);
-                if (overage >= 0)
-                    staff.Elements.Add(new Barline());
-                if (overage <= 0) return false;
-            }
-
-            for (int i = staff.Measures.IndexOf(editedMeasure); i < staff.Measures.Count; i++)
-            {
-                Measure m = staff.Measures[i];
-                if (getOverage(m) == 0) break;
-
-                // Deletion case
-                while (getOverage(m) < 0 && canStealNotes(m))
-                {
-                    stealNoteOrRest(m);
-                }
-
-                // Insertion case
-                while (getOverage(m) >= 0)
-                {
-                    //if (m.Number == staff.Measures.Count) staff.Elements.Add(new Barline());
-                    double overage = getOverage(m);
-                    if (overage == 0) break;
-
-                    NoteOrRest lastNoteOrRest = (NoteOrRest) m.Elements.Last(e => e.GetType().IsSubclassOf(typeof(NoteOrRest)));
-                    NoteOrRest itemToMove, itemInPlace = null;   // The last note or portion thereof that doesn't fit in the current measure
-                    double lastDurationValue = lastNoteOrRest.Duration.ToDouble();  // Value of last note or rest in measure
-                    int lastItemIndex = staff.Elements.IndexOf(lastNoteOrRest); // Index of last note or rest in the measure
-
-                    if (lastNoteOrRest.GetType() == typeof(Note))
-                    {
-                        if (lastDurationValue > overage) itemInPlace = new Note(((Note)lastNoteOrRest).Pitch, toRhythmicDuration(lastDurationValue - overage));
-                        itemToMove = new Note(((Note)lastNoteOrRest).Pitch, toRhythmicDuration(overage)); // Remaining note value
-                    }
-                    else
-                    {
-                        if (lastDurationValue > overage) itemInPlace = new Rest(toRhythmicDuration(lastDurationValue - overage));
-                        itemToMove = new Rest(toRhythmicDuration(overage));
-                    }
-
-                    staff.Elements.Remove(lastNoteOrRest);
-                    m.Elements.Remove(lastNoteOrRest);
-
-                    if (itemInPlace != null) insertElement(staff, lastItemIndex, itemInPlace);
-                    
-                    if (m.Number == staff.Measures.Count)
-                    {
-                        staff.Elements.Add(new Barline());
-                        staff.Elements.Add(itemToMove);
-                    }
-
-                    else if (staff.Measures[i + 1].Elements.Count == 0) staff.Elements.Add(itemToMove);
-                    
-                    else
-                    {
-                        int destIndexInStaff = staff.Elements.IndexOf(staff.Measures[i + 1].Elements[0]);
-                        insertElement(staff, destIndexInStaff, itemToMove);
-                    }
-                    //getNextMeasure(m).Elements.Insert(0, itemToMove);
-                    if (m == editedMeasure && itemInPlace != null) lastNoteBroken = true;
-                }
-            }
-            //breakStaffIfNeeded();
-            return lastNoteBroken; 
-        }
-
-        // Replaces the buggy Staff.Elements.Insert method
-        internal void insertElement(Staff staff, int index, MusicalSymbol elem)
-        {
-            staff.Elements.Insert(index, elem);
-            staff.Measures.Last().Elements.Remove(elem);
-
-            var prevElem = staff.Elements[index - 1];
-            Measure prevElemMeasure = prevElem.Measure;
-            Measure targetMeasure;
-            int indexInMeasure;
-            if (prevElem.GetType() == typeof(Barline))
-            {
-                targetMeasure = staff.Measures[staff.Measures.IndexOf(prevElemMeasure) + 1];
-                indexInMeasure = 0;
-            }
-            else
-            {
-                targetMeasure = prevElemMeasure;
-                indexInMeasure = prevElemMeasure.Elements.IndexOf(prevElem) + 1;
-            }
-
-            targetMeasure.Elements.Insert(indexInMeasure, elem);
-        }
-
-        private bool canStealNotes(Measure m)
-        {
-            Measure last = m.Staff.Measures[m.Staff.Measures.Count - 1];
-            if (m.Number == 1
-                || m == last
-                || last == null
-                || last.Elements == null
-                || !last.Elements.Any(e => e.GetType().IsSubclassOf(typeof(NoteOrRest))))
-                return false;
-            else return true;
-        }
-
-
-
-
-        /// <summary>
-        /// Adds a barline to the current measure if needed, and breaks the last note of the measure if it
-        /// exceeds the allowed beats/measure, inserting the remainder into the next measure. Then recursively calls
-        /// itself on subsequent measures until it hits a measure that does not overflow.
-        /// </summary>
-        /// <param name="m"></param>
-        /// <param name="ts"></param>
-        //internal void fitMeasureOldVersion(Measure m, TimeSignature ts) // Still need to add support for deletion
-        //{
-        //    bool nextMeasureChanged = false;
-        //    Staff staff = m.Staff;
-        //    int measureIndex = staff.Measures.IndexOf(m);
-            
-
-        //    #region TimeSigs
-        //    foreach (MusicalSymbol item in m.Elements)
-        //    {
-        //        // If new time signature, update
-        //        if (item.GetType() == typeof(TimeSignature)) ts = (TimeSignature)item;
-
-        //        // Make sure that any cleffs and signatures are at the beginning of the measure, before notes and rests
-        //        if (item.GetType() == typeof(TimeSignature) || item.GetType() == typeof(Key) || item.GetType() == typeof(Clef))
-        //        {
-        //            NoteOrRest firstBeat = getFirstBeat(m);
-        //            if (m.Elements.IndexOf(firstBeat) < m.Elements.IndexOf(item)) swapPositions(staff, item, firstBeat);
-        //        }
-        //    }
-        //    #endregion
-
-        //    #region deletion
-        //    // While the current measure is not full and is not the end of the song, steal the first beat from the next measure
-        //    while (getDurations(m).Sum() < ts.WholeNoteCapacity
-        //        && m.Number < staff.Measures.Count
-        //        && getFirstBeat(getNextMeasure(m)) != null)
-        //    {
-        //        Measure next = getNextMeasure(m);
-        //        NoteOrRest nr = getFirstBeat(next);
-        //        int destIndex = staff.Elements.IndexOf(m.Elements.Last(e => e.GetType().IsSubclassOf(typeof(NoteOrRest)))) + 1;
-        //        stealNoteOrRest(nr, destIndex);
-        //        nextMeasureChanged = true;
-        //    } 
-        //    #endregion
-
-        //    //**********THIS STILL NEEDS SOME WORK******
-        //    //    Insertion is putting barlines in funny places
-        //    // I think the recursion is putting barlines progressively closer together
-
-        //    // While the current measure has too many beats, push the extra into the next measure
-        //    while (getDurations(m).Sum() > ts.WholeNoteCapacity)
-        //    {
-        //        double overage = getOverage(m, ts);     // How much the content of the current measure exceeds its alloted time
-        //        NoteOrRest lastNoteOrRest = (NoteOrRest)m.Elements.Last(e => e.GetType().IsSubclassOf(typeof(NoteOrRest))); // Last note or rest in measure
-        //        double lastDurationValue = lastNoteOrRest.Duration.ToDouble();  // Value of last note or rest in measure
-        //        int lastItemIndex = staff.Elements.IndexOf(lastNoteOrRest); // Index of last note or rest in the measure
-        //        NoteOrRest itemToMove = null;   // The last note or portion thereof that doesn't fit in the current measure
-
-        //        // If the overage is because the last note is too big, break it into two notes
-        //        if (lastDurationValue > overage)
-        //        {
-        //            NoteOrRest itemInPlace;     // Shortened version of lastNoteOrRest that fits in currrent measure
-        //            if (lastNoteOrRest.GetType() == typeof(Note))
-        //            {
-        //                itemInPlace = new Note(((Note)lastNoteOrRest).Pitch, toRhythmicDuration(lastDurationValue - overage));
-        //                itemToMove = new Note(((Note)lastNoteOrRest).Pitch, toRhythmicDuration(overage)); // Remaining note value
-        //            }
-        //            else
-        //            {
-        //                itemInPlace = new Rest(toRhythmicDuration(lastDurationValue - overage));
-        //                itemToMove = new Rest(toRhythmicDuration(overage));
-        //            }
-        //            // Have to remove lastNoteOrRest from both the staff and the measure
-        //            staff.Elements.Remove(lastNoteOrRest);
-        //            m.Elements.Remove(lastNoteOrRest);
-        //            // Replace with shortened version, automatically populates to measure when adding
-        //            staff.Elements.Insert(lastItemIndex, itemInPlace);
-        //        }
-        //        else
-        //        {
-        //            itemToMove = lastNoteOrRest;
-        //            staff.Elements.Remove(lastNoteOrRest);
-        //            m.Elements.Remove(lastNoteOrRest);
-        //            lastItemIndex--;
-        //        }
-
-        //        // Refresh the updated measure in the staff.measures collection
-        //        Barline bar = moveOrAddBarlineAfter(staff.Elements[lastItemIndex]);
-
-        //        // Add itemToMove after the barline
-        //        staff.Elements.Insert(lastItemIndex + 2, itemToMove);
-
-        //        // Add it to the measure as well if it's not already there
-        //        Measure nextMeasure = getNextMeasure(m);
-        //        if (!nextMeasure.Elements.Contains(itemToMove)) nextMeasure.Elements.Insert(0, itemToMove);
-
-        //        // set the flag to check the next measure
-        //        nextMeasureChanged = true;
-        //    }
-
-        //    // If there are changes to the next measure, fix it.
-        //    if (nextMeasureChanged) fitMeasures(getNextMeasure(m), ts);
-        //}
-
-        // Removes the first note or rest from the next measure and adds it to the current measure.
-        private void stealNoteOrRest(Measure m)
-        {
-            Staff staff = m.Staff;
-            Measure nextMeasure = getNextMeasure(m);
-            NoteOrRest itemToSteal = getFirstBeat(nextMeasure);
-            NoteOrRest lastBeat = (NoteOrRest) m.Elements.Last(e => e.GetType().IsSubclassOf(typeof(NoteOrRest)));
-            int insertionPoint = staff.Elements.IndexOf(lastBeat) + 1;
-
-            m.Elements.Remove(itemToSteal);
-            staff.Elements.Remove(itemToSteal);
-            staff.Elements.Insert(insertionPoint, itemToSteal);
-        }
-
         // Helper methods to get the next measure and the first note or rest in a measure
         private Measure getNextMeasure(Measure m) { return m.Staff.Measures.Find(m2 => m2.Number == m.Number + 1); }
         private NoteOrRest getFirstBeat(Measure m) { return (NoteOrRest) m.Elements.Find(e => e.GetType().IsSubclassOf(typeof(NoteOrRest))); }
@@ -561,60 +340,12 @@ namespace Piano
             m.Elements.RemoveAll(e => e.GetType() == typeof(PrintSuggestion));
         }
 
-        // Returns the total beat durations of notes and rests in the measure minus the allowed amount
-        private double getOverage(Measure m) {  return getDurations(m).Sum() - timeSig.WholeNoteCapacity; }
-
         // Returns the last note or rest in the measure
         private NoteOrRest getLast(Measure m)
         {
             for (int i = m.Elements.Count - 1; i >= 0; i--)
                 if (m.Elements[i].GetType().IsSubclassOf(typeof(NoteOrRest))) return (NoteOrRest) m.Elements[i];
             return null;
-        }
-
-        // Helper method to switch positions of elements on a staff
-        private void swapPositions(Staff staff, MusicalSymbol item1, MusicalSymbol item2)
-        {
-            int pos1 = staff.Elements.IndexOf(item1);
-            int pos2 = staff.Elements.IndexOf(item2);
-            staff.Elements.Remove(item1);
-            staff.Elements.Insert(pos2, item1);
-            staff.Elements.Remove(item2);
-            staff.Elements.Insert(pos1, item2);
-        }
-
-        // Helper method to convert a double to a RhythmicDuration object.
-        private RhythmicDuration toRhythmicDuration(double d)
-        {
-            RhythmicDuration rd;
-            // Check fractions down to 1/32 and convert to the base note type
-            if (d >= 1) rd = RhythmicDuration.Whole;
-            else if (d >= .5) rd = RhythmicDuration.Half;
-            else if (d >= .25) rd = RhythmicDuration.Quarter;
-            else if (d >= .125) rd = RhythmicDuration.Eighth;
-            else if (d >= .0625) rd = RhythmicDuration.Sixteenth;
-            else rd = RhythmicDuration.D32nd;
-
-            // Fill in dots if needed
-            while (DottedValue(rd) < d)
-            {
-                var v = DottedValue(rd);
-                rd.Dots++;
-            }
-
-            return rd;
-        }
-
-        private double DottedValue(RhythmicDuration rd)
-        {
-            double d = rd.WithoutDots.ToDouble();
-            double dot = d / 2;
-            for (int i = 0; i < rd.Dots ; i++)
-            {
-                d += dot;
-                dot = dot / 2;
-            }
-            return d;
         }
 
         public void PlayNote(Note note)
