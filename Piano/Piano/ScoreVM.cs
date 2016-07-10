@@ -190,7 +190,7 @@ namespace Piano
                 this.staves = new List<LStaff>();
                 foreach (var staff in score.Staves)
                 {
-                    LStaff ls = new LStaff(staff);
+                    LStaff ls = new LStaff(staff, null, null, timeSig);
                     foreach (var measure in staff.Measures)
                     {
                         LMeasure m = new LMeasure(measure.Elements, ls, timeSig.WholeNoteCapacity);
@@ -442,6 +442,7 @@ namespace Piano
         public override void Execute(object parameter)
         {
             viewModel.Player?.Stop();
+            viewModel.updateView();
         }
     }
 }

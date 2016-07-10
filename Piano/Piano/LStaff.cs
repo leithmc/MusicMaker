@@ -22,7 +22,7 @@
                 List<MusicalSymbol> symbols = new List<MusicalSymbol>() { clef, key, timeSig };
                 if (symbols.Any(e => e != null))
                 {
-                    LMeasure measure = new LMeasure(this);
+                    LMeasure measure = new LMeasure(this, measureDuration);
                     foreach (var sym in symbols) if (sym != null) measure.Add(sym);
                     base.AddLast(measure);
                 }

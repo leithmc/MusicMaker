@@ -51,7 +51,7 @@ namespace LData
         /// </summary>
         /// <param name="staff">The LStaff object that contains or will contain the LMeasure.</param>
         /// <param name="capacity">The number of whole notes that can fit into the measure. Default = 1.</param>
-        internal LMeasure(LStaff staff, double capacity = 0) : this(new List<MusicalSymbol>(), staff, capacity = 1) { }
+        internal LMeasure(LStaff staff, double capacity = 1) : this(new List<MusicalSymbol>(), staff, capacity) { }
 
 
 
