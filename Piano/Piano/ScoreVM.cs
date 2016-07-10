@@ -185,6 +185,19 @@ namespace Piano
                 if (KeySig == null) KeySig = new Key(0);
                 timeSig = (TimeSignature) score.FirstStaff.Elements.First(k => k.GetType() == typeof(TimeSignature));
                 if (timeSig == null) timeSig = TimeSignature.CommonTime;
+
+                // Set up the back end data model
+                this.staves = new List<LStaff>();
+                foreach (var staff in score.Staves)
+                {
+                    LStaff ls = new LStaff(staff);
+                    foreach (var measure in staff.Measures)
+                    {
+                        LMeasure m = new LMeasure(measure.Elements, ls, timeSig.WholeNoteCapacity);
+                        ls.AddLast(m);
+                    }
+                    this.staves.Add(ls);
+                }
             }
             else throw new FileNotFoundException(fileName + " not found."); //This and any parser exceptions will be caught by the calling function
         }

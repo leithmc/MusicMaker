@@ -182,7 +182,7 @@ namespace Piano
             Piano_Black_Keys.Visibility = Visibility.Visible;
             MusicSheet.Visibility = Visibility.Visible;
             Notes_Rest.Visibility = Visibility.Visible;
-            Keyboard_Controls.Visibility = Visibility.Visible;
+            Keyboard_Controls.Visibility = Visibility.Hidden;
             WorkingButtons.Visibility = Visibility.Visible;
 
             //reset note selection to quarter note
@@ -292,7 +292,7 @@ namespace Piano
                 Print.Visibility = Visibility.Visible;
                 MusicSheet.Visibility = Visibility.Visible;
                 Notes_Rest.Visibility = Visibility.Visible;
-                Keyboard_Controls.Visibility = Visibility.Visible;
+                Keyboard_Controls.Visibility = Visibility.Hidden;
                 Piano_KeyBoard_layout.Visibility = Visibility.Visible;
                 Piano_White_Keys.Visibility = Visibility.Visible;
                 Piano_Black_Keys.Visibility = Visibility.Visible;
@@ -814,6 +814,9 @@ namespace Piano
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
             model.Data = null;
+
+            model.updateView();
+
             model.createNew(model.KeySig, model.TimeSig);
             Viewer.ScoreSource = model.Data;
             model.ResetPlayer();

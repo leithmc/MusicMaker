@@ -91,14 +91,14 @@
             staff.Elements.Clear();
             foreach (Measure m in staff.Measures) m.Elements.Clear();
             staff.Measures.Clear();
+
             foreach (LMeasure m in this)
             {
                 foreach (var elem in m)
                 {
                     staff.Elements.Add(elem);
                 }
-            }
-            
+            }            
         }
 
         private void updateSysytemBreaks()
@@ -108,14 +108,14 @@
             {
                 var ps = m.FirstOrDefault(e => e.GetType() == typeof(PrintSuggestion));
                 if (ps != null) m.Remove(ps);
-                if (i > 3 && (i % 4) + 1 == 0)
+                if (i > 3 && i % 4 == 0)
                 {
                     if (ps == null)
                     {
                         ps = new PrintSuggestion();
                         ((PrintSuggestion)ps).IsSystemBreak = true;
                     }
-                    m.AddLast(ps);
+                    ((LinkedList<MusicalSymbol>) m).AddFirst(ps);
                 }
                 i++;
             }
