@@ -3,15 +3,12 @@
 <score-partwise version="3.0">
   <identification>
     <software>Manufaktura.Controls</software>
-    <encoding-date>07/09/2016 17:06:14</encoding-date>
+    <encoding-date>07/10/2016 15:12:45</encoding-date>
   </identification>
   <defaults />
   <part-list>
     <score-part id="01">
-      <part-name>FirstPart</part-name>
-    </score-part>
-    <score-part id="01">
-      <part-name>FirstPart</part-name>
+      <part-name />
     </score-part>
     <score-part id="01">
       <part-name>FirstPart</part-name>
@@ -28,10 +25,83 @@
           <fifths>0</fifths>
         </key>
         <time>
-          <beats>4</beats>
+          <beats>3</beats>
           <beat-type>4</beat-type>
         </time>
       </attributes>
+      <note>
+        <pitch>
+          <step>C</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>F</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>4</octave>
+          <alter>-1</alter>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <barline />
+    </measure>
+    <measure number="2">
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>F</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>D</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <barline />
+    </measure>
+    <measure number="3">
       <note>
         <pitch>
           <step>B</step>
@@ -40,7 +110,7 @@
         <duration>1</duration>
         <voice>1</voice>
         <type>quarter</type>
-        <stem>up</stem>
+        <stem default-y="28">up</stem>
         <beam number="1">single</beam>
       </note>
       <note>
@@ -51,43 +121,7 @@
         <duration>1</duration>
         <voice>1</voice>
         <type>quarter</type>
-        <stem>up</stem>
-        <beam number="1">single</beam>
-      </note>
-      <note>
-        <pitch>
-          <step>D</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        <beam number="1">single</beam>
-      </note>
-      <note>
-        <pitch>
-          <step>D</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        <beam number="1">single</beam>
-      </note>
-      <barline />
-    </measure>
-    <measure number="2">
-      <note>
-        <pitch>
-          <step>D</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
+        <stem default-y="28">up</stem>
         <beam number="1">single</beam>
       </note>
       <note>
@@ -98,12 +132,239 @@
         <duration>1</duration>
         <voice>1</voice>
         <type>quarter</type>
-        <stem>up</stem>
+        <stem default-y="28">up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <barline />
+    </measure>
+    <measure number="4">
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>4</octave>
+          <alter>-1</alter>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>B</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>C</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <barline />
+    </measure>
+    <measure number="5">
+      <print new-system="yes" />
+      <note>
+        <pitch>
+          <step>D</step>
+          <octave>5</octave>
+          <alter>-1</alter>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>D</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
         <beam number="1">single</beam>
       </note>
       <note>
         <pitch>
           <step>E</step>
+          <octave>5</octave>
+          <alter>-1</alter>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <barline />
+    </measure>
+    <measure number="6">
+      <note>
+        <pitch>
+          <step>E</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>F</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>G</step>
+          <octave>5</octave>
+          <alter>1</alter>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <barline />
+    </measure>
+    <measure number="7">
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem>up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem>up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem>up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <barline />
+    </measure>
+    <measure number="8">
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>B</step>
+          <octave>5</octave>
+          <alter>-1</alter>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>B</step>
+          <octave>5</octave>
+          <alter>-1</alter>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <barline />
+    </measure>
+    <measure number="9">
+      <print new-system="yes" />
+      <note>
+        <pitch>
+          <step>B</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>C</step>
+          <octave>6</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>D</step>
+          <octave>6</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <barline />
+    </measure>
+    <measure number="10">
+      <note>
+        <pitch>
+          <step>G</step>
           <octave>4</octave>
         </pitch>
         <duration>1</duration>
@@ -114,7 +375,18 @@
       </note>
       <note>
         <pitch>
-          <step>F</step>
+          <step>G</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem>up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>G</step>
           <octave>4</octave>
         </pitch>
         <duration>1</duration>
@@ -125,10 +397,10 @@
       </note>
       <barline />
     </measure>
-    <measure number="3">
+    <measure number="11">
       <note>
         <pitch>
-          <step>F</step>
+          <step>A</step>
           <octave>4</octave>
         </pitch>
         <duration>1</duration>
@@ -139,40 +411,29 @@
       </note>
       <note>
         <pitch>
-          <step>F</step>
+          <step>B</step>
           <octave>4</octave>
         </pitch>
         <duration>1</duration>
         <voice>1</voice>
         <type>quarter</type>
-        <stem>up</stem>
+        <stem>down</stem>
         <beam number="1">single</beam>
       </note>
       <note>
         <pitch>
-          <step>F</step>
-          <octave>4</octave>
+          <step>C</step>
+          <octave>5</octave>
         </pitch>
         <duration>1</duration>
         <voice>1</voice>
         <type>quarter</type>
-        <stem>up</stem>
-        <beam number="1">single</beam>
-      </note>
-      <note>
-        <pitch>
-          <step>F</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
+        <stem>down</stem>
         <beam number="1">single</beam>
       </note>
       <barline />
     </measure>
-    <measure number="4" />
+    <measure number="12" />
   </part>
   <part id="01">
     <measure number="1">
@@ -185,10 +446,83 @@
           <fifths>0</fifths>
         </key>
         <time>
-          <beats>4</beats>
+          <beats>3</beats>
           <beat-type>4</beat-type>
         </time>
       </attributes>
+      <note>
+        <pitch>
+          <step>C</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>F</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>4</octave>
+          <alter>-1</alter>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <barline />
+    </measure>
+    <measure number="2">
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>F</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>D</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <barline />
+    </measure>
+    <measure number="3">
       <note>
         <pitch>
           <step>B</step>
@@ -197,7 +531,7 @@
         <duration>1</duration>
         <voice>1</voice>
         <type>quarter</type>
-        <stem>up</stem>
+        <stem default-y="28">up</stem>
         <beam number="1">single</beam>
       </note>
       <note>
@@ -208,43 +542,7 @@
         <duration>1</duration>
         <voice>1</voice>
         <type>quarter</type>
-        <stem>up</stem>
-        <beam number="1">single</beam>
-      </note>
-      <note>
-        <pitch>
-          <step>D</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        <beam number="1">single</beam>
-      </note>
-      <note>
-        <pitch>
-          <step>D</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        <beam number="1">single</beam>
-      </note>
-      <barline />
-    </measure>
-    <measure number="2">
-      <note>
-        <pitch>
-          <step>D</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
+        <stem default-y="28">up</stem>
         <beam number="1">single</beam>
       </note>
       <note>
@@ -255,100 +553,128 @@
         <duration>1</duration>
         <voice>1</voice>
         <type>quarter</type>
-        <stem>up</stem>
-        <beam number="1">single</beam>
-      </note>
-      <note>
-        <pitch>
-          <step>E</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        <beam number="1">single</beam>
-      </note>
-      <note>
-        <pitch>
-          <step>F</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
+        <stem default-y="28">up</stem>
         <beam number="1">single</beam>
       </note>
       <barline />
     </measure>
-    <measure number="3">
+    <measure number="4">
       <note>
         <pitch>
-          <step>F</step>
+          <step>A</step>
           <octave>4</octave>
+          <alter>-1</alter>
         </pitch>
         <duration>1</duration>
         <voice>1</voice>
         <type>quarter</type>
-        <stem>up</stem>
+        <stem default-y="28">up</stem>
         <beam number="1">single</beam>
       </note>
-      <note>
-        <pitch>
-          <step>F</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        <beam number="1">single</beam>
-      </note>
-      <note>
-        <pitch>
-          <step>F</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        <beam number="1">single</beam>
-      </note>
-      <note>
-        <pitch>
-          <step>F</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        <beam number="1">single</beam>
-      </note>
-      <barline />
-    </measure>
-    <measure number="4" />
-  </part>
-  <part id="01">
-    <measure number="1">
-      <attributes>
-        <clef>
-          <sign>G</sign>
-          <line>2</line>
-        </clef>
-        <key>
-          <fifths>0</fifths>
-        </key>
-        <time>
-          <beats>4</beats>
-          <beat-type>4</beat-type>
-        </time>
-      </attributes>
       <note>
         <pitch>
           <step>B</step>
+          <octave>4</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>C</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <barline />
+    </measure>
+    <measure number="5">
+      <print new-system="yes" />
+      <note>
+        <pitch>
+          <step>D</step>
+          <octave>5</octave>
+          <alter>-1</alter>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>D</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>E</step>
+          <octave>5</octave>
+          <alter>-1</alter>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <barline />
+    </measure>
+    <measure number="6">
+      <note>
+        <pitch>
+          <step>E</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>F</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>G</step>
+          <octave>5</octave>
+          <alter>1</alter>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <barline />
+    </measure>
+    <measure number="7">
+      <note>
+        <pitch>
+          <step>A</step>
           <octave>3</octave>
         </pitch>
         <duration>1</duration>
@@ -359,7 +685,107 @@
       </note>
       <note>
         <pitch>
+          <step>A</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem>up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>3</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem>up</stem>
+        <beam number="1">single</beam>
+      </note>
+      <barline />
+    </measure>
+    <measure number="8">
+      <note>
+        <pitch>
+          <step>A</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>B</step>
+          <octave>5</octave>
+          <alter>-1</alter>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>B</step>
+          <octave>5</octave>
+          <alter>-1</alter>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <barline />
+    </measure>
+    <measure number="9">
+      <print new-system="yes" />
+      <note>
+        <pitch>
+          <step>B</step>
+          <octave>5</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
           <step>C</step>
+          <octave>6</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <note>
+        <pitch>
+          <step>D</step>
+          <octave>6</octave>
+        </pitch>
+        <duration>1</duration>
+        <voice>1</voice>
+        <type>quarter</type>
+        <stem default-y="28">down</stem>
+        <beam number="1">single</beam>
+      </note>
+      <barline />
+    </measure>
+    <measure number="10">
+      <note>
+        <pitch>
+          <step>G</step>
           <octave>4</octave>
         </pitch>
         <duration>1</duration>
@@ -370,7 +796,7 @@
       </note>
       <note>
         <pitch>
-          <step>D</step>
+          <step>G</step>
           <octave>4</octave>
         </pitch>
         <duration>1</duration>
@@ -381,7 +807,7 @@
       </note>
       <note>
         <pitch>
-          <step>D</step>
+          <step>G</step>
           <octave>4</octave>
         </pitch>
         <duration>1</duration>
@@ -392,10 +818,10 @@
       </note>
       <barline />
     </measure>
-    <measure number="2">
+    <measure number="11">
       <note>
         <pitch>
-          <step>D</step>
+          <step>A</step>
           <octave>4</octave>
         </pitch>
         <duration>1</duration>
@@ -406,86 +832,28 @@
       </note>
       <note>
         <pitch>
-          <step>E</step>
+          <step>B</step>
           <octave>4</octave>
         </pitch>
         <duration>1</duration>
         <voice>1</voice>
         <type>quarter</type>
-        <stem>up</stem>
+        <stem>down</stem>
         <beam number="1">single</beam>
       </note>
       <note>
         <pitch>
-          <step>E</step>
-          <octave>4</octave>
+          <step>C</step>
+          <octave>5</octave>
         </pitch>
         <duration>1</duration>
         <voice>1</voice>
         <type>quarter</type>
-        <stem>up</stem>
-        <beam number="1">single</beam>
-      </note>
-      <note>
-        <pitch>
-          <step>F</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
+        <stem>down</stem>
         <beam number="1">single</beam>
       </note>
       <barline />
     </measure>
-    <measure number="3">
-      <note>
-        <pitch>
-          <step>F</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        <beam number="1">single</beam>
-      </note>
-      <note>
-        <pitch>
-          <step>F</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        <beam number="1">single</beam>
-      </note>
-      <note>
-        <pitch>
-          <step>F</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        <beam number="1">single</beam>
-      </note>
-      <note>
-        <pitch>
-          <step>F</step>
-          <octave>4</octave>
-        </pitch>
-        <duration>1</duration>
-        <voice>1</voice>
-        <type>quarter</type>
-        <stem>up</stem>
-        <beam number="1">single</beam>
-      </note>
-      <barline />
-    </measure>
-    <measure number="4" />
+    <measure number="12" />
   </part>
 </score-partwise>

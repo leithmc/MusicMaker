@@ -1,8 +1,7 @@
+using LData;
 using Manufaktura.Controls.Model;
 using Manufaktura.Music.Model;
-using Manufaktura.Controls.Audio;
-using Manufaktura.Controls.Desktop.Audio;
-using Manufaktura.Controls.Desktop;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,30 +11,26 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using Microsoft.Win32;
-using LData;
 
 namespace Piano
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IDisposable
     {
-        // private String KeyName;
-        private String MusicTitle;
+        private string MusicTitle;
         private int beatsPerMeasure;
         private int beatLength;
         private ScoreVM model;
-        private Boolean looped = false;
+        private bool looped = false;
         private RhythmicDuration noteLength = RhythmicDuration.Quarter;
         private string keyboard_Input = "None";
         private bool isLoaded = false;
-        private String Selected = "QuarterNote";
-        private Object SelectedNote;
+        private string Selected = "QuarterNote";
+        private object SelectedNote;
         private object DottedSelected;
-        private String HoldSelected = "";
-        //private MidiTaskScoremodel.Player model.Player;
+        private string HoldSelected = "";
         private RoutedCommand cmdDelete;
         private string[] keySigs = { "F", "C", "G", "D", "A", "E", "B", "F#", "C#", "G#", "D#", "A#", "E#", "Bb", "Eb", "Ab", "Db", "Gb" };
         string[] validBeatsPerMeasure = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16" };
@@ -47,9 +42,6 @@ namespace Piano
             {"WholeNote", RhythmicDuration.Whole }, { "HalfNote", RhythmicDuration.Half }, {"QuarterNote", RhythmicDuration.Quarter },
             {"EigthNote", RhythmicDuration.Eighth }, {"SixteenthNote", RhythmicDuration.Sixteenth }, {"ThirtySecondNote", RhythmicDuration.D32nd }
         };
-
-
-
 
         /// <summary>
         /// Constructor for main xaml window.
@@ -64,42 +56,13 @@ namespace Piano
             // Initialize the view model
             model = new ScoreVM();
             DataContext = model;
-            //model.loadStartData(); // Don't need anymore?
-
-            // Iinitialize the model.Player
-            //model.Player = new MidiTaskScoremodel.Player(model.Data);
-
-            Viewer.MouseUp += Viewer_MouseUp;
-
             cmdDelete = new RoutedCommand();
             cmdDelete.InputGestures.Add(new KeyGesture(System.Windows.Input.Key.Delete));
             CommandBindings.Add(new CommandBinding(cmdDelete, delete));
 
-
-            //looks more professional starting with a new slate.
+            // Open the score creation window
             OpenScoreCreationWindow();
-
-            // Set viewer properties
-
         }
-
-        // Deletes the selected note or rest.
-        private void delete(object sender, ExecutedRoutedEventArgs e)
-        {
-            var elem = Viewer.SelectedElement;
-            if (elem != null & elem.Staff.Elements.Contains(elem))
-            {
-                Viewer.SelectedElement = null;
-                model.staves[model.Data.Staves.IndexOf(elem.Staff)].Remove(elem);
-            }
-            else MessageBox.Show("You must select a note or rest to delete. To delete all, click the Reset button.");
-        }
-
-        private void Viewer_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            //model.updateView(); // Needed to keep the notes from jumping around when you click on them
-        }
-
 
         #region FileIO_EventHandlers
         /*** The code in this region handles the New, Load, Save, and Print buttons ***/
@@ -152,14 +115,8 @@ namespace Piano
                 // Open the popup
                 ScoreCreationWindow.Visibility = Visibility.Visible;
             }
-            else
-            {
-                return;
-            }
+            else return;
         }
-
-
-
 
         /// <summary>
         /// Collects title, time, and key signature information from the Create New Score popup
@@ -188,9 +145,7 @@ namespace Piano
             //reset note selection to quarter note
             NoteSelectionReset();
             
-
             // Calculate key signature based on selected value from array
-            // If selected index < 13, keyIndex - seleted index -1, else keyIndex = selected index
             Console.WriteLine(MusicTitle);
             MusicNameLabel.Content = MusicTitle;
 
@@ -203,37 +158,13 @@ namespace Piano
             TimeSignature timeSig = new TimeSignature(TimeSignatureType.Numbers, beatsPerMeasure, beatLength);
             model.TimeSig = new TimeSignature(TimeSignatureType.Numbers, beatsPerMeasure, beatLength);
 
-            // **** GRAND STAFF ON HOLD -- SWITCHING TO SINGLE STAFF TO GET BUGS OUT ****
-            // Build grand staff for now -- later may add options for more or fewer staves
-            //Staff treble = new Staff();
-            //MusicalSymbol[] elements = { Clef.Treble, key, timeSig }; // Add treble clef, key sig, time sig
-
-            //for (int i = 0; i < 3; i++)
-            //{
-            //    treble.Elements.Add(elements[i]);
-            //}
-
-
-            //Staff bass = new Staff();
-            //elements[0] = Clef.Bass;        // Add bass clef, key sig, time sig
-
-            //for (int i = 0; i < 3; i++)
-            //{
-            //    bass.Elements.Add(elements[i]);
-            //}
-
-            //Staff[] staves = { treble, bass };
-            //// Pass the title and the treble and bass staves to createNew
-            //model.createNew(TitleBox.Text, staves);
-
             // Create a single staff score
+            model.FileName = "";
             model.createNew(key, timeSig);
             Viewer.ScoreSource = model.Data;
             model.ResetPlayer();
         }
-
-
-
+        
 
         /// <summary>
         /// Called when the user clicks the 'Load' button.
@@ -305,10 +236,7 @@ namespace Piano
                 OpenScoreCreationWindow();
             }
         }
-
-
-
-
+        
 
         /// <summary>
         /// Saves the current score as a MusicXml file.
@@ -319,10 +247,7 @@ namespace Piano
         {
             model.save();
         }
-
-
-
-
+        
         /// <summary>
         /// Formats the current score into one or more 8 1/2 x 11 pages and then sends them to the selected printer.
         /// </summary>
@@ -358,19 +283,12 @@ namespace Piano
             MusicSheet.Visibility = Visibility.Visible;
         }
         
-
         #endregion
 
-
-
-
-
-
+        
         #region PianoKeyHandlers
         /***** The code in this region handles everything to do with the piano keys. ****/
-
-
-
+        
         /// <summary>
         /// Called when the mouse passes over a piano key.
         /// Turns the key aqua.
@@ -378,9 +296,7 @@ namespace Piano
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void keyOver(object sender, MouseEventArgs e) { ((Rectangle)sender).Fill = Brushes.Aqua; }
-
         
-
 
         /// <summary>
         /// Called when the mouse leaves a white key.
@@ -390,9 +306,7 @@ namespace Piano
         /// <param name="e"></param>
         private void whiteKeyLeave(object sender, MouseEventArgs e) { ((Rectangle)sender).Fill = Brushes.White; }
 
-
-
-
+        
         /// <summary>
         /// Called when the mouse leaves a black key.
         /// Turns the key black.
@@ -401,9 +315,7 @@ namespace Piano
         /// <param name="e"></param>
         private void blackKeyLeave(object sender, MouseEventArgs e) { ((Rectangle)sender).Fill = Brushes.Black; }
 
-
-
-
+        
         /// <summary>
         /// Called by the mouse_down event of the piano keys.
         /// Turns the key yellow, adds its note to the score, and plays the note.
@@ -419,6 +331,11 @@ namespace Piano
             addNoteOrRestToStaff(note);
         }
 
+        /// <summary>
+        /// Gets the LStaff object that corresponds to the Staff object that contatins the specified element.
+        /// </summary>
+        /// <param name="elem">The element contained.</param>
+        /// <returns>The corresponding LStaff.</returns>
         private LStaff getLStaff(MusicalSymbol elem)
         {
             if (elem == null) return model.staves[0];
@@ -426,12 +343,16 @@ namespace Piano
             return model.staves[index];
         }
 
+        /// <summary>
+        /// Identifies whether the selected element can be safely followed by a note or rest.
+        /// </summary>
+        /// <param name="elem">The element to verify.</param>
+        /// <returns>true if elem is a note or rest; false otherwise.</returns>
         private bool isValidTarget(MusicalSymbol elem)
         {
             if (elem == null) return false;
             return (elem.GetType().IsSubclassOf(typeof(NoteOrRest)));
         }
-
 
 
         /// <summary>
@@ -449,10 +370,6 @@ namespace Piano
 
             else // Black key. AB3 means A# or Bb in third octave.
             {
-                // Get the current key
-                //var key = (Manufaktura.Controls.Model.Key) model.Data.FirstStaff.Elements.First(k => k.GetType() == typeof(Manufaktura.Controls.Model.Key));
-                // TODO: MAKE SURE KEYSIG IS BEING SET IN BOTH THE LOAD HANDLER AND IN THE COMBOBOX
-
                 string letter;
                 int mod;    // sharp or flat
                 if (model.KeySig.Fifths > 0) // if sharp key, use the first letter and add a sharp
@@ -481,26 +398,47 @@ namespace Piano
             // New for LStaff
             var elem = Viewer.SelectedElement;
             LStaff staff = getLStaff(elem);
+            NoteOrRest noteToPlay;
             if (isValidTarget(elem))
             {
-                LMeasure measure = staff.FirstOrDefault(m => m.Contains(elem));
+                LMeasure measure = staff.getMeasure(elem);
                 staff.AddAfter(elem, nr);
                 if (measure.Contains(nr)) Viewer.SelectedElement = nr;
                 else if (measure.Node.Next != null && measure.Node.Next.Value.Count > 0)
                     Viewer.SelectedElement = measure.Node.Next.Value.First.Value;
+                noteToPlay = (NoteOrRest) Viewer.SelectedElement;
             }
-            else staff.Add(nr);
-            //// model.breakStaffIfNeeded();
+            else
+            {
+                staff.Add(nr);
+                noteToPlay = (NoteOrRest) staff.Last.Value.Last(e => e.GetType().IsSubclassOf(typeof(NoteOrRest)));
+            }
 
             // Play the note
-            if (nr.GetType() == typeof(Note))
+            if (noteToPlay.GetType() == typeof(Note))
             {
-                model.PlayNote((Note)nr);
+                model.PlayNote((Note)noteToPlay);
             }
 
+            // Update the view model to make the Play command available
             model.updateView();
-        }        
+        }
 
+        /// <summary>
+        /// Deletes the selected note or rest.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void delete(object sender, ExecutedRoutedEventArgs e)
+        {
+            var elem = Viewer.SelectedElement;
+            if (elem != null & elem.Staff.Elements.Contains(elem))
+            {
+                Viewer.SelectedElement = null;
+                model.staves[model.Data.Staves.IndexOf(elem.Staff)].Remove(elem);
+            }
+            else MessageBox.Show("You must select a note or rest to delete. To delete all, click the Reset button.");
+        }
 
         /// <summary>
         /// Called by the mouse_up event of the piano keys.
@@ -511,18 +449,8 @@ namespace Piano
         private void pianoKeyUp(object sender, MouseButtonEventArgs e)
         {
             ((Rectangle)sender).Fill = Brushes.Aqua;
-            //KeyName = "";
-            //Console.WriteLine(KeyName);
         }
-
-
         #endregion
-
-
-
-
-
-
 
         #region NoteControls
         /**** The code in this region handles events from duration, key signature, time signature, and 
@@ -530,15 +458,14 @@ namespace Piano
 
 
         /// <summary>
-        /// Note length Combo Box
-        /// Selected not defined at beginning on mainwindow to start.
+        /// Sets the default note value to the selected note type. Called when any
+        /// of the note value buttons are clicked.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void NoteLengthSelection(object sender, MouseButtonEventArgs e)
         {
             string NoteName = (((FrameworkElement)e.Source).Name);
-
 
             if (DottedSelected != null)
             {
@@ -547,8 +474,7 @@ namespace Piano
                     ((Rectangle)DottedSelected).Stroke = Brushes.White;
                     DottedSelected = null;
                 }
-            }
-        
+            }        
 
             if (NoteName == "Dot")
             {
@@ -557,7 +483,6 @@ namespace Piano
                 ((Rectangle)HoldSelectedwithDot).Stroke = Brushes.Yellow;
                 HoldSelected = (((FrameworkElement)HoldSelectedwithDot).Name);
 
-
                 //bring in dot and hold color
                 DottedSelected = sender;
                 noteLength.Dots++;
@@ -565,13 +490,10 @@ namespace Piano
                 Selected = (((FrameworkElement)e.Source).Name);
             }
 
-
-
             else
             {
                 noteLength = NoteLengths[NoteName];
                 noteLength.Dots = 0;
-
 
                 //Change previos selected note outline to white
                 if (SelectedNote != sender)
@@ -580,18 +502,15 @@ namespace Piano
                 }
                 
                 SelectedNote = sender;
-
                 Selected = (((FrameworkElement)e.Source).Name);
-
                 ((Rectangle)sender).Stroke = Brushes.Yellow;
             }
-
-            
         }
 
 
-
-        //reset Note Selection to default on load and new
+        /// <summary>
+        /// Resets the selected note value to QuarterNote when a new score is created or loaded.
+        /// </summary>
         private void NoteSelectionReset()
         {
             object PreviousSelected = SelectedNote;
@@ -609,27 +528,24 @@ namespace Piano
 
             if(SelectedNote != PreviousSelected)
             {
-
                 ((Rectangle)PreviousSelected).Stroke = Brushes.White;
                 ((Rectangle)SelectedNote).Stroke = Brushes.Yellow;
                 noteLength = RhythmicDuration.Quarter;
                 Selected = "QuarterNote";
             }
-            else
-            {
-                return;
-            }
+            else return;
         }
 
 
 
-        //rest selection
+        /// <summary>
+        /// Adds the selected Rest to the score.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NoteRestSelection(object sender, MouseButtonEventArgs e)
         {
             string NoteRestName = (((FrameworkElement)e.Source).Name);
-
-            
-
             RhythmicDuration previousNoteLength = noteLength;
 
             // Update note value to match the rest
@@ -666,45 +582,35 @@ namespace Piano
         }
 
 
-        //Note mouse leave, If note is selected return
+        /// <summary>
+        /// Called when the cursor leaves the region of a piano key. Reverts the key color to
+        /// the previous value unless selected.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NoteMouseLeave(object sender, MouseEventArgs e)
         {
             String Over = (((FrameworkElement)e.Source).Name);
-            if (Over == Selected || Over == HoldSelected)
-            {
-                return;
-            }
-
-            else
-            {
-                ((Rectangle)sender).Stroke = Brushes.White;
-            }
+            if (Over == Selected || Over == HoldSelected) return;
+            else ((Rectangle)sender).Stroke = Brushes.White;
         }
 
-
-
-
-        //Note mouse over, If note is selected return
+        /// <summary>
+        /// Called when the cursor enters the region of a piano key. Changes the color of the key.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void NoteMouseEnter(object sender, MouseEventArgs e)
         {
             String Over = (((FrameworkElement)e.Source).Name);
-            if (Over == Selected || Over ==HoldSelected)
-            {
-                return;
-            }
-
-            else
-            {
-                ((Rectangle)sender).Stroke = Brushes.Aqua;
-            }
-
-        }
-
-        
+            if (Over == Selected || Over == HoldSelected) return;
+            else ((Rectangle)sender).Stroke = Brushes.Aqua;            
+        }        
 
 
         /// <summary>
-        /// Radio Buttons... tested Default is none
+        /// Controls the choice of keyboard mappings.
+        /// Not implemented.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -729,8 +635,6 @@ namespace Piano
             Console.WriteLine(keyboard_Input);
         }
         #endregion
-
-
 
 
         #region ScoreSetup
@@ -759,7 +663,6 @@ namespace Piano
                 }
             }
 
-            // Console.WriteLine(TitlePurged);
             MusicTitle = TitlePurged;
         }
 
@@ -791,21 +694,6 @@ namespace Piano
         }
 
 
-
-        /// <summary>
-        /// Called when the user makes a selection from the Key Signature combobox.
-        /// Sets the key signature in the view model to the selected key.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void KeySignatureComboSelection_Changed(object sender, SelectionChangedEventArgs e)
-        {
-            // SHOULD BE UNNECESSARY -- CALCULATED IN CreateNew and in LoadFile
-            //int keyIndex = (KeySignatureCombo.SelectedIndex < 13) ? KeySignatureCombo.SelectedIndex - 1 : 12 - KeySignatureCombo.SelectedIndex;
-            //model.KeySig = new Manufaktura.Controls.Model.Key(keyIndex);
-        }
-
-
         /// <summary>
         /// Deletes the current score and replaces it with a blank default staff.
         /// </summary>
@@ -814,26 +702,20 @@ namespace Piano
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
             model.Data = null;
-
             model.updateView();
-
             model.createNew(model.KeySig, model.TimeSig);
             Viewer.ScoreSource = model.Data;
             model.ResetPlayer();
         }
         #endregion
 
-
-
-
         #region Playback
         /**** Code in this region pertains to plaback controls. ****/
 
         /// <summary>
-        /// loop button
+        /// Sets the looping property of the player when the Loop button is clicked.
+        /// Currently inactive.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void LoopButton_Click(object sender, RoutedEventArgs e)
         {
             //unloop method
@@ -850,18 +732,28 @@ namespace Piano
                 looped = true;
             }
         }
-        #endregion
 
-
-
-
-
-        #region HelperFunctions
-        // Just a temporary helper method to show when something isn't implemented yet.
-        private void TBI(string feature)
+        /// <summary>
+        /// Cleans up resources.
+        /// </summary>
+        /// <param name="cleanAll">true to dispose managed resources. false to dispose native only.</param>
+        protected virtual void Dispose(bool cleanAll)
         {
-            MessageBox.Show(feature + " is not yet implemented.");
+            if (cleanAll)
+            {
+                model.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Cleans up resources.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
         #endregion
+
     }
 }

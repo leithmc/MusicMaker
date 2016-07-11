@@ -74,7 +74,6 @@
                     <PathGeometry>
                         <PathFigure StartPoint="120,380">
                             <LineSegment Point="1160,380"/>
-
                         </PathFigure>
                     </PathGeometry>
                 </Path.Data>
@@ -261,7 +260,7 @@
                 </ComboBox>
 
                 <Label Content="Key Signature" Canvas.Left="150" Canvas.Top="130"/>
-                <ComboBox x:Name="KeySignatureCombo" Canvas.Left="250" Canvas.Top="130" ItemsSource="{Binding System.Enum.GetValues(typeof(Key));}" SelectionChanged="KeySignatureComboSelection_Changed">
+                <ComboBox x:Name="KeySignatureCombo" Canvas.Left="250" Canvas.Top="130" ItemsSource="{Binding System.Enum.GetValues(typeof(Key));}">
                 </ComboBox>
 
                 <Button x:Name="PopUpClose" Content="Start" Width="50" Canvas.Left="215" Canvas.Top="300" Click="createNew"/>
@@ -285,9 +284,6 @@
                         <Image Source="/Resources/Images/Loop.png" Width="25" Height="14" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </StackPanel>
                 </Button>
-                <!--<Button  x:Name="Play"  Content=" Play/ Pause" Canvas.Left="330" Canvas.Top="342"  Height="20" Width="75" Click="PlayButton_Click" Command="{Binding PlayCommand}"/>
-                <Button x:Name="Stop" Content="Stop" Canvas.Left="433" Canvas.Top="342" Width="50"  Height="20" Click="StopButton_Click" Command="{Binding StopCommand}"/>
-                <Button x:Name="Reset" Content="Reset" Canvas.Left="510" Canvas.Top="342" Width="50" Height="20"  Click="ResetButton_Click" />-->
                 <Button  x:Name="Play"  Content=" Play/ Pause" Canvas.Left="330" Canvas.Top="342"  Height="20" Width="75" Command="{Binding PlayCommand}"/>
                 <Button x:Name="Stop" Content="Stop" Canvas.Left="433" Canvas.Top="342" Width="50"  Height="20" Command="{Binding StopCommand}"/>
                 <Button x:Name="Reset" Content="Reset" Canvas.Left="510" Canvas.Top="342" Width="50" Height="20"  Click="ResetButton_Click" />
@@ -519,9 +515,5 @@
 
         </Canvas>
         <!--End Piano Key Canvases-->
-
-
-
-
     </Grid>
 </Window>

@@ -59,7 +59,7 @@ namespace LData
         /// <summary>
         /// Returns a reference to the LStaff object that contains the current LMeasure.
         /// </summary>
-        public LStaff Staff { get { return staff; } }
+        public LStaff Staff { get { return staff; } set { staff = value; } }
 
         /// <summary>
         /// Returns the LinkedListNode object containing the current LMeasure.
@@ -269,44 +269,6 @@ namespace LData
             else if (Beats > capacity) throw new DataMisalignedException("There are too many beats in this measure.");
         }
 
-        //private void setSigs()
-        //{
-        //    var clefs = (List < MusicalSymbol >) this.Where(e => e.GetType() == typeof(Clef));
-        //    var keys = (List<MusicalSymbol>) this.Where(e => e.GetType() == typeof(Key));
-        //    var times = (List<MusicalSymbol>) this.Where(e => e.GetType() == typeof(TimeSignature));
-        //    var sets = new List<List<MusicalSymbol>>() { clefs, keys, times };
-        //    var sigs = new List<MusicalSymbol>();
-        //    MusicalSymbol clef, key, time;
-        //    foreach (var set in sets)
-        //    {
-        //        if (set.Count == 0) sets.Remove(set);
-        //        else while (set.Count > 1)
-        //        {
-        //            base.Remove(set.Last());
-        //            set.Remove(set.Last());
-        //        }
-        //    }
-            
-        //    foreach 
-
-        //}
-
-        private void RemoveExtras(MusicalSymbol elem)
-        {
-            if (elem == null) return;
-            var set = this.Where(e => e.GetType() == elem.GetType());
-            foreach (var v in set) if (!v.Equals(elem)) base.Remove(v);
-        }
-
-        /// <summary>
-        /// Removes all Barline elements from the LMeasure.
-        /// </summary>
-        private void removeBarlines()
-        {
-            var barlines = this.Where(e => e.GetType() == typeof(Barline));
-            foreach (var bar in barlines) base.Remove(bar);
-        }
-
 
         /// <summary>
         /// Converts a double value to a RhythmicDuration object. Supports note values down
@@ -352,6 +314,5 @@ namespace LData
             }
             return d;
         }
-
     }
 }
